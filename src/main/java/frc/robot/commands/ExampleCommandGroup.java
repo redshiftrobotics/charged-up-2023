@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ExampleSubsystem;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 // Sequential command group will run all commands sequentially
 // ParallelCommandGroup will run all commands in parallel and finish when all commands are finished
@@ -14,6 +15,7 @@ public class ExampleCommandGroup extends SequentialCommandGroup {
 		//setDeadline(new ExampleCommand(subsystem))
 		addCommands(
 				new ExampleCommand(subsystem),
-				new ExampleCommand2(subsystem2));
+				new WaitCommand(1.0),
+				new ExampleCommand(subsystem2));
 	}
 }
