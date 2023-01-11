@@ -4,9 +4,9 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.ExampleSubsystem;
 
 // Sequential command group will run all commands sequentially
-// Race command group will run all commands until one finishes
-// Parallel command group will run all commands at once and finish when all commands end
-// Deadline command group will run all commands until a specific command finishes
+// ParallelCommandGroup will run all commands in parallel and finish when all commands are finished
+// ParallelRaceGroup will run all commands until one finishes, and interupt the rest
+// ParallelDeadlineGroup will run all commands until a specified "deadline" command finishes, then interupt the rest
 
 public class ExampleCommandGroup extends SequentialCommandGroup {
 	public ExampleCommandGroup(ExampleSubsystem subsystem, ExampleSubsystem subsystem2) {
