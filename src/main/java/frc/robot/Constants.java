@@ -14,6 +14,28 @@ package frc.robot;
  */
 public final class Constants {
 	public static class OperatorConstants {
-		public static final int kDriverControllerPort = 0;
+		public static final int DRIVER_CONTROLLER_PORT = 0;
+	}
+
+	public static class SwerveDriveConstants {
+
+		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
+		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
+
+		public static final double ENCODER_POSITION_CONVERSION_FACTOR = ROTATIONAL_UNITS_CONSTANT
+				/ ENCODER_NATIVE_NUM_SUBDIVISION;
+
+		public static final double WHEEL_DIAMETER = 7;
+
+		// https://www.swervedrivespecialties.com/products/mk4-swerve-module 
+		// It depends on which version we bought
+		// See above site for info
+		public static final double VELOCITY_MOTOR_MAX_SPEED_IMPERIAL = 14.5;
+
+		public static final double VELOCITY_MOTOR_MAX_SPEED_METRIC = VELOCITY_MOTOR_MAX_SPEED_IMPERIAL * 0.3048;
+
+		public static final double PID_P = 1;
+		public static final double PID_I = 0;
+		public static final double PID_D = 0;
 	}
 }
