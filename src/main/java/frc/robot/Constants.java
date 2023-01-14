@@ -33,12 +33,16 @@ public final class Constants {
 		// https://www.swervedrivespecialties.com/products/mk4-swerve-module 
 		// It depends on which version we bought
 		// See above site for info
-		public static final double VELOCITY_MOTOR_MAX_SPEED_IMPERIAL = 14.5;
+		public static final double VELOCITY_MOTOR_MAX_SPEED_IMPERIAL = 12;
 
 		public static final double VELOCITY_MOTOR_MAX_SPEED_METRIC = VELOCITY_MOTOR_MAX_SPEED_IMPERIAL * 0.3048;
 
-		public static final double PID_P = 1;
-		public static final double PID_I = 0;
-		public static final double PID_D = 0;
+		public static final double ANGULAR_PID_P = 1;
+		public static final double ANGULAR_PID_I = 0;
+		public static final double ANGULAR_PID_D = 0;
+
+		public static final double VELOCITY_PID_P = 1;
+		public static final double VELOCITY_PID_I = 0;
+		public static final double VELOCITY_PID_D = 0;
 	}
 }
