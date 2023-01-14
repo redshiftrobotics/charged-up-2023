@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** An example command that uses an example subsystem. */
@@ -28,6 +29,7 @@ public class SingularSwerveModuleCommand extends CommandBase {
 	// Called when the command is initially scheduled.
 	@Override
 	public void initialize() {
+		SmartDashboard.putBoolean("Command Initialize", true);
 		swerveModule.setSwerveModuleState(state);
 	}
 

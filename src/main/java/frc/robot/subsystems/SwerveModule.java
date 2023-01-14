@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 
 import com.revrobotics.AbsoluteEncoder;
@@ -50,6 +51,7 @@ public class SwerveModule extends PIDSubsystem {
 
 		// https://www.swervedrivespecialties.com/products/mk4-swerve-module
 		velocityMotor.set(state.speedMetersPerSecond / SwerveDriveConstants.VELOCITY_MOTOR_MAX_SPEED_METRIC);
+		SmartDashboard.putNumber("Velocity Motor Speed", velocityMotor.get());
 
 		SwerveModule.super.m_controller.setSetpoint(state.angle.getRadians());
 
@@ -63,6 +65,11 @@ public class SwerveModule extends PIDSubsystem {
 	@Override
 	protected void useOutput(double output, double setpoint) {
 		angularMotor.set(output);
+	}
+
+	@Override
+	public void periodic() {
+		SmartDashboard.putNumber("Encoder Value", angularMotorEncoder.getPosition());
 	}
 
 }
