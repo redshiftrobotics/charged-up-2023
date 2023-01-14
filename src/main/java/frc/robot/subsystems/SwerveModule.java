@@ -41,11 +41,13 @@ public class SwerveModule extends PIDSubsystem {
 		return angularMotorEncoder.getPosition();
 	}
 
+	// Sets the speed of the velocity motor and sets the desired state of the angular motor
+	// Optimizes the path so that the angular motor doesn't take a longer route than need be
+	// Parameters: disered swerve module state
 	public void setSwerveModuleState(SwerveModuleState desiredState) {
 
 		SwerveModuleState state = SwerveModuleState.optimize(desiredState, new Rotation2d(getRotation()));
 
-		// TODO: determine max speed from which version we bought 
 		// https://www.swervedrivespecialties.com/products/mk4-swerve-module
 		velocityMotor.set(state.speedMetersPerSecond / SwerveDriveConstants.VELOCITY_MOTOR_MAX_SPEED_METRIC);
 

@@ -14,10 +14,13 @@ package frc.robot;
  */
 public final class Constants {
 	public static class OperatorConstants {
-		public static final int DRIVER_CONTROLLER_PORT = 0;
+		public static final int DRIVER_JOYSTICK_PORT = 0;
 	}
 
 	public static class SwerveDriveConstants {
+
+		public static final int ANGULAR_MOTOR_ID = 0;
+		public static final int VELOCITY_MOTOR_ID = 1;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
