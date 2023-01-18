@@ -23,7 +23,7 @@ public class SwerveModule extends SubsystemBase {
 	private final PIDController angularPIDController;
 	private final PIDController velocityPIDController;
 
-	private final SwerveModuleState state = new SwerveModuleState();
+	private SwerveModuleState state = new SwerveModuleState();
 
 	// Constructor for Swerve Module
 	// Makes 2 Motor classes and a PID Controller for one of the Motors
