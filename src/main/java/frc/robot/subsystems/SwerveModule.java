@@ -78,6 +78,7 @@ public class SwerveModule extends SubsystemBase {
 		velocityPIDController.setSetpoint(state.speedMetersPerSecond);
 	}
 
+	// Calculates the next output value of each PID controller and sets motors to them
 	@Override
 	public void periodic() {
 		angularMotor.set(
