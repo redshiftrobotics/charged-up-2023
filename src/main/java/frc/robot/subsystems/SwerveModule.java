@@ -57,8 +57,9 @@ public class SwerveModule extends SubsystemBase {
 
 	// Returns the Rotation of the Angular Motor
 	// Returns the roations in number of rotations (eg. instead of 2pi or 360 it returns 1)
-	public double getRotation() {
-		return angularEncoder.getPosition().getValue() * SwerveDriveConstants.ANGULAR_MOTOR_GEAR_RATIO;
+	// TODO: add modulo operator with the wheel yaw
+	public double getYawRotation() {
+		return (angularEncoder.getPosition().getValue() * SwerveDriveConstants.ANGULAR_MOTOR_GEAR_RATIO);
 	}
 
 	// Returns the velocity of the Velocity motor in meters / second of the wheel
@@ -72,7 +73,7 @@ public class SwerveModule extends SubsystemBase {
 	// Optimizes the path so that the angular motor doesn't take a longer route than need be
 	// Parameters: disered swerve module state
 	public void setSwerveModuleState(SwerveModuleState desiredState) {
-		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getRotation()));
+		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
 
 		angularPIDController.setSetpoint(state.angle.getRotations());
 		velocityPIDController.setSetpoint(state.speedMetersPerSecond);
@@ -81,7 +82,7 @@ public class SwerveModule extends SubsystemBase {
 	@Override
 	public void periodic() {
 		angularMotor.set(
-				angularPIDController.calculate(getRotation()));
+				angularPIDController.calculate(getYawRotation()));
 
 		velocityMotor.set(
 				velocityPIDController.calculate(getVelocity()));
