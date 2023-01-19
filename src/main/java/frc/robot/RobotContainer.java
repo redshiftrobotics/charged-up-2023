@@ -24,8 +24,11 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-	private final SwerveModule module1 = new SwerveModule(SwerveDriveConstants.ANGULAR_MOTOR_ID,
-			SwerveDriveConstants.VELOCITY_MOTOR_ID);
+	private final SwerveModule module1 = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID,
+			SwerveDriveConstants.VELOCITY_MOTOR_ENCODER_ID);
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	// Replace with CommandPS4Controller or CommandJoystick if needed

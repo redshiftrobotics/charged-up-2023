@@ -12,12 +12,18 @@ package frc.robot;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
+
+import edu.wpi.first.math.util.Units;
+
 public final class Constants {
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 	}
 
 	public static class SwerveDriveConstants {
+
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 0;
+		public static final int VELOCITY_MOTOR_ENCODER_ID = 1;
 
 		public static final int ANGULAR_MOTOR_ID = 3;
 		public static final int VELOCITY_MOTOR_ID = 19;
@@ -28,14 +34,17 @@ public final class Constants {
 		public static final double ENCODER_POSITION_CONVERSION_FACTOR = ROTATIONAL_UNITS_CONSTANT
 				/ ENCODER_NATIVE_NUM_SUBDIVISION;
 
-		public static final double WHEEL_DIAMETER = 7;
+		public static final double WHEEL_DIAMETER_INCHES = 7;
+		public static final double WHEEL_DIAMETER_METRIC = Units.inchesToMeters(WHEEL_DIAMETER_INCHES);
+
+		public static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER_METRIC * Math.PI;
 
 		// https://www.swervedrivespecialties.com/products/mk4-swerve-module 
 		// It depends on which version we bought
 		// See above site for info
-		public static final double VELOCITY_MOTOR_MAX_SPEED_IMPERIAL = 12;
+		public static final double VELOCITY_MOTOR_GEAR_RATIO = 57 / 7;
 
-		public static final double VELOCITY_MOTOR_MAX_SPEED_METRIC = VELOCITY_MOTOR_MAX_SPEED_IMPERIAL * 0.3048;
+		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
 
 		public static final double ANGULAR_PID_P = 1;
 		public static final double ANGULAR_PID_I = 0;
