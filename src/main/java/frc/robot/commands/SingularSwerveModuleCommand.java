@@ -10,13 +10,14 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-/** An example command that uses an example subsystem. */
+/** Command for testing a singular swerve module, just sets state of a given module. */
 public class SingularSwerveModuleCommand extends CommandBase {
 	// @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 	// private final ExampleSubsystem subsystem;
 	private final SwerveModule swerveModule;
 	private final SwerveModuleState state;
 
+	// constructs the state object and sets its speed to the velocity
 	public SingularSwerveModuleCommand(SwerveModule swerveModule, double angle, double velocity) {
 		this.swerveModule = swerveModule;
 		state = new SwerveModuleState();
