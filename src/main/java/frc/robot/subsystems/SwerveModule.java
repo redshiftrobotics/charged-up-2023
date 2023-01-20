@@ -36,8 +36,7 @@ public class SwerveModule extends SubsystemBase {
 	public SwerveModule(
 			int angularMotorDeviceID,
 			int velocityMotorDeviceID,
-			int angularEncoderDeviceID,
-			int velocityEncoderDeviceID) {
+			int angularEncoderDeviceID) {
 
 		angularPIDController = new PIDController(
 				SwerveDriveConstants.ANGULAR_PID_P,

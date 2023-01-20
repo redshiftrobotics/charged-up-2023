@@ -23,7 +23,6 @@ public final class Constants {
 	public static class SwerveDriveConstants {
 
 		public static final int ANGULAR_MOTOR_ENCODER_ID = 0;
-		public static final int VELOCITY_MOTOR_ENCODER_ID = 1;
 
 		public static final int ANGULAR_MOTOR_ID = 3;
 		public static final int VELOCITY_MOTOR_ID = 19;
