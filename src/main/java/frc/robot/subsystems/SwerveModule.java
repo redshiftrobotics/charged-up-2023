@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenixpro.hardware.CANcoder;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,7 +22,7 @@ public class SwerveModule extends SubsystemBase {
 	private final CANSparkMax velocityMotor;
 
 	private final CANcoder angularEncoder;
-	private final CANcoder velocityEncoder;
+	private final RelativeEncoder velocityEncoder;
 
 	private final PIDController angularPIDController;
 	private final PIDController velocityPIDController;
@@ -51,7 +53,7 @@ public class SwerveModule extends SubsystemBase {
 		velocityMotor = new CANSparkMax(velocityMotorDeviceID, MotorType.kBrushless);
 
 		angularEncoder = new CANcoder(angularEncoderDeviceID);
-		velocityEncoder = new CANcoder(velocityEncoderDeviceID);
+		velocityEncoder = velocityMotor.getEncoder();
 
 	}
 
@@ -64,7 +66,7 @@ public class SwerveModule extends SubsystemBase {
 
 	// Returns the velocity of the Velocity motor in meters / second of the wheel
 	public double getVelocity() {
-		return velocityEncoder.getVelocity().getValue() *
+		return velocityEncoder.getVelocity() *
 				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
 				SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
 	}
