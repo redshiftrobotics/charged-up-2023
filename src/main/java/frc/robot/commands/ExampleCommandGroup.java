@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 public class ExampleCommandGroup extends SequentialCommandGroup {
 	public ExampleCommandGroup(ExampleSubsystem subsystem, ExampleSubsystem subsystem2) {
 		// if making a deadline group add the following line and remove ExampleCommand from addCommands
-		//setDeadline(new ExampleCommand(subsystem))
+		// setDeadline(new ExampleCommand(subsystem))
 		addCommands(
 				new ExampleCommand(subsystem),
 				new WaitCommand(1.0),
