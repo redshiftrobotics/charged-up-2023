@@ -73,7 +73,7 @@ public class SwerveModule extends SubsystemBase {
 	// Sets the speed of the velocity motor and sets the desired state of the angular motor
 	// Optimizes the path so that the angular motor doesn't take a longer route than need be
 	// Parameters: disered swerve module state
-	public void setSwerveModuleState(SwerveModuleState desiredState) {
+	public void setState(SwerveModuleState desiredState) {
 		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
 
 		angularPIDController.setSetpoint(state.angle.getRotations());
