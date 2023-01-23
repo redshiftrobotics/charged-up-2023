@@ -17,6 +17,7 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveModule;
 
+/* The robot drivetrain using Swerve Drive */
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
@@ -45,10 +46,14 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private static final SwerveModule moduleBR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
-	
-	private final Gyro gyro;
-	private Pose2d pose;
 
+	private final Gyro gyro; // the gyroscope of the robot
+	private Pose2d pose; // the position of the robot
+
+	/** Creates the SwerveDrivetrain and initializes odometry
+	 * 
+	 * @param gyro The Gyroscope of the robot.
+	 */
 	public SwerveDrivetrain(Gyro gyro) {
 		this.gyro = gyro;
 		odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(),
@@ -59,14 +64,19 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleBR.getPosition() });
 	}
 
-	public void setChassisSpeed(ChassisSpeeds speed) {
-		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speed);
+	/** Set the SwerveModuleState of all modules
+	 * 
+	 * @param speeds The ChassisSpeeds object to calculate module states based off of.
+	 */
+	public void setSwerveModuleStates(ChassisSpeeds speeds) {
+		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
 		moduleFL.setState(moduleStates[0]);
 		moduleFR.setState(moduleStates[1]);
 		moduleBL.setState(moduleStates[2]);
 		moduleBR.setState(moduleStates[3]);
 	}
 
+	// calculates odometry and updates the pose
 	@Override
 	public void periodic() {
 		this.pose = odometry.update(gyro.getRotation2d(),
