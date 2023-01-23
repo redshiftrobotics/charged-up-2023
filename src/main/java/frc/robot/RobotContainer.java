@@ -13,6 +13,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -39,7 +40,8 @@ public class RobotContainer {
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new Rotation2d(0));
+	// TODO get gyro type from electrical - create gyro object as part of model's class
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new Gyro());
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
