@@ -49,12 +49,12 @@ public class SwerveDrivetrain extends SubsystemBase {
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
 
-	private final AHRS gyro; // the gyroscope of the robot
+	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
 	private Pose2d pose; // the position of the robot
 
 	/** Creates the SwerveDrivetrain and initializes odometry
 	 * 
-	 * @param gyro The Gyroscope of the robot.
+	 * @param gyro The Gyroscope of the robot. Part of AHRS class corresponding the our gyro.
 	 */
 	public SwerveDrivetrain(AHRS gyro) {
 		this.gyro = gyro;
@@ -68,7 +68,8 @@ public class SwerveDrivetrain extends SubsystemBase {
 
 	/** Set the SwerveModuleState of all modules
 	 * 
-	 * @param speeds The ChassisSpeeds object to calculate module states based off of.
+	 * @param speeds The ChassisSpeeds object to calculate module states
+	 * based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);

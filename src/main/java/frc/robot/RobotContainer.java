@@ -43,7 +43,8 @@ public class RobotContainer {
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-	// TODO get gyro type from electrical - create gyro object as part of model's class
+
+	//  Initialize drivetrain object - AHRS is the class for the gyroscope
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
