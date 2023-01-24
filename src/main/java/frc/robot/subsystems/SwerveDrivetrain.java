@@ -3,6 +3,8 @@ package frc.robot.subsystems;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.swing.text.Position;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -47,14 +49,14 @@ public class SwerveDrivetrain extends SubsystemBase {
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
 
-	private final Gyro gyro; // the gyroscope of the robot
+	private final AHRS gyro; // the gyroscope of the robot
 	private Pose2d pose; // the position of the robot
 
 	/** Creates the SwerveDrivetrain and initializes odometry
 	 * 
 	 * @param gyro The Gyroscope of the robot.
 	 */
-	public SwerveDrivetrain(Gyro gyro) {
+	public SwerveDrivetrain(AHRS gyro) {
 		this.gyro = gyro;
 		odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(),
 				new SwerveModulePosition[] {
@@ -80,7 +82,8 @@ public class SwerveDrivetrain extends SubsystemBase {
 	@Override
 	public void periodic() {
 		this.pose = odometry.update(gyro.getRotation2d(),
-				new SwerveModulePosition[] { moduleFL.getPosition(),
+				new SwerveModulePosition[] {
+						moduleFL.getPosition(),
 						moduleFR.getPosition(),
 						moduleBL.getPosition(),
 						moduleBR.getPosition() });

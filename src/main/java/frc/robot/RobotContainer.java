@@ -11,6 +11,9 @@ import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
+
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -41,7 +44,7 @@ public class RobotContainer {
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// TODO get gyro type from electrical - create gyro object as part of model's class
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new Gyro());
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
