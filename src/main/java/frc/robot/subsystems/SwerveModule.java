@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -26,6 +27,7 @@ public class SwerveModule extends SubsystemBase {
 	private final PIDController velocityPIDController;
 
 	private SwerveModuleState state = new SwerveModuleState();
+	private SwerveModulePosition position = new SwerveModulePosition();
 
 	// Constructor for Swerve Module
 	// Makes 2 Motor classes and a PID Controller for one of the Motors
@@ -68,10 +70,14 @@ public class SwerveModule extends SubsystemBase {
 				SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
 	}
 
+	public SwerveModulePosition getPosition() {
+		return position;
+	}
+
 	// Sets the speed of the velocity motor and sets the desired state of the angular motor
 	// Optimizes the path so that the angular motor doesn't take a longer route than need be
 	// Parameters: disered swerve module state
-	public void setSwerveModuleState(SwerveModuleState desiredState) {
+	public void setState(SwerveModuleState desiredState) {
 		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
 
 		angularPIDController.setSetpoint(state.angle.getRotations());
