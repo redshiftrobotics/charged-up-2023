@@ -37,9 +37,9 @@ public final class Constants {
 		public static final double MODULE_LOCATION_Y = 0.25;
 
 		// TESTING ONLY
-		public static final int ANGULAR_MOTOR_ID = 3;
-		public static final int VELOCITY_MOTOR_ID = 19;
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 0;
+		public static final int ANGULAR_MOTOR_ID = 19;
+		public static final int VELOCITY_MOTOR_ID = 17;
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 25;
 
 		// TODO update motor IDs
 		public static final int ANGULAR_MOTOR_ID_FL = 0;
