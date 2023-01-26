@@ -30,6 +30,7 @@ public class RobotContainer {
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
+	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -60,6 +61,7 @@ public class RobotContainer {
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 		driverJoystick.button(1).onTrue(setModule);
+		driverJoystick.button(2).onTrue(zeroModule);
 
 	}
 
