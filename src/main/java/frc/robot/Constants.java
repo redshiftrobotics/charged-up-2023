@@ -18,6 +18,7 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
+		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
 	}
 
 	public static class SwerveDriveConstants {
@@ -52,5 +53,12 @@ public final class Constants {
 		public static final double VELOCITY_PID_P = 1;
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
+
+	}
+
+	public static class IntakeConstants {
+		public static final double INTAKE_MOTOR_SPEED = 0.5;
+		public static final int TOP_MOTOR_ID = 0;
+		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 }
