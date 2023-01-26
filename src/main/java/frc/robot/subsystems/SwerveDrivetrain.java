@@ -68,10 +68,14 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleBR.getPosition() });
 	}
 
+	/** Set the robot's movement to either field or robot relative
+	 * @param fieldRelative If true, movement will be field relative
+	 */
 	public void setFieldRelative(boolean fieldRelative) {
 		this.fieldRelative = fieldRelative;
 	}
 
+	/** Toggle if the robot will move according to field or robot coordinates */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
 	}
@@ -83,6 +87,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 		if (fieldRelative) {
+			// convert field-relative speeds to robot-relative speeds 
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
 		} else {
 			this.speeds = speeds;
@@ -94,9 +99,9 @@ public class SwerveDrivetrain extends SubsystemBase {
 		moduleBR.setState(moduleStates[3]);
 	}
 
-	// calculates odometry and updates the pose
 	@Override
 	public void periodic() {
+		// calculates odometry and updates the pose
 		this.pose = odometry.update(gyro.getRotation2d(),
 				new SwerveModulePosition[] {
 						moduleFL.getPosition(),
