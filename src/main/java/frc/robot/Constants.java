@@ -22,10 +22,10 @@ public final class Constants {
 
 	public static class SwerveDriveConstants {
 
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 0;
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 25;
 
-		public static final int ANGULAR_MOTOR_ID = 3;
-		public static final int VELOCITY_MOTOR_ID = 19;
+		public static final int ANGULAR_MOTOR_ID = 19;
+		public static final int VELOCITY_MOTOR_ID = 17;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
@@ -45,11 +45,11 @@ public final class Constants {
 
 		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
 
-		public static final double ANGULAR_PID_P = 1;
+		public static final double ANGULAR_PID_P = 0.05;
 		public static final double ANGULAR_PID_I = 0;
 		public static final double ANGULAR_PID_D = 0;
 
-		public static final double VELOCITY_PID_P = 1;
+		public static final double VELOCITY_PID_P = 0.05;
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
 	}
