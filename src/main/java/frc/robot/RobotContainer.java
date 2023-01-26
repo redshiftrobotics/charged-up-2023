@@ -80,9 +80,10 @@ public class RobotContainer {
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 		driverJoystick.button(1).onTrue(setModule);
-		driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 		driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
+
+		driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
 	}
 
