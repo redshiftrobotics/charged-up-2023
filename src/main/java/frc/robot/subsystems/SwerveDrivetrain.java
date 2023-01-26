@@ -34,6 +34,8 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
+	private ChassisSpeeds speeds;
+	private boolean fieldRelative = false;
 
 	// Initialize swerve modules
 	private static final SwerveModule moduleFL = new SwerveModule(
@@ -66,13 +68,26 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleBR.getPosition() });
 	}
 
+	public void setFieldRelative(boolean fieldRelative) {
+		this.fieldRelative = fieldRelative;
+	}
+
+	public void toggleFieldRelative() {
+		fieldRelative = !fieldRelative;
+	}
+
 	/** Set the SwerveModuleState of all modules
 	 * 
 	 * @param speeds The ChassisSpeeds object to calculate module states
 	 * based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
-		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(speeds);
+		if (fieldRelative) {
+			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
+		} else {
+			this.speeds = speeds;
+		}
+		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(this.speeds);
 		moduleFL.setState(moduleStates[0]);
 		moduleFR.setState(moduleStates[1]);
 		moduleBL.setState(moduleStates[2]);
