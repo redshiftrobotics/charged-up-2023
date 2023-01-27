@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CameraConstants;
 
 import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
 
+import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
@@ -41,12 +43,20 @@ public class Camera extends SubsystemBase {
 		aprilTagDetector.setQuadThresholdParameters(quadThresholdParameters);
 
 		aprilTagDetector.addFamily(CameraConstants.TAG_FAMILY);
-
 	}
 
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
+		if (cvSink.grabFrame(mat) != 0) {
+			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
+
+			final AprilTagDetection[] results = aprilTagDetector.detect(grayMat);
+
+			for (final AprilTagDetection result : results) {
+				System.out.println(result);
+			}
+		}
 	}
 
 }

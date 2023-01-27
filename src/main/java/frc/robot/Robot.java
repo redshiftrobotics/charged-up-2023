@@ -5,27 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
-
-import edu.wpi.first.apriltag.AprilTagDetection;
-import edu.wpi.first.apriltag.AprilTagDetector;
-import edu.wpi.first.apriltag.AprilTagDetector.Config;
-import edu.wpi.first.apriltag.AprilTagDetector.QuadThresholdParameters;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -47,56 +28,6 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
-
-		// https://github.com/Ri3DRedux/Robot2023-Simple/blob/f90a583bcfaa8e3c579e253f3bc003cb2dfba665/src/main/java/frc/robot/Robot.java#L50-L145
-		final Thread visionThread = new Thread(
-				() -> {
-					UsbCamera camera = CameraServer.startAutomaticCapture();
-
-					int cameraWidth = 640;
-					int cameraHeight = 480;
-
-					camera.setResolution(cameraWidth, cameraHeight);
-
-					CvSink cvSink = CameraServer.getVideo();
-
-					Mat mat = new Mat();
-					Mat grayMat = new Mat();
-
-					AprilTagDetector aprilTagDetector = new AprilTagDetector();
-
-					Config config = aprilTagDetector.getConfig();
-					config.quadSigma = 0.8f; // set Gaussian blue. fix noice with this.
-
-					aprilTagDetector.setConfig(config);
-
-					QuadThresholdParameters quadThreshParams = aprilTagDetector.getQuadThresholdParameters();
-					// todo put this stuff in constants file
-					quadThreshParams.minClusterPixels = 250;
-					quadThreshParams.criticalAngle *= 5; // default is 10
-					quadThreshParams.maxLineFitMSE *= 1.5;
-					aprilTagDetector.setQuadThresholdParameters(quadThreshParams);
-
-					aprilTagDetector.addFamily("tag16h5");
-
-					while (!Thread.interrupted()) {
-
-						if (cvSink.grabFrame(mat) == 0) {
-							continue;
-						}
-
-						Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
-
-						AprilTagDetection[] results = aprilTagDetector.detect(grayMat);
-
-						for (AprilTagDetection result : results) {
-							System.out.println(result.getId());
-						}
-					}
-					aprilTagDetector.close();
-				});
-		visionThread.setDaemon(true);
-		visionThread.start();
 	}
 
 	/**
