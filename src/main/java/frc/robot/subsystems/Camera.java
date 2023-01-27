@@ -25,11 +25,21 @@ public class Camera extends SubsystemBase {
 
 	private final AprilTagDetector aprilTagDetector = new AprilTagDetector();
 
-	private final Mat mat = new Mat(CameraConstants.CAMERA_RESOLUTION_WIDTH, CameraConstants.CAMERA_RESOLUTION_HEIGHT,
+	// create mat with color (8 bits, 3 channels)
+	private final Mat mat = new Mat(
+			CameraConstants.CAMERA_RESOLUTION_WIDTH,
+			CameraConstants.CAMERA_RESOLUTION_HEIGHT,
 			CvType.CV_8UC3);
-	private final Mat grayMat = new Mat(CameraConstants.CAMERA_RESOLUTION_WIDTH,
-			CameraConstants.CAMERA_RESOLUTION_HEIGHT, CvType.CV_8UC1);
 
+	// create black and white mat (8 bits, 1 channel)
+	private final Mat grayMat = new Mat(
+			CameraConstants.CAMERA_RESOLUTION_WIDTH,
+			CameraConstants.CAMERA_RESOLUTION_HEIGHT,
+			CvType.CV_8UC1);
+
+	// Constructor for Camera 
+	// Creates a Camera and AprilTagDetector
+	// Parameters: Camera ID
 	public Camera(int cameraID) {
 		this.camera = CameraServer.startAutomaticCapture(cameraID);
 
@@ -37,11 +47,12 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_WIDTH,
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
-		Config config = aprilTagDetector.getConfig();
+		final Config config = aprilTagDetector.getConfig();
 		config.quadSigma = CameraConstants.QUAD_SIGMA;
 		aprilTagDetector.setConfig(config);
 
-		QuadThresholdParameters quadThresholdParameters = aprilTagDetector.getQuadThresholdParameters();
+		final QuadThresholdParameters quadThresholdParameters = aprilTagDetector.getQuadThresholdParameters();
+		// set quad config, see CameraConstants for comments what each setting does
 		quadThresholdParameters.minClusterPixels = CameraConstants.MIN_CLUSTER_PIXELS;
 		quadThresholdParameters.criticalAngle = CameraConstants.CRITICAL_ANGLE;
 		quadThresholdParameters.maxLineFitMSE = CameraConstants.MAX_LINE_FIT_MSE;
@@ -53,6 +64,8 @@ public class Camera extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
+
+		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
 		if (cvSink.grabFrame(mat) != 0) {
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
