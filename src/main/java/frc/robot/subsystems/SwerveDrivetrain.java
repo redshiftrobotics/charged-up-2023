@@ -35,6 +35,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
 	private ChassisSpeeds speeds;
+
 	private boolean fieldRelative = false;
 
 	// Initialize swerve modules
@@ -74,6 +75,14 @@ public class SwerveDrivetrain extends SubsystemBase {
 
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
+	}
+
+	public Pose2d getRobotPosition() {
+		return pose;
+	}
+
+	public ChassisSpeeds getVelocity() {
+		return speeds;
 	}
 
 	/** Set the SwerveModuleState of all modules

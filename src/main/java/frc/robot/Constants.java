@@ -83,6 +83,14 @@ public final class Constants {
 		public static final double VELOCITY_PID_P = 0.05;
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
+
+		public static final double ROBOT_VELOCITY_PID_P = 0.05;
+		public static final double ROBOT_VELOCITY_PID_I = 0;
+		public static final double ROBOT_VELOCITY_PID_D = 0;
+
+		public static final double ROBOT_ANGULAR_PID_P = 0.05;
+		public static final double ROBOT_ANGULAR_PID_I = 0;
+		public static final double ROBOT_ANGULAR_PID_D = 0;
 	}
 
 }
