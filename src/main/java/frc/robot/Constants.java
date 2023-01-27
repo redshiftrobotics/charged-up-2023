@@ -58,6 +58,10 @@ public final class Constants {
 		public static final int CAMERA_RESOLUTION_WIDTH = 640;
 		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
 
+		// What Gaussian blur should be applied to the segmented image
+		// important for noisy images
+		public static final float QUAD_SIGMA = 0.8f;
+
 		// if a cluster of pixels is smaller than this value it is ignored
 		public static final int MIN_CLUSTER_PIXELS = 250;
 
@@ -65,7 +69,7 @@ public final class Constants {
 		public static final double CRITICAL_ANGLE = Math.toRadians(45);
 
 		// How square an object needs to be to be considered
-		public static final float MAX_LINE_FIT_MSE = 15;
+		public static final float MAX_LINE_FIT_MSE = 15f;
 
 		// the April Tag family we are using
 		public static final String TAG_FAMILY = "tag16h5";

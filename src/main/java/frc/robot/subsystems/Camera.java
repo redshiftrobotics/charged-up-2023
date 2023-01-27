@@ -7,8 +7,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CameraConstants;
 
-import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Mat;
+import org.opencv.core.CvType;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
@@ -21,9 +22,13 @@ import edu.wpi.first.apriltag.AprilTagDetector.QuadThresholdParameters;
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
 	private final CvSink cvSink = CameraServer.getVideo();
-	private final Mat mat = new Mat();
-	private final Mat grayMat = new Mat();
+
 	private final AprilTagDetector aprilTagDetector = new AprilTagDetector();
+
+	private final Mat mat = new Mat(CameraConstants.CAMERA_RESOLUTION_WIDTH, CameraConstants.CAMERA_RESOLUTION_HEIGHT,
+			CvType.CV_8UC3);
+	private final Mat grayMat = new Mat(CameraConstants.CAMERA_RESOLUTION_WIDTH,
+			CameraConstants.CAMERA_RESOLUTION_HEIGHT, CvType.CV_8UC1);
 
 	public Camera(int cameraID) {
 		this.camera = CameraServer.startAutomaticCapture(cameraID);
@@ -33,7 +38,7 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
 		Config config = aprilTagDetector.getConfig();
-		config.quadSigma = 0.8f;
+		config.quadSigma = CameraConstants.QUAD_SIGMA;
 		aprilTagDetector.setConfig(config);
 
 		QuadThresholdParameters quadThresholdParameters = aprilTagDetector.getQuadThresholdParameters();
