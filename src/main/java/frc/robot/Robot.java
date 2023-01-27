@@ -80,6 +80,7 @@ public class Robot extends TimedRobot {
 					aprilTagDetector.addFamily("tag16h5");
 
 					while (!Thread.interrupted()) {
+
 						if (cvSink.grabFrame(mat) == 0) {
 							continue;
 						}
