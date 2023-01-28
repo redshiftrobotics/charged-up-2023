@@ -106,8 +106,8 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("state", state.angle.getDegrees());
 
-		// velocityMotor.set(
-		// velocityPIDController.calculate(getVelocity()));
+		velocityMotor.set(
+				velocityPIDController.calculate(getVelocity()));
 
 		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());

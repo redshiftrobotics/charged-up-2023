@@ -43,7 +43,7 @@ public class RobotContainer {
 			SwerveDriveConstants.VELOCITY_MOTOR_ID,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
-	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 0);
+	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 0.25);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
