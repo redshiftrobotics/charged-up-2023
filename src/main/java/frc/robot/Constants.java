@@ -38,9 +38,9 @@ public final class Constants {
 		public static final double MODULE_LOCATION_Y = 0.25;
 
 		// TESTING ONLY
-		public static final int ANGULAR_MOTOR_ID = 19;
-		public static final int VELOCITY_MOTOR_ID = 17;
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 25;
+		public static final int ANGULAR_MOTOR_ID = 12;
+		public static final int VELOCITY_MOTOR_ID = 10;
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 26;
 
 		// TODO update motor IDs
 		public static final int ANGULAR_MOTOR_ID_FL = 0;
@@ -75,15 +75,15 @@ public final class Constants {
 		// See above site for info
 		public static final double VELOCITY_MOTOR_GEAR_RATIO = 57 / 7;
 
-		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
+		public static final double ANGULAR_MOTOR_GEAR_RATIO = 1;
 
-		public static final double ANGULAR_PID_P = 0.05;
+		public static final double ANGULAR_PID_P = 0.001;
 		public static final double ANGULAR_PID_I = 0;
 		public static final double ANGULAR_PID_D = 0;
 
 		public static final double VELOCITY_PID_P = 0.05;
 		public static final double VELOCITY_PID_I = 0;
-		public static final double VELOCITY_PID_D = 0;
+		public static final double VELOCITY_PID_D = 1;
 
 	}
 

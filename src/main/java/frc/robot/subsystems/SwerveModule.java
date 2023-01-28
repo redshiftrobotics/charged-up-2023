@@ -7,6 +7,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -21,6 +23,8 @@ public class SwerveModule extends SubsystemBase {
 	private final CANSparkMax velocityMotor;
 
 	private final CANCoder angularEncoder;
+	private final CANCoderConfiguration config = new CANCoderConfiguration();
+
 	private final RelativeEncoder velocityEncoder;
 
 	private final PIDController angularPIDController;
@@ -43,6 +47,8 @@ public class SwerveModule extends SubsystemBase {
 				SwerveDriveConstants.ANGULAR_PID_I,
 				SwerveDriveConstants.ANGULAR_PID_D);
 
+		angularPIDController.enableContinuousInput(0, 360);
+
 		velocityPIDController = new PIDController(
 				SwerveDriveConstants.VELOCITY_PID_P,
 				SwerveDriveConstants.VELOCITY_PID_I,
@@ -51,7 +57,14 @@ public class SwerveModule extends SubsystemBase {
 		angularMotor = new CANSparkMax(angularMotorDeviceID, MotorType.kBrushless);
 		velocityMotor = new CANSparkMax(velocityMotorDeviceID, MotorType.kBrushless);
 
+		config.sensorCoefficient = 1 / 4096;
+		config.unitString = "rot";
+		config.sensorTimeBase = SensorTimeBase.PerSecond;
+
+		// state.angle = new Rotation2d(Math.PI);
+
 		angularEncoder = new CANCoder(angularEncoderDeviceID, "rio");
+		angularEncoder.configAllSettings(config);
 		velocityEncoder = velocityMotor.getEncoder();
 
 	}
@@ -78,22 +91,25 @@ public class SwerveModule extends SubsystemBase {
 	// Optimizes the path so that the angular motor doesn't take a longer route than need be
 	// Parameters: disered swerve module state
 	public void setState(SwerveModuleState desiredState) {
-		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
-
-		angularPIDController.setSetpoint(state.angle.getRotations());
-		velocityPIDController.setSetpoint(state.speedMetersPerSecond);
+		// state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
+		state = desiredState;
+		// angularPIDController.setSetpoint(state.angle.getRotations());
+		// velocityPIDController.setSetpoint(state.speedMetersPerSecond);
 	}
 
 	// Calculates the next output value of each PID controller and sets motors to them
 	@Override
 	public void periodic() {
-		angularMotor.set(
-				angularPIDController.calculate(getYawRotation()));
+		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
+		angularMotor.set(test);
+		SmartDashboard.putNumber("Angular PID value", test);
 
-		velocityMotor.set(
-				velocityPIDController.calculate(getVelocity()));
+		SmartDashboard.putNumber("state", state.angle.getDegrees());
 
-		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getPosition());
+		// velocityMotor.set(
+		// velocityPIDController.calculate(getVelocity()));
+
+		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());
 	}
 

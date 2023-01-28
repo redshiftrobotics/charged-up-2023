@@ -18,7 +18,9 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -41,25 +43,29 @@ public class RobotContainer {
 			SwerveDriveConstants.VELOCITY_MOTOR_ID,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
-	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
+	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 0);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-	private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
+	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 
 	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
+	// private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
 
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
+	// private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
+		// drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
 		// Configure the trigger bindings
 		configureBindings();
+
+		SmartDashboard.putData(CommandScheduler.getInstance());
+		SmartDashboard.putData(module1);
+
 	}
 
 	/**
@@ -81,9 +87,9 @@ public class RobotContainer {
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 		driverJoystick.button(1).onTrue(setModule);
 		driverJoystick.button(2).onTrue(zeroModule);
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		// driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
+		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
 	}
 
