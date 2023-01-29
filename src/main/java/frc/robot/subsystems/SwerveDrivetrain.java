@@ -69,18 +69,22 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleBR.getPosition() });
 	}
 
+	/** Set all robot movement to either relative to the field forward (true) or relative to the robot forward (false) */
 	public void setFieldRelative(boolean fieldRelative) {
 		this.fieldRelative = fieldRelative;
 	}
 
+	/** Toggle the robot movement between relative to the field forward and relative to the robot forward */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
 	}
 
+	/** Return robot position as Pose2d */
 	public Pose2d getRobotPosition() {
 		return pose;
 	}
 
+	/** Return robot speed as ChassisSpeeds */
 	public ChassisSpeeds getVelocity() {
 		return speeds;
 	}

@@ -25,9 +25,10 @@ public class DriveDistanceCommand extends CommandBase {
 			SwerveDriveConstants.ROBOT_VELOCITY_PID_D);
 
 	/**
-	 * Creates a new ExampleCommand.
-	 *
-	 * @param subsystem The subsystem used by this command.
+	 * Creates a new DriveDistanceCommand. 
+	 * Will drive to
+	 * @param drivetrain The drivetrain of the robot.
+	 * @param driveDistance The distance the robot is to move as a Translation2d vector
 	 */
 	public DriveDistanceCommand(SwerveDrivetrain drivetrain, Translation2d driveDistance, boolean isFieldRelative) {
 		this.drivetrain = drivetrain;
@@ -51,8 +52,14 @@ public class DriveDistanceCommand extends CommandBase {
 	@Override
 	public void execute() {
 		position = drivetrain.getRobotPosition().getTranslation();
+
+		// Vector math: distance A - B =  vector from B to A
 		distance = driveDistance.minus(position);
+
+		// Get the new speed as a Translation 2d using the output of the pid controller and the angle to the target position
 		Translation2d speed = new Translation2d(pidController.calculate(distance.getNorm()), distance.getAngle());
+
+		// Set the SwerveModuleStates as a new ChassisSpeeds object using the vector from the previous line
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed.getX(), speed.getY(), 0));
 	}
 
