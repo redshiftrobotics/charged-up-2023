@@ -23,7 +23,9 @@ public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
 	private final CvSink cvSink = CameraServer.getVideo();
 
-	private final AprilTagDetector aprilTagDetector = new AprilTagDetector();
+	private final AprilTagDetector aprilTagDetector;
+
+	private AprilTagDetection[] detectedAprilTags;
 
 	// create mat with color (8 bits, 3 channels)
 	private final Mat mat = new Mat(
@@ -37,17 +39,24 @@ public class Camera extends SubsystemBase {
 			CameraConstants.CAMERA_RESOLUTION_HEIGHT,
 			CvType.CV_8UC1);
 
-	// Constructor for Camera 
-	// Creates a Camera and AprilTagDetector
-	// Parameters: Camera ID
+	/** Constructor for Camera.
+	* Creates a UsbCamera object with CameraServer and sets its resolution.
+	* Configures a aprilTagDetector 
+	* @param cameraID ID of the camera
+	*/
 	public Camera(int cameraID) {
-		this.camera = CameraServer.startAutomaticCapture(cameraID);
+
+		camera = CameraServer.startAutomaticCapture(cameraID);
 
 		camera.setResolution(
 				CameraConstants.CAMERA_RESOLUTION_WIDTH,
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
+		// set up aprilTagDetector
+		aprilTagDetector = new AprilTagDetector();
+
 		final Config config = aprilTagDetector.getConfig();
+		// set config, see CameraConstants for comments what each setting does
 		config.quadSigma = CameraConstants.QUAD_SIGMA;
 		aprilTagDetector.setConfig(config);
 
@@ -61,19 +70,24 @@ public class Camera extends SubsystemBase {
 		aprilTagDetector.addFamily(CameraConstants.TAG_FAMILY);
 	}
 
+	/** @return list of all AprilTagDetections found by camera */
+	public AprilTagDetection[] getDetectedAprilTags() {
+		return detectedAprilTags;
+	}
+
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
 
 		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
-		if (cvSink.grabFrame(mat) != 0) {
+		final long timeToFrame = cvSink.grabFrame(mat);
+
+		if (timeToFrame != 0) {
+			// convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-			final AprilTagDetection[] results = aprilTagDetector.detect(grayMat);
-
-			for (final AprilTagDetection result : results) {
-				System.out.println(result);
-			}
+			// detects all AprilTags in grayMat
+			detectedAprilTags = aprilTagDetector.detect(grayMat);
 		}
 	}
 
