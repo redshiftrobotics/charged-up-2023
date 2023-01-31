@@ -23,8 +23,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ToggleIntakeCommand;
-import frc.robot.subsystems.Intake;
+// import frc.robot.commands.ToggleIntakeCommand;
+// import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -48,7 +48,7 @@ public class RobotContainer {
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-	private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
+	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 
 	//  Initialize drivetrain object - AHRS is the class for the gyroscope
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
@@ -83,7 +83,7 @@ public class RobotContainer {
 		driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
+		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
 	}
 
