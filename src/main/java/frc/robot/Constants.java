@@ -58,6 +58,10 @@ public final class Constants {
 		public static final int CAMERA_RESOLUTION_WIDTH = 640;
 		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
 
+		public static final double CAMERA_FOCAL_LENGTH = 543.45; // random focal length, update when we have real one
+
+		public static final double APRIL_TAG_SIZE_INCHS = 6;
+
 		// What Gaussian blur should be applied to the segmented image
 		// important for noisy images
 		public static final float QUAD_SIGMA = 0.8f;

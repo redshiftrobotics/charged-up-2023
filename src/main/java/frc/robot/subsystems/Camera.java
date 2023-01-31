@@ -70,6 +70,26 @@ public class Camera extends SubsystemBase {
 		aprilTagDetector.addFamily(CameraConstants.TAG_FAMILY);
 	}
 
+	/** get distance to an object from the camera
+	 * @param knownSizeInchs the known width/height of the object you are tring to detect 
+	 * @param size the width/height of the object you have found
+	 * @return distance to object in inches
+	*/
+	public static double getDistanceToObjectFromCamera(double knownSizeInchs, double size) {
+		return (knownSizeInchs * CameraConstants.CAMERA_FOCAL_LENGTH) / size;
+	}
+
+	public static double getDistanceToAprilTag(AprilTagDetection aprilTag) {
+		final double distance1 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_INCHS,
+				aprilTag.getCornerX(1) - aprilTag.getCornerX(0));
+		final double distance2 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_INCHS,
+				aprilTag.getCornerY(1) - aprilTag.getCornerY(0));
+
+		final double avgDistance = (distance1 + distance2) / 2;
+
+		return avgDistance;
+	}
+
 	/** @return list of all AprilTagDetections found by camera */
 	public AprilTagDetection[] getDetectedAprilTags() {
 		return detectedAprilTags;
@@ -86,7 +106,7 @@ public class Camera extends SubsystemBase {
 			// convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-			// detects all AprilTags in grayMat
+			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 		}
 	}
