@@ -123,10 +123,13 @@ public class SwerveModule extends SubsystemBase {
 		} else if (velocityMotorSpeed < -1) {
 			velocityMotorSpeed = -1;
 		}
+
+		SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
+
 		velocityMotor.set(velocityMotorSpeed);
 
 		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getAbsolutePosition());
+		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getPosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());
 	}
-
 }
