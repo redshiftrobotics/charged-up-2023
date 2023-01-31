@@ -53,6 +53,12 @@ public class SwerveModule extends SubsystemBase {
 
 		angularEncoder = new CANCoder(angularEncoderDeviceID, "rio");
 		velocityEncoder = velocityMotor.getEncoder();
+		velocityEncoder.setPositionConversionFactor(
+				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
+						SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		velocityEncoder.setVelocityConversionFactor(
+				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
+						SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
 
 	}
 
@@ -60,18 +66,17 @@ public class SwerveModule extends SubsystemBase {
 	// Returns the roations in number of rotations (eg. instead of 2pi or 360 it returns 1)
 	// TODO: add modulo operator with the wheel yaw
 	public double getYawRotation() {
-		return (angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_MOTOR_GEAR_RATIO);
+		return (angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO);
 	}
 
 	// Returns the velocity of the Velocity motor in meters / second of the wheel
 	public double getVelocity() {
-		return velocityEncoder.getVelocity() *
-				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
-				SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
+		return velocityEncoder.getVelocity();
 	}
 
 	public SwerveModulePosition getPosition() {
-		return position;
+		return new SwerveModulePosition(velocityEncoder.getPosition(),
+				new Rotation2d(angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO));
 	}
 
 	// Sets the speed of the velocity motor and sets the desired state of the angular motor

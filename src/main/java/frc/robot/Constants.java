@@ -75,6 +75,7 @@ public final class Constants {
 		public static final double VELOCITY_MOTOR_GEAR_RATIO = 57 / 7;
 
 		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
+		public static final double ANGULAR_ENCODER_GEAR_RATIO = 1;
 
 		public static final double ANGULAR_PID_P = 0.05;
 		public static final double ANGULAR_PID_I = 0;
@@ -91,6 +92,9 @@ public final class Constants {
 		public static final double ROBOT_ANGULAR_PID_P = 0.05;
 		public static final double ROBOT_ANGULAR_PID_I = 0;
 		public static final double ROBOT_ANGULAR_PID_D = 0;
+
+		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
+		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = 0.1;
 	}
 
 }
