@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDrivetrain;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -38,11 +39,10 @@ public class SwerveDriveCommand extends CommandBase {
 	// Gets joystick input and sends it to the drivetrain
 	@Override
 	public void execute() {
-		ChassisSpeeds speeds = new ChassisSpeeds(
-				-joystick.getX() * SwerveDriveConstants.MAX_SPEED,
-				joystick.getY() * SwerveDriveConstants.MAX_SPEED,
-				joystick.getTwist() * SwerveDriveConstants.MAX_ROTATION_SPEED);
-		drivetrain.setSwerveModuleStates(speeds);
+		Translation2d velocity = new Translation2d(-joystick.getX() * SwerveDriveConstants.MAX_SPEED,
+				joystick.getY() * SwerveDriveConstants.MAX_SPEED);
+		double rotationSpeed = joystick.getTwist() * SwerveDriveConstants.MAX_ROTATION_SPEED;
+		drivetrain.setSwerveModuleStates(velocity, rotationSpeed);
 	}
 
 	// Called once the command ends or is interrupted.

@@ -58,16 +58,16 @@ public class DriveDistanceCommand extends CommandBase {
 		distance = driveDistance.minus(position);
 
 		// Get the new speed as a Translation 2d using the output of the pid controller and the angle to the target position
-		Translation2d speed = new Translation2d(pidController.calculate(distance.getNorm()), distance.getAngle());
+		Translation2d velocity = new Translation2d(pidController.calculate(distance.getNorm()), distance.getAngle());
 
 		// Set the SwerveModuleStates as a new ChassisSpeeds object using the vector from the previous line
-		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed.getX(), speed.getY(), 0));
+		drivetrain.setSwerveModuleStates(velocity, 0);
 	}
 
 	// Called once the command ends or is interrupted.
 	@Override
 	public void end(boolean interrupted) {
-		drivetrain.setSwerveModuleStates(new ChassisSpeeds());
+		drivetrain.setSwerveModuleStates(new Translation2d(), 0);
 	}
 
 	// Returns true when the command should end.

@@ -35,6 +35,8 @@ public class SwerveDrivetrain extends SubsystemBase {
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
 	private ChassisSpeeds speeds;
+	private Translation2d velocity;
+	private double rotationSpeed;
 
 	private boolean fieldRelative = false;
 
@@ -85,8 +87,12 @@ public class SwerveDrivetrain extends SubsystemBase {
 	}
 
 	/** Return robot speed as ChassisSpeeds */
-	public ChassisSpeeds getVelocity() {
-		return speeds;
+	public Translation2d getVelocity() {
+		return velocity;
+	}
+
+	public double getRotationSpeed() {
+		return rotationSpeed;
 	}
 
 	/** Set the SwerveModuleState of all modules
@@ -94,11 +100,16 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 * @param speeds The ChassisSpeeds object to calculate module states
 	 * based off forward-backward, left-right, and rotation speeds.
 	 */
-	public void setSwerveModuleStates(ChassisSpeeds speeds) {
+	public void setSwerveModuleStates(Translation2d velocity, double rotation) {
+		this.velocity = velocity;
+		this.rotationSpeed = rotation;
+		ChassisSpeeds newSpeeds = new ChassisSpeeds(
+				this.velocity.getX(), this.velocity.getY(), this.rotationSpeed);
+
 		if (fieldRelative) {
-			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
+			speeds = ChassisSpeeds.fromFieldRelativeSpeeds(newSpeeds, gyro.getRotation2d());
 		} else {
-			this.speeds = speeds;
+			speeds = newSpeeds;
 		}
 		SwerveModuleState[] moduleStates = kinematics.toSwerveModuleStates(this.speeds);
 		moduleFL.setState(moduleStates[0]);
