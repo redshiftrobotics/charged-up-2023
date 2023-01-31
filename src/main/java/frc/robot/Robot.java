@@ -4,6 +4,16 @@
 
 package frc.robot;
 
+import org.opencv.core.Mat;
+import org.opencv.imgproc.Imgproc;
+
+import edu.wpi.first.apriltag.AprilTagDetection;
+import edu.wpi.first.apriltag.AprilTagDetector;
+import edu.wpi.first.apriltag.AprilTagDetector.Config;
+import edu.wpi.first.apriltag.AprilTagDetector.QuadThresholdParameters;
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,7 +30,7 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer robotContainer;
 
-	private final Camera camModule = new Camera(0);
+	// private final Camera camModule = new Camera(0);
 
 	/**
 	 * This function is run when the robot is first started up and should be used for any
@@ -31,6 +41,54 @@ public class Robot extends TimedRobot {
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
+
+		Thread visionThread = new Thread(
+				() -> {
+					UsbCamera camera = CameraServer.startAutomaticCapture();
+
+					int cameraWidth = 640;
+					int cameraHeight = 480;
+
+					camera.setResolution(cameraWidth, cameraHeight);
+
+					CvSink cvSink = CameraServer.getVideo();
+
+					Mat mat = new Mat();
+					Mat grayMat = new Mat();
+
+					AprilTagDetector aprilTagDetector = new AprilTagDetector();
+
+					Config config = aprilTagDetector.getConfig();
+					config.quadSigma = 0.8f; // set Gaussian blue. fix noice with this.
+
+					aprilTagDetector.setConfig(config);
+
+					QuadThresholdParameters quadThreshParams = aprilTagDetector.getQuadThresholdParameters();
+					// todo put this stuff in constants file
+					quadThreshParams.minClusterPixels = 250;
+					quadThreshParams.criticalAngle *= 5; // default is 10
+					quadThreshParams.maxLineFitMSE *= 1.5;
+					aprilTagDetector.setQuadThresholdParameters(quadThreshParams);
+
+					aprilTagDetector.addFamily("tag16h5");
+
+					while (!Thread.interrupted()) {
+						if (cvSink.grabFrame(mat) == 0) {
+							continue;
+						}
+
+						Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
+
+						AprilTagDetection[] results = aprilTagDetector.detect(grayMat);
+
+						for (AprilTagDetection result : results) {
+							System.out.println(result.toString());
+						}
+					}
+					aprilTagDetector.close();
+				});
+		visionThread.setDaemon(true);
+		visionThread.start();
 	}
 
 	/**
@@ -47,6 +105,11 @@ public class Robot extends TimedRobot {
 		// and running subsystem periodic() methods. This must be called from the robot's periodic
 		// block in order for anything in the Command-based framework to work.
 		CommandScheduler.getInstance().run();
+
+		// for (AprilTagDetection tag : camModule.getDetectedAprilTags()) {
+		// 	System.out.println(tag);
+		// 	Camera.getDistanceToAprilTag(tag);
+		// }
 	}
 
 	/** This function is called once each time the robot enters Disabled mode. */

@@ -21,32 +21,45 @@ import edu.wpi.first.apriltag.AprilTagDetector.QuadThresholdParameters;
 
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
-	private final CvSink cvSink = CameraServer.getVideo();
+	private final CvSink cvSink;
+
+	private Mat mat;
+	private final Mat grayMat;
 
 	private final AprilTagDetector aprilTagDetector;
 
 	private AprilTagDetection[] detectedAprilTags;
 
-	// create mat with color (8 bits, 3 channels)
-	private final Mat mat = new Mat(
-			CameraConstants.CAMERA_RESOLUTION_WIDTH,
-			CameraConstants.CAMERA_RESOLUTION_HEIGHT,
-			CvType.CV_8UC3);
-
-	// create black and white mat (8 bits, 1 channel)
-	private final Mat grayMat = new Mat(
-			CameraConstants.CAMERA_RESOLUTION_WIDTH,
-			CameraConstants.CAMERA_RESOLUTION_HEIGHT,
-			CvType.CV_8UC1);
-
 	/** Constructor for Camera.
-	* Creates a UsbCamera object with CameraServer and sets its resolution.
-	* Configures a aprilTagDetector 
-	* @param cameraID ID of the camera
-	*/
+	 * Creates a UsbCamera object with CameraServer and sets its resolution.
+	 * Configures a aprilTagDetector 
+	 * @param cameraID ID of the camera
+	 */
 	public Camera(int cameraID) {
 
+		// create mat with color (8 bits, 3 channels)
+		try {
+
+			mat = new Mat(
+					CameraConstants.CAMERA_RESOLUTION_WIDTH,
+					CameraConstants.CAMERA_RESOLUTION_HEIGHT,
+					CvType.CV_8UC3);
+		} catch (Exception e) {
+			System.out.println("error !!!");
+			System.out.println(e);
+			mat = null;
+			// TODO: handle exception
+		}
+
+		// create black and white mat (8 bits, 1 channel)
+		grayMat = new Mat(
+				CameraConstants.CAMERA_RESOLUTION_WIDTH,
+				CameraConstants.CAMERA_RESOLUTION_HEIGHT,
+				CvType.CV_8UC1);
+
 		camera = CameraServer.startAutomaticCapture(cameraID);
+
+		cvSink = CameraServer.getVideo();
 
 		camera.setResolution(
 				CameraConstants.CAMERA_RESOLUTION_WIDTH,
@@ -86,6 +99,8 @@ public class Camera extends SubsystemBase {
 				aprilTag.getCornerY(1) - aprilTag.getCornerY(0));
 
 		final double avgDistance = (distance1 + distance2) / 2;
+
+		System.out.println(String.format("w: %s, h: %s, avg: %s", distance1, distance2, avgDistance));
 
 		return avgDistance;
 	}
