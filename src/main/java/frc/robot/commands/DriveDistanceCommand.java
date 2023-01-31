@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.SwerveDrivetrain;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.Constants.SwerveDriveConstants;
 
 public class DriveDistanceCommand extends CommandBase {
@@ -19,7 +18,6 @@ public class DriveDistanceCommand extends CommandBase {
 	private Translation2d initialPosition;
 	private final boolean isFieldRelative;
 	private Translation2d position;
-	private Translation2d speed = new Translation2d();
 	private final PIDController pidController = new PIDController(
 			SwerveDriveConstants.ROBOT_VELOCITY_PID_P,
 			SwerveDriveConstants.ROBOT_VELOCITY_PID_I,
@@ -73,7 +71,10 @@ public class DriveDistanceCommand extends CommandBase {
 	// Returns true when the command should end.
 	@Override
 	public boolean isFinished() {
-		if (distance.getNorm() < SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE & speed.getNorm())
-			return false;
+		if (distance.getNorm() < SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE
+				& drivetrain.getVelocity().getNorm() < SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE) {
+			return true;
+		}
+		return false;
 	}
 }
