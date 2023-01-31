@@ -116,6 +116,8 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
 
+		// makes sure speed is under 1 and over -1
+
 		if (velocityMotorSpeed > 1) {
 			velocityMotorSpeed = 1;
 		} else if (velocityMotorSpeed < -1) {
