@@ -33,6 +33,8 @@ public class SwerveModule extends SubsystemBase {
 	private SwerveModuleState state = new SwerveModuleState();
 	private SwerveModulePosition position = new SwerveModulePosition();
 
+	private double velocityMotorSpeed = 0;
+
 	// Constructor for Swerve Module
 	// Makes 2 Motor classes and a PID Controller for one of the Motors
 	// Makes an Encoder for the same Motor and sets it up with the motor specifics
@@ -106,8 +108,20 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("state", state.angle.getDegrees());
 
-		velocityMotor.set(
-				velocityPIDController.calculate(getVelocity()));
+		double velocityTest = velocityPIDController.calculate(getVelocity());
+
+		SmartDashboard.putNumber("Velocity PID output", velocityTest);
+
+		velocityMotorSpeed += velocityTest;
+
+		SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
+
+		if (velocityMotorSpeed > 1) {
+			velocityMotorSpeed = 1;
+		} else if (velocityMotorSpeed < -1) {
+			velocityMotorSpeed = -1;
+		}
+		velocityMotor.set(velocityMotorSpeed);
 
 		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());
