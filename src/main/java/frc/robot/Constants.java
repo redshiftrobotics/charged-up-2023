@@ -93,4 +93,11 @@ public final class Constants {
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 
+	public static class ArmConstants {
+		public static final double ARM_PID_P = 5.5;
+		public static final double ARM_PID_I = 5;
+		public static final double ARM_PID_D = 0.75;
+		public static final double ARM_MOTOR_GEAR_RATIO = 1;
+	}
+
 }
