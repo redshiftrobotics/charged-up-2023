@@ -42,53 +42,6 @@ public class Robot extends TimedRobot {
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
 
-		Thread visionThread = new Thread(
-				() -> {
-					UsbCamera camera = CameraServer.startAutomaticCapture();
-
-					int cameraWidth = 640;
-					int cameraHeight = 480;
-
-					camera.setResolution(cameraWidth, cameraHeight);
-
-					CvSink cvSink = CameraServer.getVideo();
-
-					Mat mat = new Mat();
-					Mat grayMat = new Mat();
-
-					AprilTagDetector aprilTagDetector = new AprilTagDetector();
-
-					Config config = aprilTagDetector.getConfig();
-					config.quadSigma = 0.8f; // set Gaussian blue. fix noice with this.
-
-					aprilTagDetector.setConfig(config);
-
-					QuadThresholdParameters quadThreshParams = aprilTagDetector.getQuadThresholdParameters();
-					// todo put this stuff in constants file
-					quadThreshParams.minClusterPixels = 250;
-					quadThreshParams.criticalAngle *= 5; // default is 10
-					quadThreshParams.maxLineFitMSE *= 1.5;
-					aprilTagDetector.setQuadThresholdParameters(quadThreshParams);
-
-					aprilTagDetector.addFamily("tag16h5");
-
-					while (!Thread.interrupted()) {
-						if (cvSink.grabFrame(mat) == 0) {
-							continue;
-						}
-
-						Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
-
-						AprilTagDetection[] results = aprilTagDetector.detect(grayMat);
-
-						for (AprilTagDetection result : results) {
-							System.out.println(result.toString());
-						}
-					}
-					aprilTagDetector.close();
-				});
-		visionThread.setDaemon(true);
-		visionThread.start();
 	}
 
 	/**
