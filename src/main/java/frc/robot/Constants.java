@@ -57,10 +57,13 @@ public final class Constants {
 	public static final class CameraConstants {
 		public static final int CAMERA_RESOLUTION_WIDTH = 640;
 		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
+		// public static final int CAMERA_RESOLUTION_WIDTH = 960;
+		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
 
-		public static final double CAMERA_FOCAL_LENGTH_MM = 2.9272781257541;
+		public static final double CAMERA_FOCAL_CENTER_X = 479.132337442;
+		public static final double CAMERA_FOCAL_CENTER_Y = 359.143001808;
 
-		public static final double APRIL_TAG_SIZE_MM = 147.32;
+		public static final double APRIL_TAG_SIZE_MM = 152.4;
 
 		// What Gaussian blur should be applied to the segmented image
 		// important for noisy images

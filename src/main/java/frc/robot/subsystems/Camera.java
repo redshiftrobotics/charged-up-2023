@@ -14,11 +14,11 @@ import org.opencv.core.CvType;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
 import edu.wpi.first.apriltag.AprilTagDetector;
+import edu.wpi.first.apriltag.AprilTagPoseEstimator;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.apriltag.AprilTagDetector.Config;
-import edu.wpi.first.apriltag.AprilTagDetector.QuadThresholdParameters;
+import edu.wpi.first.math.geometry.Transform3d;
 
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
@@ -28,15 +28,17 @@ public class Camera extends SubsystemBase {
 	private final Mat grayMat;
 
 	private final AprilTagDetector aprilTagDetector;
+	private final AprilTagPoseEstimator aprilTagPoseEstimator;
 
 	private AprilTagDetection[] detectedAprilTags;
 
 	/** Constructor for Camera.
 	 * Creates a UsbCamera object with CameraServer and sets its resolution.
-	 * Configures a aprilTagDetector 
+	 * Creates and configures a AprilTagDetector and AprilTagPoseEstimator
 	 * @param cameraID ID of the camera
 	 */
 	public Camera(int cameraID) {
+		// -------------- Set up Camera --------------
 		camera = CameraServer.startAutomaticCapture(cameraID);
 
 		camera.setResolution(
@@ -44,6 +46,8 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
 		cvSink = CameraServer.getVideo();
+
+		// -------------- Set up Mats --------------
 
 		// create mat with color (8 bits, 3 channels)
 		mat = new Mat(
@@ -57,15 +61,17 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT,
 				CvType.CV_8UC1);
 
-		// set up aprilTagDetector
+		// -------------- Set up aprilTagDetector --------------
+
 		aprilTagDetector = new AprilTagDetector();
 
-		final Config config = aprilTagDetector.getConfig();
+		final AprilTagDetector.Config detectorConfig = aprilTagDetector.getConfig();
 		// set config, see CameraConstants for comments what each setting does
-		config.quadSigma = CameraConstants.QUAD_SIGMA;
-		aprilTagDetector.setConfig(config);
+		detectorConfig.quadSigma = CameraConstants.QUAD_SIGMA;
+		aprilTagDetector.setConfig(detectorConfig);
 
-		final QuadThresholdParameters quadThresholdParameters = aprilTagDetector.getQuadThresholdParameters();
+		final AprilTagDetector.QuadThresholdParameters quadThresholdParameters = aprilTagDetector
+				.getQuadThresholdParameters();
 		// set quad config, see CameraConstants for comments what each setting does
 		quadThresholdParameters.minClusterPixels = CameraConstants.MIN_CLUSTER_PIXELS;
 		quadThresholdParameters.criticalAngle = CameraConstants.CRITICAL_ANGLE;
@@ -73,45 +79,32 @@ public class Camera extends SubsystemBase {
 		aprilTagDetector.setQuadThresholdParameters(quadThresholdParameters);
 
 		aprilTagDetector.addFamily(CameraConstants.TAG_FAMILY);
+
+		// -------------- Set up aprilTagPoseEstimator --------------
+
+		final AprilTagPoseEstimator.Config poseConfig = new AprilTagPoseEstimator.Config(
+				CameraConstants.APRIL_TAG_SIZE_MM, CameraConstants.CAMERA_FOCAL_CENTER_X,
+				CameraConstants.CAMERA_FOCAL_CENTER_Y, CameraConstants.CAMERA_FOCAL_CENTER_X,
+				CameraConstants.CAMERA_FOCAL_CENTER_Y);
+
+		aprilTagPoseEstimator = new AprilTagPoseEstimator(poseConfig);
 	}
 
-	/** get distance to an object from the camera
-	 * @param knownSizeMM the known width/height of the object you are tring to detect 
-	 * @param size the width/height of the object you have found
-	 * @return distance to object in mm
-	*/
-	public static double getDistanceToObjectFromCamera(double knownSizeMM, double sizePixels) {
-		return (CameraConstants.CAMERA_FOCAL_LENGTH_MM * knownSizeMM) / (sizePixels);
+	public Transform3d estimateTagPose(AprilTagDetection tag) {
+		return aprilTagPoseEstimator.estimate(tag);
 	}
 
-	public static double getDistanceToObjectFromCameraNew(double knownSizeMM, double imgSize, double sensorSize,
-			double sizePixels) {
-		return (CameraConstants.CAMERA_FOCAL_LENGTH_MM * knownSizeMM * imgSize) / (sizePixels * sensorSize);
-	}
-
-	public static double getDistanceToAprilTag(AprilTagDetection aprilTag) {
-		final double distanceWidth1 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_MM,
-				aprilTag.getCornerX(1) - aprilTag.getCornerX(0));
-		final double distanceWidth2 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_MM,
-				aprilTag.getCornerX(2) - aprilTag.getCornerX(3));
-
-		final double distanceHeight1 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_MM,
-				aprilTag.getCornerY(0) - aprilTag.getCornerY(3));
-		final double distanceHeight2 = getDistanceToObjectFromCamera(CameraConstants.APRIL_TAG_SIZE_MM,
-				aprilTag.getCornerY(1) - aprilTag.getCornerY(2));
-
-		final double avgDistance = (distanceWidth1 + distanceWidth2 + distanceHeight1 + distanceHeight2) / 4;
-
-		System.out.println(
-				String.format("x1: %s, x2: %s, y1: %s, y2: %s, avg: %s", distanceWidth1, distanceWidth2,
-						distanceHeight1, distanceHeight2, avgDistance));
-
-		return avgDistance;
+	public Transform3d estimateTagPoseHomography(AprilTagDetection tag) {
+		return aprilTagPoseEstimator.estimateHomography(tag);
 	}
 
 	/** @return list of all AprilTagDetections found by camera */
 	public AprilTagDetection[] getDetectedAprilTags() {
 		return detectedAprilTags;
+	}
+
+	public double getDistance(Transform3d transfrom) {
+		return Math.sqrt(Math.pow(transfrom.getX(), 2) + Math.pow(transfrom.getY(), 2) + Math.pow(transfrom.getY(), 2));
 	}
 
 	@Override
@@ -128,10 +121,21 @@ public class Camera extends SubsystemBase {
 			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 			for (AprilTagDetection tag : detectedAprilTags) {
-				double dis = getDistanceToAprilTag(tag);
-				if (tag.getId() == 2) {
-					System.out
-							.println(String.format("Tag id %s is %smm away (%s inchs)", tag.getId(), dis, dis / 25.4));
+				if (tag.getId() == 1) {
+					System.out.println(tag);
+					System.out.println();
+
+					final Transform3d tagPose = estimateTagPose(tag);
+					System.out.println(tagPose);
+					final double distancePose = getDistance(tagPose);
+					System.out.println(String.format("distance: %s (%s inchs)", distancePose, distancePose / 25.4));
+					System.out.println();
+
+					final Transform3d tagPoseHomography = estimateTagPoseHomography(tag);
+					System.out.println(tagPoseHomography);
+					final double distancePoseHomography = getDistance(tagPose);
+					System.out.println(String.format("distance: %s (%s inchs)", distancePoseHomography,
+							distancePoseHomography / 25.4));
 					System.out.println();
 				}
 			}
