@@ -7,23 +7,9 @@ package frc.robot;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.DriveDistanceCommand;
-import frc.robot.commands.DriveDurationCommand;
-import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.subsystems.Camera;
-import frc.robot.commands.StopCommand;
-import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -46,24 +32,12 @@ public class RobotContainer {
 
 	private final Camera module2 = new Camera(0);
 
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
-
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
-	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
-	private final Command stopCommand = new StopCommand(drivetrain);
-	private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
-	private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
-			new ChassisSpeeds(1, 0, Math.PI * 2));
-	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-
-	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -88,10 +62,6 @@ public class RobotContainer {
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
-		driverJoystick.button(11).onTrue(stopCommand);
-
-		// Test bindings
 		driverJoystick.button(1).onTrue(setModule);
 
 	}
