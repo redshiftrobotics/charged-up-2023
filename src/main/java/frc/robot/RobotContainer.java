@@ -11,6 +11,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -40,6 +41,8 @@ public class RobotContainer {
 			SwerveDriveConstants.ANGULAR_MOTOR_ID,
 			SwerveDriveConstants.VELOCITY_MOTOR_ID,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+
+	private final Camera module2 = new Camera(0);
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);

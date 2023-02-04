@@ -93,4 +93,31 @@ public final class Constants {
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 
+	public static final class CameraConstants {
+		public static final int CAMERA_RESOLUTION_WIDTH = 640;
+		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
+		// public static final int CAMERA_RESOLUTION_WIDTH = 960;
+		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
+
+		public static final double CAMERA_FOCAL_CENTER_X = 479.132337442;
+		public static final double CAMERA_FOCAL_CENTER_Y = 359.143001808;
+
+		public static final double APRIL_TAG_SIZE_MM = 152.4;
+
+		// What Gaussian blur should be applied to the segmented image
+		// important for noisy images
+		public static final float QUAD_SIGMA = 0.8f;
+
+		// if a cluster of pixels is smaller than this value it is ignored
+		public static final int MIN_CLUSTER_PIXELS = 250;
+
+		// The yaw rotation of an object before it is ignored
+		public static final double CRITICAL_ANGLE = Math.toRadians(45);
+
+		// How square an object needs to be to be considered
+		public static final float MAX_LINE_FIT_MSE = 15f;
+
+		// the April Tag family we are using
+		public static final String TAG_FAMILY = "tag16h5";
+	}
 }
