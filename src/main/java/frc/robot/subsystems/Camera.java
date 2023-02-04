@@ -109,9 +109,6 @@ public class Camera extends SubsystemBase {
 	public double getDistance(Transform3d transform) {
 		return Math.sqrt(Math.pow(transform.getX(), 2) + Math.pow(transform.getY(), 2) + Math.pow(transform.getZ(), 2));
 	}
-	// public double getDistance(Transform3d transform) {
-	// 	return transform.getZ();
-	// }
 
 	@Override
 	public void periodic() {
@@ -140,13 +137,6 @@ public class Camera extends SubsystemBase {
 					// Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
 					// Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
 					System.out.println();
-
-					// final Transform3d tagPoseHomography = estimateTagPoseHomography(tag);
-					// System.out.println(tagPoseHomography);
-					// final double distancePoseHomography = getDistance(tagPose);
-					// System.out.println(String.format("distance: %s (%s inches)", distancePoseHomography,
-					// 		distancePoseHomography / 25.4));
-					// System.out.println();
 				}
 			}
 		}
