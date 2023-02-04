@@ -31,7 +31,7 @@ public class SingularSwerveModuleCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		SmartDashboard.putBoolean("Command Initialize", true);
-		swerveModule.setState(state);
+		swerveModule.setSwerveModuleState(state);
 	}
 
 	// // Called every time the scheduler runs while the command is scheduled.

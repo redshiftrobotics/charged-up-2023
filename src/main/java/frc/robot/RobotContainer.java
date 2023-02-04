@@ -9,17 +9,8 @@ import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.subsystems.Camera;
-import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
-
-import com.kauailabs.navx.frc.AHRS;
-
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -42,21 +33,14 @@ public class RobotContainer {
 	private final Camera module2 = new Camera(0);
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
-	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 
-	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
-
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
-
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
 		// Configure the trigger bindings
 		configureBindings();
 	}
@@ -79,8 +63,6 @@ public class RobotContainer {
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 		driverJoystick.button(1).onTrue(setModule);
-		driverJoystick.button(2).onTrue(zeroModule);
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
 	}
 
