@@ -10,6 +10,8 @@ import frc.robot.Constants.CameraConstants;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
 
+import java.util.ArrayList;
+
 import org.opencv.core.CvType;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
@@ -83,19 +85,20 @@ public class Camera extends SubsystemBase {
 		// -------------- Set up aprilTagPoseEstimator --------------
 
 		final AprilTagPoseEstimator.Config poseConfig = new AprilTagPoseEstimator.Config(
-				CameraConstants.APRIL_TAG_SIZE_MM, CameraConstants.CAMERA_FOCAL_CENTER_X,
-				CameraConstants.CAMERA_FOCAL_CENTER_Y, CameraConstants.CAMERA_FOCAL_CENTER_X,
+				CameraConstants.APRIL_TAG_SIZE_MM, CameraConstants.CAMERA_FOCAL_LENGTH_X,
+				CameraConstants.CAMERA_FOCAL_LENGTH_Y, CameraConstants.CAMERA_FOCAL_CENTER_X,
 				CameraConstants.CAMERA_FOCAL_CENTER_Y);
 
 		aprilTagPoseEstimator = new AprilTagPoseEstimator(poseConfig);
 	}
 
+	/** Returns position of tag relative to camera
+	 * x: -right to +left, y: -up to +down, z: distance
+	 * @param tag use element from list returned by getDetectedAprilTags
+	 * @return Transform 3d of camera to tag.
+	 */
 	public Transform3d estimateTagPose(AprilTagDetection tag) {
 		return aprilTagPoseEstimator.estimate(tag);
-	}
-
-	public Transform3d estimateTagPoseHomography(AprilTagDetection tag) {
-		return aprilTagPoseEstimator.estimateHomography(tag);
 	}
 
 	/** @return list of all AprilTagDetections found by camera */
@@ -103,9 +106,12 @@ public class Camera extends SubsystemBase {
 		return detectedAprilTags;
 	}
 
-	public double getDistance(Transform3d transfrom) {
-		return Math.sqrt(Math.pow(transfrom.getX(), 2) + Math.pow(transfrom.getY(), 2) + Math.pow(transfrom.getY(), 2));
+	public double getDistance(Transform3d transform) {
+		return Math.sqrt(Math.pow(transform.getX(), 2) + Math.pow(transform.getY(), 2) + Math.pow(transform.getZ(), 2));
 	}
+	// public double getDistance(Transform3d transform) {
+	// 	return transform.getZ();
+	// }
 
 	@Override
 	public void periodic() {
@@ -126,17 +132,21 @@ public class Camera extends SubsystemBase {
 					System.out.println();
 
 					final Transform3d tagPose = estimateTagPose(tag);
+
 					System.out.println(tagPose);
 					final double distancePose = getDistance(tagPose);
-					System.out.println(String.format("distance: %s (%s inchs)", distancePose, distancePose / 25.4));
+					System.out.println(String.format("distance: %s (%s inches)", distancePose, distancePose / 25.4));
+
+					// Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
+					// Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
 					System.out.println();
 
-					final Transform3d tagPoseHomography = estimateTagPoseHomography(tag);
-					System.out.println(tagPoseHomography);
-					final double distancePoseHomography = getDistance(tagPose);
-					System.out.println(String.format("distance: %s (%s inchs)", distancePoseHomography,
-							distancePoseHomography / 25.4));
-					System.out.println();
+					// final Transform3d tagPoseHomography = estimateTagPoseHomography(tag);
+					// System.out.println(tagPoseHomography);
+					// final double distancePoseHomography = getDistance(tagPose);
+					// System.out.println(String.format("distance: %s (%s inches)", distancePoseHomography,
+					// 		distancePoseHomography / 25.4));
+					// System.out.println();
 				}
 			}
 		}
