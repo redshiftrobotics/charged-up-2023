@@ -24,7 +24,7 @@ public class SingularSwerveModuleCommand extends CommandBase {
 		state.angle = Rotation2d.fromRadians(angle);
 		state.speedMetersPerSecond = velocity;
 		// Use addRequirements() here to declare subsystem dependencies.
-		addRequirements(this.swerveModule);
+		addRequirements(swerveModule);
 	}
 
 	// Called when the command is initially scheduled.
