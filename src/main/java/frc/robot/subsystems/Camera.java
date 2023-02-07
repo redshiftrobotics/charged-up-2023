@@ -20,7 +20,10 @@ import edu.wpi.first.apriltag.AprilTagPoseEstimator;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
@@ -92,18 +95,38 @@ public class Camera extends SubsystemBase {
 		aprilTagPoseEstimator = new AprilTagPoseEstimator(poseConfig);
 	}
 
-	/** Returns position of tag relative to camera
-	 * x: -right to +left, y: -up to +down, z: distance
-	 * @param tag use element from list returned by getDetectedAprilTags
-	 * @return Transform 3d of camera to tag.
+	/** @return list of all AprilTagDetections found by camera */
+	public AprilTagDetection[] getDetectedAprilTags() {
+		return detectedAprilTags;
+	}
+
+	/** @return returns AprilTagDetections with specified. If it is not found it returns null */
+	public AprilTagDetection getDetectedAprilTag(int tagId) {
+		for (AprilTagDetection tag : getDetectedAprilTags()) {
+			if (tag.getId() == tagId) {
+				return tag;
+			}
+		}
+		return null;
+	}
+
+	/** Returns position of tag relative to camera.
+	 * Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
+	 * Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
+	 * @param tag a AprilTagDetection
+	 * @return Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: distance), Rotation3d(Quaternion(...)))
 	 */
 	public Transform3d estimateTagPose(AprilTagDetection tag) {
 		return aprilTagPoseEstimator.estimate(tag);
 	}
 
-	/** @return list of all AprilTagDetections found by camera */
-	public AprilTagDetection[] getDetectedAprilTags() {
-		return detectedAprilTags;
+	/** Returns position of tag relative to camera in 2d.
+	 * @param tag a AprilTagDetection
+	 * @return simple Translation2d towards april tag
+	 */
+	public Translation2d estimateTagPoseSimple(AprilTagDetection tag) {
+		final Transform3d pose = estimateTagPose(tag);
+		return new Translation2d(pose.getZ(), pose.getX());
 	}
 
 	public double getDistance(Transform3d transform) {
@@ -123,22 +146,6 @@ public class Camera extends SubsystemBase {
 
 			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
-			for (AprilTagDetection tag : detectedAprilTags) {
-				if (tag.getId() == 1) {
-					System.out.println(tag);
-					System.out.println();
-
-					final Transform3d tagPose = estimateTagPose(tag);
-
-					System.out.println(tagPose);
-					final double distancePose = getDistance(tagPose);
-					System.out.println(String.format("distance: %s (%s inches)", distancePose, distancePose / 25.4));
-
-					// Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
-					// Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
-					System.out.println();
-				}
-			}
 		}
 	}
 
