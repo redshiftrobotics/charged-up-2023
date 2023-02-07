@@ -55,18 +55,27 @@ public final class Constants {
 	}
 
 	public static final class CameraConstants {
+		// Understading the focal length values: https://en.wikipedia.org/wiki/Camera_resectioning, https://en.wikipedia.org/wiki/Cardinal_point_(optics)
+
+		// Microsoft LifeCam HD-3000 stuff https://github.com/FIRST-Tech-Challenge/FtcRobotController/blob/master/TeamCode/src/main/res/xml/teamwebcamcalibrations.xml
 		public static final int CAMERA_RESOLUTION_WIDTH = 640;
 		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
 
-		// Lime Light stuffhttps://docs.limelightvision.io/en/latest/vision_pipeline_tuning.html
+		public static final double CAMERA_FOCAL_LENGTH_X = 678.154f;
+		public static final double CAMERA_FOCAL_LENGTH_Y = 678.17;
+
+		public static final double CAMERA_FOCAL_CENTER_X = 318.135;
+		public static final double CAMERA_FOCAL_CENTER_Y = 228.374;
+
+		// LimeLight stuff https://docs.limelightvision.io/en/latest/vision_pipeline_tuning.html
 		// public static final int CAMERA_RESOLUTION_WIDTH = 960;
 		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
 
-		public static final double CAMERA_FOCAL_CENTER_X = 479.132337442;
-		public static final double CAMERA_FOCAL_CENTER_Y = 359.143001808;
+		// public static final double CAMERA_FOCAL_LENGTH_X = 772.53876202;
+		// public static final double CAMERA_FOCAL_LENGTH_Y = 769.052151477;
 
-		public static final double CAMERA_FOCAL_LENGTH_X = 772.53876202;
-		public static final double CAMERA_FOCAL_LENGTH_Y = 769.052151477;
+		// public static final double CAMERA_FOCAL_CENTER_X = 479.132337442;
+		// public static final double CAMERA_FOCAL_CENTER_Y = 359.143001808;
 
 		public static final double APRIL_TAG_SIZE_MM = 152.4;
 

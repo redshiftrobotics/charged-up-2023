@@ -24,6 +24,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
@@ -114,7 +115,7 @@ public class Camera extends SubsystemBase {
 	 * Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
 	 * Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
 	 * @param tag a AprilTagDetection
-	 * @return Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: distance), Rotation3d(Quaternion(...)))
+	 * @return Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
 	 */
 	public Transform3d estimateTagPose(AprilTagDetection tag) {
 		return aprilTagPoseEstimator.estimate(tag);
@@ -124,7 +125,7 @@ public class Camera extends SubsystemBase {
 	 * @param tag a AprilTagDetection
 	 * @return simple Translation2d towards april tag
 	 */
-	public Translation2d estimateTagPoseSimple(AprilTagDetection tag) {
+	public Translation2d estimateTagPose2d(AprilTagDetection tag) {
 		final Transform3d pose = estimateTagPose(tag);
 		return new Translation2d(pose.getZ(), pose.getX());
 	}
@@ -146,6 +147,19 @@ public class Camera extends SubsystemBase {
 
 			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
+
+			// for (AprilTagDetection tag : detectedAprilTags) {
+			// 	if (tag.getId() == 1) {
+			// 		System.out.println(tag);
+			// 		System.out.println();
+
+			// 		final Translation2d pose = estimateTagPose2d(tag);
+			// 		System.out.println(pose);
+			// 		System.out.println(
+			// 				String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
+			// 		System.out.println();
+			// 	}
+			// }
 		}
 	}
 
