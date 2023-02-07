@@ -10,7 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ArmConstants;
 
+// The subsystem for controlling the arm
 public class Arm extends SubsystemBase {
+	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotor;
 	private final CANCoder armEncoder;
 	private final PIDController armPIDController;
@@ -18,7 +20,7 @@ public class Arm extends SubsystemBase {
 	private double minDegree;
 	private double maxDegree;
 
-	// Constructor for the Arm
+	// Constructor for the Arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum degrees
 	public Arm(int armMotorId, int armEncoderId, double inMinDegree, double inMaxDegree) {
 		armPIDController = new PIDController(
 				ArmConstants.ARM_PID_P,
@@ -37,6 +39,7 @@ public class Arm extends SubsystemBase {
 
 	// Setting the desired degree for the arm
 	public void setDegree(double desiredDegree) {
+		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		if (desiredDegree > maxDegree) {
 			armDegree = maxDegree;
 		}
