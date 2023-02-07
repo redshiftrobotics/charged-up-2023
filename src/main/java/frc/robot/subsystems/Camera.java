@@ -148,18 +148,19 @@ public class Camera extends SubsystemBase {
 			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
-			// for (AprilTagDetection tag : detectedAprilTags) {
-			// 	if (tag.getId() == 1) {
-			// 		System.out.println(tag);
-			// 		System.out.println();
+			for (AprilTagDetection tag : detectedAprilTags) {
+				if (tag.getId() == 1) {
+					System.out.println(tag);
+					System.out.println();
 
-			// 		final Translation2d pose = estimateTagPose2d(tag);
-			// 		System.out.println(pose);
-			// 		System.out.println(
-			// 				String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
-			// 		System.out.println();
-			// 	}
-			// }
+					final Translation2d pose = estimateTagPose2d(tag);
+					System.out.println(pose);
+					System.out.println(
+							String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
+
+					System.out.println();
+				}
+			}
 		}
 	}
 
