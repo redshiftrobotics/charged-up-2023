@@ -98,6 +98,16 @@ public final class Constants {
 		public static final double ARM_PID_I = 5;
 		public static final double ARM_PID_D = 0.75;
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
+
+		public static final int BOTTOM_ARM_MOTOR_ID = 0;
+		public static final int TOP_ARM_MOTOR_ID = 0;
+		public static final int BOTTOM_ARM_ENCODER_ID = 0;
+		public static final int TOP_ARM_ENCODER_ID = 0;
+
+		public static final double BOTTOM_ARM_MIN_DEGREE = 0;
+		public static final double TOP_ARM_MIN_DEGREE = 0;
+		public static final double BOTTOM_ARM_MAX_DEGREE = 0;
+		public static final double TOP_ARM_MAX_DEGREE = 0;
 	}
 
 }

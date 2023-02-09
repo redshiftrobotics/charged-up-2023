@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.math.controller.PIDController;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -40,13 +41,14 @@ public class Arm extends SubsystemBase {
 	// Setting the desired degree for the arm
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
-		if (desiredDegree > maxDegree) {
+		// Minimum degree will not always be set to zero. 
+		if (minDegree + desiredDegree > maxDegree) {
 			armDegree = maxDegree;
 		}
-		if (desiredDegree < minDegree) {
+		if (minDegree + desiredDegree < minDegree) {
 			armDegree = minDegree;
 		} else {
-			armDegree = desiredDegree;
+			armDegree = minDegree + desiredDegree;
 		}
 	}
 
