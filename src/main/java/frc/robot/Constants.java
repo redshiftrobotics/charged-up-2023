@@ -20,6 +20,8 @@ import edu.wpi.first.math.util.Units;
 
 public final class Constants {
 
+	public static final double periodicFrequency = 0.02;
+
 	public static final Pose2d STARTING_POSITION = new Pose2d(0, 0, new Rotation2d(0)); // x, y, theta
 
 	public static class OperatorConstants {
@@ -38,9 +40,9 @@ public final class Constants {
 		public static final double MODULE_LOCATION_Y = 0.25;
 
 		// TESTING ONLY
-		public static final int ANGULAR_MOTOR_ID = 2;
-		public static final int VELOCITY_MOTOR_ID = 1;
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 25;
+		public static final int ANGULAR_MOTOR_ID = 7;
+		public static final int VELOCITY_MOTOR_ID = 8;
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 26;
 
 		// TODO update motor IDs
 		public static final int ANGULAR_MOTOR_ID_FL = 0;
@@ -81,7 +83,7 @@ public final class Constants {
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 
-		public static final double VELOCITY_PID_P = 0.0001;
+		public static final double VELOCITY_PID_P = 0.0025;
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
 

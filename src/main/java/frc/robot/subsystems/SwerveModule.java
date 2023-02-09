@@ -14,7 +14,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
+import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -81,8 +81,9 @@ public class SwerveModule extends SubsystemBase {
 	// Returns the velocity of the Velocity motor in meters / second of the wheel
 	public double getVelocity() {
 		return velocityEncoder.getVelocity() *
-				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
-				SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
+				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO /**
+																SwerveDriveConstants.WHEEL_CIRCUMFERENCE*/
+		;
 	}
 
 	public SwerveModulePosition getPosition() {
@@ -108,11 +109,11 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("state", state.angle.getDegrees());
 
-		double velocityTest = velocityPIDController.calculate(getVelocity());
+		double velocityTest = velocityPIDController.calculate(getVelocity(), state.speedMetersPerSecond);
 
 		SmartDashboard.putNumber("Velocity PID output", velocityTest);
 
-		velocityMotorSpeed += velocityTest;
+		velocityMotorSpeed += velocityTest * Constants.periodicFrequency;
 
 		SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
 
