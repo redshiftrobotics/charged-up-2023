@@ -139,6 +139,10 @@ public class Camera extends SubsystemBase {
 		return Math.sqrt(Math.pow(transform.getX(), 2) + Math.pow(transform.getY(), 2) + Math.pow(transform.getZ(), 2));
 	}
 
+	public double getDistance(Translation2d translation) {
+		return Math.sqrt(Math.pow(translation.getX(), 2) + Math.pow(translation.getY(), 2));
+	}
+
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
@@ -152,7 +156,7 @@ public class Camera extends SubsystemBase {
 		var pt3 = new Point();
 		var center = new Point();
 		var red = new Scalar(0, 0, 255);
-		var green = new Scalar(0, 255, 0);
+		var blue = new Scalar(70, 7215, 70);
 
 		if (timeToFrame != 0) {
 			// convert mat to gray scale and store it in grayMat
@@ -168,6 +172,10 @@ public class Camera extends SubsystemBase {
 				final Translation2d pose = estimateTagPose2d(tag);
 				// System.out.println(pose);
 				// System.out.println(String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
+
+				final double distanceMM = getDistance(pose);
+
+				final double distanceInch = distanceMM / 25.4;
 
 				pt0.x = tag.getCornerX(0);
 				pt1.x = tag.getCornerX(1);
@@ -187,11 +195,12 @@ public class Camera extends SubsystemBase {
 				Imgproc.line(mat, pt2, pt3, red, 5);
 				Imgproc.line(mat, pt3, pt0, red, 5);
 
-				// Imgproc.circle(mat, center, 4, green);
-				Imgproc.putText(mat, String.valueOf(tag.getId()), pt2, Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 7);
-				Imgproc.putText(mat,
-						String.format("%.2f", pose.getX() / 25.4), pt0,
-						Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
+				Imgproc.putText(mat, String.format(" %s", tag.getId()), center, Imgproc.FONT_HERSHEY_DUPLEX,
+						3, blue, 3);
+
+				Imgproc.putText(mat, String.format("%,.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+						1, blue, 1);
+
 				// Imgproc.putText(mat,
 				// 		String.format("x: %.2f inches y: %.2f inches", pose.getX() / 25.4, pose.getY() / 25.4), pt0,
 				// 		Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
