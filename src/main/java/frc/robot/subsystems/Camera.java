@@ -9,6 +9,8 @@ import frc.robot.Constants.CameraConstants;
 
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 
 import java.util.ArrayList;
 
@@ -19,12 +21,10 @@ import edu.wpi.first.apriltag.AprilTagDetector;
 import edu.wpi.first.apriltag.AprilTagPoseEstimator;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
@@ -37,6 +37,8 @@ public class Camera extends SubsystemBase {
 	private final AprilTagPoseEstimator aprilTagPoseEstimator;
 
 	private AprilTagDetection[] detectedAprilTags;
+
+	private final CvSource outputStream;
 
 	/** Constructor for Camera.
 	 * Creates a UsbCamera object with CameraServer and sets its resolution.
@@ -52,6 +54,9 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
 		cvSink = CameraServer.getVideo();
+
+		outputStream = CameraServer.putVideo("RioApriltags", CameraConstants.CAMERA_RESOLUTION_WIDTH,
+				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
 		// -------------- Set up Mats --------------
 
@@ -141,6 +146,14 @@ public class Camera extends SubsystemBase {
 		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
 		final long timeToFrame = cvSink.grabFrame(mat);
 
+		var pt0 = new Point();
+		var pt1 = new Point();
+		var pt2 = new Point();
+		var pt3 = new Point();
+		var center = new Point();
+		var red = new Scalar(0, 0, 255);
+		var green = new Scalar(0, 255, 0);
+
 		if (timeToFrame != 0) {
 			// convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
@@ -148,18 +161,47 @@ public class Camera extends SubsystemBase {
 			// detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
-			AprilTagDetection tag = getDetectedAprilTag(1);
-
-			if (tag != null) {
-				System.out.println(tag);
-				System.out.println();
+			for (AprilTagDetection tag : detectedAprilTags) {
+				// System.out.println(tag);
+				// System.out.println();
 
 				final Translation2d pose = estimateTagPose2d(tag);
-				System.out.println(pose);
-				System.out.println(String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
+				// System.out.println(pose);
+				// System.out.println(String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
+
+				pt0.x = tag.getCornerX(0);
+				pt1.x = tag.getCornerX(1);
+				pt2.x = tag.getCornerX(2);
+				pt3.x = tag.getCornerX(3);
+
+				pt0.y = tag.getCornerY(0);
+				pt1.y = tag.getCornerY(1);
+				pt2.y = tag.getCornerY(2);
+				pt3.y = tag.getCornerY(3);
+
+				center.x = tag.getCenterX();
+				center.y = tag.getCenterY();
+
+				Imgproc.line(mat, pt0, pt1, red, 5);
+				Imgproc.line(mat, pt1, pt2, red, 5);
+				Imgproc.line(mat, pt2, pt3, red, 5);
+				Imgproc.line(mat, pt3, pt0, red, 5);
+
+				// Imgproc.circle(mat, center, 4, green);
+				Imgproc.putText(mat, String.valueOf(tag.getId()), pt2, Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 7);
+				Imgproc.putText(mat,
+						String.format("%.2f", pose.getX() / 25.4), pt0,
+						Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
+				// Imgproc.putText(mat,
+				// 		String.format("x: %.2f inches y: %.2f inches", pose.getX() / 25.4, pose.getY() / 25.4), pt0,
+				// 		Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
 
 				System.out.println();
+
 			}
+			// System.out.println(detectedAprilTags.length);
+			// System.out.println();
+			outputStream.putFrame(mat);
 		}
 	}
 
