@@ -106,8 +106,9 @@ public class Camera extends SubsystemBase {
 		return detectedAprilTags;
 	}
 
-	/** @return returns AprilTagDetections with specified. If it is not found it returns null */
-	public AprilTagDetection getDetectedAprilTag(int tagId) {
+	/** @return actual april tag from AprilTagDetections with specified ID. If it is not found it returns null. 
+	 * NOTE: The tag and the tagId are different. The tagId is just an int while tag has more data and is what's found by AprilTagDetector.*/
+	public AprilTagDetection getDetectedAprilTagById(int tagId) {
 		for (AprilTagDetection tag : getDetectedAprilTags()) {
 			if (tag.getId() == tagId) {
 				return tag;
@@ -135,11 +136,19 @@ public class Camera extends SubsystemBase {
 		return new Translation2d(pose.getZ(), pose.getX());
 	}
 
-	public double getDistance(Transform3d transform) {
+	/** Returns distance from a Transform3d using 3d distance formula
+	 * @param Transform3d
+	 * @return distance from Transform3d
+	 */
+	public double getDistance3d(Transform3d transform) {
 		return Math.sqrt(Math.pow(transform.getX(), 2) + Math.pow(transform.getY(), 2) + Math.pow(transform.getZ(), 2));
 	}
 
-	public double getDistance(Translation2d translation) {
+	/** Returns distance from a Translation2d using 2d distance formula
+	 * @param Translation2d
+	 * @return distance from Translation2d
+	 */
+	public double getDistance2d(Translation2d translation) {
 		return Math.sqrt(Math.pow(translation.getX(), 2) + Math.pow(translation.getY(), 2));
 	}
 
@@ -150,6 +159,7 @@ public class Camera extends SubsystemBase {
 		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
 		final long timeToFrame = cvSink.grabFrame(mat);
 
+		// Creates points to draw from later
 		var pt0 = new Point();
 		var pt1 = new Point();
 		var pt2 = new Point();
@@ -159,24 +169,23 @@ public class Camera extends SubsystemBase {
 		var blue = new Scalar(70, 7215, 70);
 
 		if (timeToFrame != 0) {
-			// convert mat to gray scale and store it in grayMat
+			// Convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-			// detects all AprilTags in grayMat and store them
+			// Detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
+			// Loops through each april tag detected, once one is
 			for (AprilTagDetection tag : detectedAprilTags) {
-				// System.out.println(tag);
-				// System.out.println();
 
-				final Translation2d pose = estimateTagPose2d(tag);
-				// System.out.println(pose);
 				// System.out.println(String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
 
-				final double distanceMM = getDistance(pose);
-
+				// Gets distance from april tag in MM and Inches
+				final Translation2d pose = estimateTagPose2d(tag);
+				final double distanceMM = getDistance2d(pose);
 				final double distanceInch = distanceMM / 25.4;
 
+				// Assigns positions to points created earlier, updated every frame to track april tag
 				pt0.x = tag.getCornerX(0);
 				pt1.x = tag.getCornerX(1);
 				pt2.x = tag.getCornerX(2);
@@ -190,26 +199,24 @@ public class Camera extends SubsystemBase {
 				center.x = tag.getCenterX();
 				center.y = tag.getCenterY();
 
+				// Draws lines using points around april tag
 				Imgproc.line(mat, pt0, pt1, red, 5);
 				Imgproc.line(mat, pt1, pt2, red, 5);
 				Imgproc.line(mat, pt2, pt3, red, 5);
 				Imgproc.line(mat, pt3, pt0, red, 5);
 
+				// Displays tagId and distance from camera in inches on april tag
 				Imgproc.putText(mat, String.format(" %s", tag.getId()), center, Imgproc.FONT_HERSHEY_DUPLEX,
 						3, blue, 3);
 
 				Imgproc.putText(mat, String.format("%,.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
 						1, blue, 1);
 
-				// Imgproc.putText(mat,
-				// 		String.format("x: %.2f inches y: %.2f inches", pose.getX() / 25.4, pose.getY() / 25.4), pt0,
-				// 		Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
-
 				System.out.println();
 
 			}
-			// System.out.println(detectedAprilTags.length);
-			// System.out.println();
+
+			// Outputs the newly drawn on frame to the outputStream
 			outputStream.putFrame(mat);
 		}
 	}
