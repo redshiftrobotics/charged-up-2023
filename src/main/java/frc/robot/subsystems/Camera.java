@@ -6,13 +6,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CameraConstants;
+import frc.robot.Constants.VideoDisplayConstants;
 
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
-
-import java.util.ArrayList;
 
 import org.opencv.core.CvType;
 
@@ -30,6 +29,7 @@ public class Camera extends SubsystemBase {
 	private final UsbCamera camera;
 	private final CvSink cvSink;
 
+	// create mats here because they are quite exspensive to make
 	private Mat mat;
 	private final Mat grayMat;
 
@@ -55,7 +55,7 @@ public class Camera extends SubsystemBase {
 
 		cvSink = CameraServer.getVideo();
 
-		outputStream = CameraServer.putVideo("RioApriltags", CameraConstants.CAMERA_RESOLUTION_WIDTH,
+		outputStream = CameraServer.putVideo("AprilTags", CameraConstants.CAMERA_RESOLUTION_WIDTH,
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT);
 
 		// -------------- Set up Mats --------------
@@ -120,27 +120,70 @@ public class Camera extends SubsystemBase {
 	 * Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
 	 * Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
 	 * @param tag a AprilTagDetection
-	 * @return Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
+	 * @return 3d pose of tag. Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
 	 */
 	public Transform3d estimateTagPose(AprilTagDetection tag) {
 		return aprilTagPoseEstimator.estimate(tag);
 	}
 
-	/** Returns position of tag relative to camera in 2d.
-	 * @param tag a AprilTagDetection
-	 * @return simple Translation2d towards april tag
-	 */
-	public Translation2d estimateTagPose2d(AprilTagDetection tag) {
-		final Transform3d pose = estimateTagPose(tag);
+	public Translation2d makePose2d(Transform3d pose) {
 		return new Translation2d(pose.getZ(), pose.getX());
 	}
 
-	public double getDistance(Transform3d transform) {
-		return Math.sqrt(Math.pow(transform.getX(), 2) + Math.pow(transform.getY(), 2) + Math.pow(transform.getZ(), 2));
+	/** Returns position of tag relative to camera in 2d ignoring all vertical.
+	 * @param tag a AprilTagDetection
+	 * @return simple 2d pose of tag. Translation2d(x: +foward, y: -right to +left)
+	 */
+	public Translation2d estimateTagPose2d(AprilTagDetection tag) {
+		return makePose2d(estimateTagPose(tag));
 	}
 
-	public double getDistance(Translation2d translation) {
-		return Math.sqrt(Math.pow(translation.getX(), 2) + Math.pow(translation.getY(), 2));
+	/** returns distance to pose in mm
+	 * @param pose3d a 3d pose
+	 * @return distance to tag in mm
+	 */
+	public double getDistance(Transform3d pose3d) {
+		return Math.sqrt(
+				Math.pow(pose3d.getX(), 2) + Math.pow(pose3d.getY(), 2) + Math.pow(pose3d.getZ(), 2));
+	}
+
+	/** returns distance to pose in mm ignoring all vertical distance
+	 * @param pose2d a 2d pose
+	 * @return distance to tag in mm
+	 */
+	public double getDistance2d(Translation2d pose2d) {
+		return Math.sqrt(Math.pow(pose2d.getX(), 2) + Math.pow(pose2d.getY(), 2));
+	}
+
+	/** Outlines and adds helpful data to diplay  */
+	public void decorateTagInImage(AprilTagDetection tag, Transform3d tagPose3d, Mat mat) {
+
+		final double distanceMM = getDistance(tagPose3d);
+
+		final double distanceInch = distanceMM / 25.4;
+
+		final Point pt0 = new Point(tag.getCornerX(0), tag.getCornerY(0));
+		final Point pt1 = new Point(tag.getCornerX(1), tag.getCornerY(1));
+		final Point pt2 = new Point(tag.getCornerX(2), tag.getCornerY(2));
+		final Point pt3 = new Point(tag.getCornerX(3), tag.getCornerY(3));
+		final Point center = new Point(tag.getCenterX(), tag.getCenterY());
+
+		Imgproc.line(mat, pt0, pt1, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
+		Imgproc.line(mat, pt1, pt2, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
+		Imgproc.line(mat, pt2, pt3, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
+		Imgproc.line(mat, pt3, pt0, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
+
+		final String tagIdMessage = Integer.toString(tag.getId());
+
+		// final Size tagIdMessageSize = Imgproc.getTextSize();
+
+		Imgproc.putText(mat, tagIdMessage, center, Imgproc.FONT_HERSHEY_DUPLEX,
+				3, VideoDisplayConstants.TEXT_COLOR, 3);
+
+		Imgproc.putText(mat, String.format("%.2f", tagPose3d.getRotation().getY()), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+				1, VideoDisplayConstants.TEXT_COLOR, 1);
+		// Imgproc.putText(mat, String.format("%.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+		// 		1, VideoDisplayConstants.TEXT_COLOR, 1);
 	}
 
 	@Override
@@ -150,14 +193,6 @@ public class Camera extends SubsystemBase {
 		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
 		final long timeToFrame = cvSink.grabFrame(mat);
 
-		var pt0 = new Point();
-		var pt1 = new Point();
-		var pt2 = new Point();
-		var pt3 = new Point();
-		var center = new Point();
-		var red = new Scalar(0, 0, 255);
-		var blue = new Scalar(70, 7215, 70);
-
 		if (timeToFrame != 0) {
 			// convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
@@ -166,52 +201,12 @@ public class Camera extends SubsystemBase {
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
 			for (AprilTagDetection tag : detectedAprilTags) {
-				// System.out.println(tag);
-				// System.out.println();
-
-				final Translation2d pose = estimateTagPose2d(tag);
-				// System.out.println(pose);
-				// System.out.println(String.format("x: %s inches, y: %s inches", pose.getX() / 25.4, pose.getY() / 25.4));
-
-				final double distanceMM = getDistance(pose);
-
-				final double distanceInch = distanceMM / 25.4;
-
-				pt0.x = tag.getCornerX(0);
-				pt1.x = tag.getCornerX(1);
-				pt2.x = tag.getCornerX(2);
-				pt3.x = tag.getCornerX(3);
-
-				pt0.y = tag.getCornerY(0);
-				pt1.y = tag.getCornerY(1);
-				pt2.y = tag.getCornerY(2);
-				pt3.y = tag.getCornerY(3);
-
-				center.x = tag.getCenterX();
-				center.y = tag.getCenterY();
-
-				Imgproc.line(mat, pt0, pt1, red, 5);
-				Imgproc.line(mat, pt1, pt2, red, 5);
-				Imgproc.line(mat, pt2, pt3, red, 5);
-				Imgproc.line(mat, pt3, pt0, red, 5);
-
-				Imgproc.putText(mat, String.format(" %s", tag.getId()), center, Imgproc.FONT_HERSHEY_DUPLEX,
-						3, blue, 3);
-
-				Imgproc.putText(mat, String.format("%,.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
-						1, blue, 1);
-
-				// Imgproc.putText(mat,
-				// 		String.format("x: %.2f inches y: %.2f inches", pose.getX() / 25.4, pose.getY() / 25.4), pt0,
-				// 		Imgproc.FONT_HERSHEY_SIMPLEX, 1, green, 3);
-
-				System.out.println();
-
+				Transform3d pose3d = estimateTagPose(tag); // takes 2-4 milliseconds
+				// long startEstimationTime = System.currentTimeMillis();
+				decorateTagInImage(tag, pose3d, mat); // takes about 1 millisecond or less
+				// System.out.printf("Estimation Time: %s", System.currentTimeMillis() - startEstimationTime);
 			}
-			// System.out.println(detectedAprilTags.length);
-			// System.out.println();
 			outputStream.putFrame(mat);
 		}
 	}
-
 }

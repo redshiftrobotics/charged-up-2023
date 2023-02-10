@@ -1,9 +1,0 @@
-// commands we will have accses to
-
-RotateByCommand(SwerveDrivetrain drivetrain, Rotation2d rotation)
-RotateToCommand(SwerveDrivetrain drivetrain, Rotation2d rotation)
-DriveDistanceCommand(SwerveDrivetrain drivetrain, Translation2d driveDistance)
-DriveDurationCommand(SwerveDrivetrain drivetrain, ChassisSpeeds speeds)
-RotateByAndDriveCommand(SwerveDrivetrain drivetrain, Rotation2d angle, Translation2d distance)
-RotateToAndDriveCommand(SwerveDrivetrain drivetrain, Rotation2d angle, Translation2d distance)
-RotateAndDriveSimultaneous(SwerveDrivetrain drivetrain, Rotation2d rotation, boolean absoluteRotation Translation2d driveDistance, boolean fieldRelativeDistance)

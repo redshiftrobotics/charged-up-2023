@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import org.opencv.core.Scalar;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -98,5 +100,17 @@ public final class Constants {
 
 		// the April Tag family we are using
 		public static final String TAG_FAMILY = "tag16h5";
+	}
+
+	public static final class VideoDisplayConstants {
+		public static final Scalar RED = new Scalar(0, 0, 255);
+		public static final Scalar GREEN = new Scalar(0, 255, 0);
+		public static final Scalar BLUE = new Scalar(255, 0, 0);
+		public static final Scalar WHITE = new Scalar(0, 0, 0);
+		public static final Scalar BLACK = new Scalar(255, 255, 255);
+
+		public static final Scalar TEXT_COLOR = VideoDisplayConstants.GREEN;
+		public static final Scalar BOX_OUTLINE_COLOR = VideoDisplayConstants.RED;
+
 	}
 }
