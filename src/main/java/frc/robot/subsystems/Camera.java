@@ -130,14 +130,6 @@ public class Camera extends SubsystemBase {
 		return new Translation2d(pose.getZ(), pose.getX());
 	}
 
-	/** Returns position of tag relative to camera in 2d ignoring all vertical.
-	 * @param tag a AprilTagDetection
-	 * @return simple 2d pose of tag. Translation2d(x: +foward, y: -right to +left)
-	 */
-	public Translation2d estimateTagPose2d(AprilTagDetection tag) {
-		return makePose2d(estimateTagPose(tag));
-	}
-
 	/** returns distance to pose in mm
 	 * @param pose3d a 3d pose
 	 * @return distance to tag in mm
@@ -145,14 +137,6 @@ public class Camera extends SubsystemBase {
 	public double getDistance(Transform3d pose3d) {
 		return Math.sqrt(
 				Math.pow(pose3d.getX(), 2) + Math.pow(pose3d.getY(), 2) + Math.pow(pose3d.getZ(), 2));
-	}
-
-	/** returns distance to pose in mm ignoring all vertical distance
-	 * @param pose2d a 2d pose
-	 * @return distance to tag in mm
-	 */
-	public double getDistance2d(Translation2d pose2d) {
-		return Math.sqrt(Math.pow(pose2d.getX(), 2) + Math.pow(pose2d.getY(), 2));
 	}
 
 	/** Outlines and adds helpful data to diplay  */
