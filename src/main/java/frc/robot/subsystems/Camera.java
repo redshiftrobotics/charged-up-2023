@@ -11,7 +11,6 @@ import frc.robot.Constants.VideoDisplayConstants;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 
 import org.opencv.core.CvType;
 
@@ -106,8 +105,9 @@ public class Camera extends SubsystemBase {
 		return detectedAprilTags;
 	}
 
-	/** @return returns AprilTagDetections with specified. If it is not found it returns null */
-	public AprilTagDetection getDetectedAprilTag(int tagId) {
+	/** @return actual april tag from AprilTagDetections with specified ID. If it is not found it returns null. 
+	 * NOTE: The tag and the tagId are different. The tagId is just an int while tag has more data and is what's found by AprilTagDetector.*/
+	public AprilTagDetection getDetectedAprilTagById(int tagId) {
 		for (AprilTagDetection tag : getDetectedAprilTags()) {
 			if (tag.getId() == tagId) {
 				return tag;
@@ -180,9 +180,9 @@ public class Camera extends SubsystemBase {
 		Imgproc.putText(mat, tagIdMessage, center, Imgproc.FONT_HERSHEY_DUPLEX,
 				3, VideoDisplayConstants.TEXT_COLOR, 3);
 
-		Imgproc.putText(mat, String.format("%.2f", tagPose3d.getRotation().getY()), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+		Imgproc.putText(mat, String.format("%.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
 				1, VideoDisplayConstants.TEXT_COLOR, 1);
-		// Imgproc.putText(mat, String.format("%.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+		// Imgproc.putText(mat, String.format("%.2f", tagPose3d.getRotation().getY()), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
 		// 		1, VideoDisplayConstants.TEXT_COLOR, 1);
 	}
 
@@ -194,12 +194,13 @@ public class Camera extends SubsystemBase {
 		final long timeToFrame = cvSink.grabFrame(mat);
 
 		if (timeToFrame != 0) {
-			// convert mat to gray scale and store it in grayMat
+			// Convert mat to gray scale and store it in grayMat
 			Imgproc.cvtColor(mat, grayMat, Imgproc.COLOR_RGB2GRAY);
 
-			// detects all AprilTags in grayMat and store them
+			// Detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
+			// Loops through each april tag detected, once one is
 			for (AprilTagDetection tag : detectedAprilTags) {
 				Transform3d pose3d = estimateTagPose(tag); // takes 2-4 milliseconds
 				// long startEstimationTime = System.currentTimeMillis();
