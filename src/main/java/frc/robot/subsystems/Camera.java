@@ -144,8 +144,6 @@ public class Camera extends SubsystemBase {
 
 		final double distanceMM = getDistance(tagPose3d);
 
-		final double distanceFeet = distanceMM / 304.8;
-
 		final Point pt0 = new Point(tag.getCornerX(0), tag.getCornerY(0));
 		final Point pt1 = new Point(tag.getCornerX(1), tag.getCornerY(1));
 		final Point pt2 = new Point(tag.getCornerX(2), tag.getCornerY(2));
@@ -156,21 +154,26 @@ public class Camera extends SubsystemBase {
 		Imgproc.line(mat, pt2, pt3, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 		Imgproc.line(mat, pt3, pt0, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 
-		final String tagIdMessage = Integer.toString(tag.getId());
+		final double distanceFeet = distanceMM / 304.8;
 
-		final Size tagIdMessageSize = Imgproc.getTextSize(tagIdMessage, VideoDisplayConstants.FONT_TYPE, 3, 3, null);
+		addCenteredText(Integer.toString(tag.getId()), 4, 4,
+				new Point(tag.getCenterX(), tag.getCenterY()), mat);
 
-		final double textCenterX = tag.getCenterX() - (tagIdMessageSize.width / 2);
-		final double textCenterY = tag.getCenterY() - (tagIdMessageSize.height / 2);
+		addCenteredText(String.format("%.1f ft.", distanceFeet), 1, 2,
+				new Point(tag.getCenterX(), tag.getCenterY() * 1.2),
+				mat);
+	}
 
-		Imgproc.putText(mat, tagIdMessage, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
-				3, VideoDisplayConstants.WHITE, 6);
-		Imgproc.putText(mat, tagIdMessage, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
-				3, VideoDisplayConstants.TEXT_COLOR, 4);
+	public void addCenteredText(String text, int fontScale, int thickness, Point org, Mat mat) {
+		final Size textSize = Imgproc.getTextSize(text, VideoDisplayConstants.FONT_TYPE, fontScale, thickness, null);
 
-		Imgproc.putText(mat, String.format("%.2f", distanceFeet),
-				new Point(textCenterX, textCenterY - tagIdMessageSize.height), VideoDisplayConstants.FONT_TYPE,
-				1, VideoDisplayConstants.TEXT_COLOR, 1);
+		final double textCenterX = org.x - (textSize.width / 2);
+		final double textCenterY = org.y + (textSize.height / 2);
+
+		Imgproc.putText(mat, text, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+				fontScale, VideoDisplayConstants.WHITE, thickness + 2);
+		Imgproc.putText(mat, text, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+				fontScale, VideoDisplayConstants.TEXT_COLOR, thickness);
 
 	}
 
