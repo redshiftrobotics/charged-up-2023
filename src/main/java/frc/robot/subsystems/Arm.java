@@ -1,8 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.SparkMaxAbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -12,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Arm extends SubsystemBase {
 	private final CANSparkMax armMotor;
-	private final AbsoluteEncoder armEncoder;
+	private final RelativeEncoder armEncoder;
 	private final PIDController armPIDController;
 
 	//definds the arm and its berriors
@@ -34,11 +33,11 @@ public class Arm extends SubsystemBase {
 	}
 
 	//   _______     _
-	//  /  ____  \  | |
-	//  | /    \ |  | |
-	//  | |    | |  | |  ___           _   ___      _____
-	//  | |    | |  | |/ ___ \        | |/ ___ \   /  _  \
-	//  | |    | |  |  /    \ |       |  /    \ |  | / \ |
-	//  | \____/ |  | |     | |       | |     | |  | \_/ |
-	//  \________/  |_|     |_|       |_|     |_|  \_____/
+	//  /  ____  \  | |                _
+	//  | /    \ |  | |          |_|
+	//  | |    | |  | |  ___      _    _____
+	//  | |    | |  | |/ ___ \   | |  /  _  \
+	//  | |    | |  |  /    \ |  | |  | / \ |
+	//  | \____/ |  | |     | |  | |  | \_/ |
+	//  \________/  |_|     |_|  |_|  \_____/
 }
