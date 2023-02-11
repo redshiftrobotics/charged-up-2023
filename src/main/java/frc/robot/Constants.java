@@ -83,9 +83,10 @@ public final class Constants {
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 
-		public static final double VELOCITY_PID_P = 0.01;
+		public static final double VELOCITY_PID_P = 0.00001;
 		public static final double VELOCITY_PID_I = 0;
-		public static final double VELOCITY_PID_D = 0.01;
+		public static final double VELOCITY_PID_D = 0;
+		public static final double VELOCITY_PID_FF = 0.090944883322;
 
 	}
 

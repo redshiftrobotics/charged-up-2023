@@ -71,14 +71,9 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setP(SwerveDriveConstants.VELOCITY_PID_P);
 		velocitySparkMaxPIDController.setI(SwerveDriveConstants.VELOCITY_PID_I);
 		velocitySparkMaxPIDController.setD(SwerveDriveConstants.VELOCITY_PID_D);
-		velocitySparkMaxPIDController.setFF(0.00000);
+		velocitySparkMaxPIDController.setFF(SwerveDriveConstants.VELOCITY_PID_FF);
 		velocitySparkMaxPIDController.setOutputRange(-1, 1);
 		velocitySparkMaxPIDController.setIZone(0);
-
-		SmartDashboard.putNumber("Velocity P", SwerveDriveConstants.ANGULAR_PID_P);
-		SmartDashboard.putNumber("Velocity I", SwerveDriveConstants.ANGULAR_PID_I);
-		SmartDashboard.putNumber("Velocity D", SwerveDriveConstants.ANGULAR_PID_D);
-		SmartDashboard.putNumber("Velocity FF", 0);
 
 		config.sensorCoefficient = 1 / 4096;
 		config.unitString = "rot";
@@ -105,7 +100,7 @@ public class SwerveModule extends SubsystemBase {
 
 	// Returns the velocity of the Velocity motor in meters / second of the wheel
 	public double getVelocity() {
-		return velocityEncoder.getVelocity() *
+		return velocityEncoder.getVelocity() / 60 /
 				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO /**
 																SwerveDriveConstants.WHEEL_CIRCUMFERENCE*/
 		;
@@ -167,26 +162,14 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("Velocity test", velocityTest);
 
-		double p = SmartDashboard.getNumber("Velocity P", 0);
-		double i = SmartDashboard.getNumber("Velocity I", 0);
-		double d = SmartDashboard.getNumber("Velocity D", 0);
-
-		Joystick joy = new Joystick(0);
-		velocitySparkMaxPIDController.setP(p);
-		velocitySparkMaxPIDController.setI(i);
-		velocitySparkMaxPIDController.setD(d);
-
-		double ff = (joy.getThrottle() + 1) / 20;
-
-		velocitySparkMaxPIDController.setFF(ff);
-
-		SmartDashboard.putNumber("Velocity FF", ff);
+		SmartDashboard.putNumber("Velocity", getVelocity());
 
 		// velocitySparkMaxPIDController.setFF(SmartDashboard.getNumber("Velocity FF", 0));
 
-		velocitySparkMaxPIDController.setReference(SmartDashboard.getNumber("RPM", 0),
+		velocitySparkMaxPIDController.setReference(
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
 				CANSparkMax.ControlType.kVelocity);
 
-		// velocityMotor.set(();
+		// velocityMotor.set();
 	}
 }
