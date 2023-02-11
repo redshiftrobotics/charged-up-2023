@@ -5,6 +5,7 @@
 package frc.robot;
 
 import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -111,6 +112,8 @@ public final class Constants {
 
 		public static final Scalar TEXT_COLOR = VideoDisplayConstants.GREEN;
 		public static final Scalar BOX_OUTLINE_COLOR = VideoDisplayConstants.RED;
+
+		public static final int FONT_TYPE = Imgproc.FONT_HERSHEY_DUPLEX;
 
 	}
 }

@@ -11,7 +11,7 @@ import frc.robot.Constants.VideoDisplayConstants;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
-
+import org.opencv.core.Size;
 import org.opencv.core.CvType;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
@@ -144,13 +144,12 @@ public class Camera extends SubsystemBase {
 
 		final double distanceMM = getDistance(tagPose3d);
 
-		final double distanceInch = distanceMM / 25.4;
+		final double distanceFeet = distanceMM / 304.8;
 
 		final Point pt0 = new Point(tag.getCornerX(0), tag.getCornerY(0));
 		final Point pt1 = new Point(tag.getCornerX(1), tag.getCornerY(1));
 		final Point pt2 = new Point(tag.getCornerX(2), tag.getCornerY(2));
 		final Point pt3 = new Point(tag.getCornerX(3), tag.getCornerY(3));
-		final Point center = new Point(tag.getCenterX(), tag.getCenterY());
 
 		Imgproc.line(mat, pt0, pt1, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 		Imgproc.line(mat, pt1, pt2, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
@@ -159,15 +158,20 @@ public class Camera extends SubsystemBase {
 
 		final String tagIdMessage = Integer.toString(tag.getId());
 
-		// final Size tagIdMessageSize = Imgproc.getTextSize();
+		final Size tagIdMessageSize = Imgproc.getTextSize(tagIdMessage, VideoDisplayConstants.FONT_TYPE, 3, 3, null);
 
-		Imgproc.putText(mat, tagIdMessage, center, Imgproc.FONT_HERSHEY_DUPLEX,
-				3, VideoDisplayConstants.TEXT_COLOR, 3);
+		final double textCenterX = tag.getCenterX() - (tagIdMessageSize.width / 2);
+		final double textCenterY = tag.getCenterY() - (tagIdMessageSize.height / 2);
 
-		Imgproc.putText(mat, String.format("%.2f", distanceInch), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
+		Imgproc.putText(mat, tagIdMessage, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+				3, VideoDisplayConstants.WHITE, 6);
+		Imgproc.putText(mat, tagIdMessage, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+				3, VideoDisplayConstants.TEXT_COLOR, 4);
+
+		Imgproc.putText(mat, String.format("%.2f", distanceFeet),
+				new Point(textCenterX, textCenterY - tagIdMessageSize.height), VideoDisplayConstants.FONT_TYPE,
 				1, VideoDisplayConstants.TEXT_COLOR, 1);
-		// Imgproc.putText(mat, String.format("%.2f", tagPose3d.getRotation().getY()), pt0, Imgproc.FONT_HERSHEY_DUPLEX,
-		// 		1, VideoDisplayConstants.TEXT_COLOR, 1);
+
 	}
 
 	@Override
