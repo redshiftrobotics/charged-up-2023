@@ -58,14 +58,13 @@ public final class Constants {
 	}
 
 	public static final class CameraConstants {
+		public static final int cameraID = 0;
+
 		// Understading the focal length values: https://en.wikipedia.org/wiki/Camera_resectioning, https://en.wikipedia.org/wiki/Cardinal_point_(optics)
 
 		// Microsoft LifeCam HD-3000 stuff https://github.com/FIRST-Tech-Challenge/FtcRobotController/blob/master/TeamCode/src/main/res/xml/teamwebcamcalibrations.xml
 		public static final int CAMERA_RESOLUTION_WIDTH = 640;
 		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
-
-		// public static final int CAMERA_RESOLUTION_WIDTH = 1280;
-		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
 
 		public static final double CAMERA_FOCAL_LENGTH_X = 678.154f;
 		public static final double CAMERA_FOCAL_LENGTH_Y = 678.17;
@@ -86,18 +85,42 @@ public final class Constants {
 		// width and height of April Tag
 		public static final double APRIL_TAG_SIZE_MM = 152.4;
 
-		// What Gaussian blur should be applied to the segmented image
-		// important for noisy images
-		public static final float QUAD_SIGMA = 0.8f;
+		// Valid tag ID range
+		public static final int MIN_TAG_NUMBER = 1;
+		public static final int MAX_TAG_NUMBER = 8;
+
+		public static final int MIN_APRIL_TAG_DECISION_MARGIN = 25;
+
+		// ---------- AprilTagDetector.Config ----------:
+
+		// how much image should be decimated when finding quads
+		public static final float QUAD_DECIMATE = 2.0f;
+
+		// What Gaussian blur should be applied to the segmented image. Important for noisy images
+		public static final float QUAD_SIGMA = 0.0f;
+
+		// should edges snap to strong gradients 
+		public static final boolean REFINE_EDGES = true;
+
+		// How much sharpening should be done to decoded images.
+		public static final double DECODE_SHARPENING = 0.25;
+
+		// ---------- AprilTagDetector.QuadThresholdParameters ---------- 
 
 		// if a cluster of pixels is smaller than this value it is ignored
-		public static final int MIN_CLUSTER_PIXELS = 250;
+		public static final int MIN_CLUSTER_PIXELS = 0;
 
 		// The yaw rotation of an object before it is ignored
-		public static final double CRITICAL_ANGLE = Math.toRadians(45);
+		public static final double CRITICAL_ANGLE = 10 * Math.PI / 180.0;
 
 		// How square an object needs to be to be considered
-		public static final float MAX_LINE_FIT_MSE = 15f;
+		public static final float MAX_LINE_FIT_MSE = 10.0f;
+
+		// Minimum brightness offset
+		public static final int MIN_WHITE_BLACK_DIFF = 5;
+
+		// Whether the thresholded image be should be deglitched. Important for noisy images
+		public static final boolean DEGLITCH = false;
 
 		// the April Tag family we are using
 		public static final String TAG_FAMILY = "tag16h5";

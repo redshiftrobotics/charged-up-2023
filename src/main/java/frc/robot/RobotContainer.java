@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
@@ -30,7 +31,7 @@ public class RobotContainer {
 			SwerveDriveConstants.VELOCITY_MOTOR_ID,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
-	private final Camera module2 = new Camera(0);
+	private final Camera module2 = new Camera(CameraConstants.cameraID);
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	// Replace with CommandPS4Controller or CommandJoystick if needed

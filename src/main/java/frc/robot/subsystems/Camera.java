@@ -12,6 +12,9 @@ import org.opencv.imgproc.Imgproc;
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
+
+import java.util.Arrays;
+
 import org.opencv.core.CvType;
 
 import edu.wpi.first.apriltag.AprilTagDetection;
@@ -36,6 +39,7 @@ public class Camera extends SubsystemBase {
 	private final AprilTagPoseEstimator aprilTagPoseEstimator;
 
 	private AprilTagDetection[] detectedAprilTags;
+	private AprilTagDetection[] detectedAprilTagsValid;
 
 	private final CvSource outputStream;
 
@@ -71,13 +75,16 @@ public class Camera extends SubsystemBase {
 				CameraConstants.CAMERA_RESOLUTION_HEIGHT,
 				CvType.CV_8UC1);
 
-		// -------------- Set up aprilTagDetector --------------
+		// ---------- Set up aprilTagDetector ----------
 
 		aprilTagDetector = new AprilTagDetector();
 
 		final AprilTagDetector.Config detectorConfig = aprilTagDetector.getConfig();
 		// set config, see CameraConstants for comments what each setting does
+		detectorConfig.quadDecimate = CameraConstants.QUAD_DECIMATE;
 		detectorConfig.quadSigma = CameraConstants.QUAD_SIGMA;
+		detectorConfig.refineEdges = CameraConstants.REFINE_EDGES;
+		detectorConfig.decodeSharpening = CameraConstants.DECODE_SHARPENING;
 		aprilTagDetector.setConfig(detectorConfig);
 
 		final AprilTagDetector.QuadThresholdParameters quadThresholdParameters = aprilTagDetector
@@ -86,11 +93,13 @@ public class Camera extends SubsystemBase {
 		quadThresholdParameters.minClusterPixels = CameraConstants.MIN_CLUSTER_PIXELS;
 		quadThresholdParameters.criticalAngle = CameraConstants.CRITICAL_ANGLE;
 		quadThresholdParameters.maxLineFitMSE = CameraConstants.MAX_LINE_FIT_MSE;
+		quadThresholdParameters.minWhiteBlackDiff = CameraConstants.MIN_WHITE_BLACK_DIFF;
+		quadThresholdParameters.deglitch = CameraConstants.DEGLITCH;
 		aprilTagDetector.setQuadThresholdParameters(quadThresholdParameters);
 
 		aprilTagDetector.addFamily(CameraConstants.TAG_FAMILY);
 
-		// -------------- Set up aprilTagPoseEstimator --------------
+		// ---------- Set up aprilTagPoseEstimator ----------
 
 		final AprilTagPoseEstimator.Config poseConfig = new AprilTagPoseEstimator.Config(
 				CameraConstants.APRIL_TAG_SIZE_MM, CameraConstants.CAMERA_FOCAL_LENGTH_X,
@@ -101,8 +110,16 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** @return list of all AprilTagDetections found by camera */
-	public AprilTagDetection[] getDetectedAprilTags() {
+	public AprilTagDetection[] getAllDetectedAprilTags() {
 		return detectedAprilTags;
+	}
+
+	/** 
+	 * valid tags are 
+	 * @return list of all AprilTagDetections found by camera that meet the requirements of 
+	 */
+	public AprilTagDetection[] getDetectedAprilTags() {
+		return detectedAprilTagsValid;
 	}
 
 	/** @return actual april tag from AprilTagDetections with specified ID. If it is not found it returns null. 
@@ -116,22 +133,26 @@ public class Camera extends SubsystemBase {
 		return null;
 	}
 
-	/** Returns position of tag relative to camera.
-	 * Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
-	 * Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
+	/** gets position of tag relative to camera.
 	 * @param tag a AprilTagDetection
 	 * @return 3d pose of tag. Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
 	 */
-	public Transform3d estimateTagPose(AprilTagDetection tag) {
+	public Transform3d getTagPose(AprilTagDetection tag) {
+		// Translation3d https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png
+		// Rotation3d Quaternion https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png
 		return aprilTagPoseEstimator.estimate(tag);
 	}
 
-	public Translation2d makePose2d(Transform3d pose) {
-		return new Translation2d(pose.getZ(), pose.getX());
+	/** converts position of tag relative to camera.
+	 * @param pose3d a 3d pose of a tag
+	 * @return 2d pose of a tag (ignores verticle). Translation2d(x: +foward, y: -right to +left)
+	 */
+	public Translation2d makePose2d(Transform3d pose3d) {
+		return new Translation2d(pose3d.getZ(), pose3d.getX());
 	}
 
 	/** returns distance to pose in mm
-	 * @param pose3d a 3d pose
+	 * @param pose3d a 3d pose of tag
 	 * @return distance to tag in mm
 	 */
 	public double getDistance(Transform3d pose3d) {
@@ -139,42 +160,71 @@ public class Camera extends SubsystemBase {
 				Math.pow(pose3d.getX(), 2) + Math.pow(pose3d.getY(), 2) + Math.pow(pose3d.getZ(), 2));
 	}
 
-	/** Outlines and adds helpful data to diplay  */
-	public void decorateTagInImage(AprilTagDetection tag, Transform3d tagPose3d, Mat mat) {
+	/** returns distance to pose in mm without verticle distance
+	 * @param pose2d a 2d pose of tag (ignores verticle)
+	 * @return distance to tag in mm
+	 */
+	public double getDistance(Translation2d pose2d) {
+		return Math.sqrt(Math.pow(pose2d.getX(), 2) + Math.pow(pose2d.getY(), 2));
+	}
 
+	/** Outlines and adds helpful data to diplay about a tag in Mat */
+	public void decorateTagInImage(Mat mat, AprilTagDetection tag, Transform3d tagPose3d) {
+		// get distance to tag and convert it to feet
+
+		// final double distanceMM = getDistance(makePose2d(tagPose3d));
 		final double distanceMM = getDistance(tagPose3d);
 
+		// create point for each corner of tag
 		final Point pt0 = new Point(tag.getCornerX(0), tag.getCornerY(0));
 		final Point pt1 = new Point(tag.getCornerX(1), tag.getCornerY(1));
 		final Point pt2 = new Point(tag.getCornerX(2), tag.getCornerY(2));
 		final Point pt3 = new Point(tag.getCornerX(3), tag.getCornerY(3));
 
+		// Draw lines around box with corner points
 		Imgproc.line(mat, pt0, pt1, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 		Imgproc.line(mat, pt1, pt2, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 		Imgproc.line(mat, pt2, pt3, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 		Imgproc.line(mat, pt3, pt0, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 
+		// draw tag Id on tag
+		addCenteredText(mat, Integer.toString(tag.getId()), 4, 4,
+				new Point(tag.getCenterX(), tag.getCenterY()));
+
+		// draw distance to tag under tag Id
+
 		final double distanceFeet = distanceMM / 304.8;
+		addCenteredText(mat, String.format("%.1f ft.", distanceFeet), 1, 2,
+				new Point(tag.getCenterX(), tag.getCenterY() * 1.2));
 
-		addCenteredText(Integer.toString(tag.getId()), 4, 4,
-				new Point(tag.getCenterX(), tag.getCenterY()), mat);
-
-		addCenteredText(String.format("%.1f ft.", distanceFeet), 1, 2,
-				new Point(tag.getCenterX(), tag.getCenterY() * 1.2),
-				mat);
+		// final double distanceInch = distanceMM / 25.4;
+		// addCenteredText(mat, String.format("%.2f", distanceInch), 1, 2,
+		// 		new Point(tag.getCenterX(), tag.getCenterY() * 1.2));
 	}
 
-	public void addCenteredText(String text, int fontScale, int thickness, Point org, Mat mat) {
+	/** add text centerd on point to mat */
+	public void addCenteredText(Mat mat, String text, int fontScale, int thickness, Point org) {
+		// get width and height of text
 		final Size textSize = Imgproc.getTextSize(text, VideoDisplayConstants.FONT_TYPE, fontScale, thickness, null);
 
-		final double textCenterX = org.x - (textSize.width / 2);
-		final double textCenterY = org.y + (textSize.height / 2);
+		// find point where the text goes if it were centered
+		// Y is added because Point(0, 0) is top left of Mat
+		final Point textCenter = new Point(org.x - (textSize.width / 2), org.y + (textSize.height / 2));
 
-		Imgproc.putText(mat, text, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+		// add text outline
+		Imgproc.putText(mat, text, textCenter, VideoDisplayConstants.FONT_TYPE,
 				fontScale, VideoDisplayConstants.WHITE, thickness + 2);
-		Imgproc.putText(mat, text, new Point(textCenterX, textCenterY), VideoDisplayConstants.FONT_TYPE,
+		// add text
+		Imgproc.putText(mat, text, textCenter, VideoDisplayConstants.FONT_TYPE,
 				fontScale, VideoDisplayConstants.TEXT_COLOR, thickness);
 
+	}
+
+	/** Check if tag should be consideded by checking if its ID is possible and if its decision margin is high enough  */
+	public boolean isTagValid(AprilTagDetection tag) {
+		return tag.getId() >= CameraConstants.MIN_TAG_NUMBER
+				&& tag.getId() <= CameraConstants.MAX_TAG_NUMBER
+				&& tag.getDecisionMargin() > CameraConstants.MIN_APRIL_TAG_DECISION_MARGIN;
 	}
 
 	@Override
@@ -191,14 +241,17 @@ public class Camera extends SubsystemBase {
 			// Detects all AprilTags in grayMat and store them
 			detectedAprilTags = aprilTagDetector.detect(grayMat);
 
-			// Loops through each april tag detected, once one is
-			for (AprilTagDetection tag : detectedAprilTags) {
-				Transform3d pose3d = estimateTagPose(tag); // takes 2-4 milliseconds
-				// long startEstimationTime = System.currentTimeMillis();
-				decorateTagInImage(tag, pose3d, mat); // takes about 1 millisecond or less
-				// System.out.printf("Estimation Time: %s", System.currentTimeMillis() - startEstimationTime);
+			// Filters out invalid tags
+			detectedAprilTagsValid = Arrays.stream(detectedAprilTags)
+					.filter(this::isTagValid).toArray(AprilTagDetection[]::new);
+
+			for (AprilTagDetection tag : getDetectedAprilTags()) {
+				Transform3d pose3d = getTagPose(tag);
+				decorateTagInImage(mat, tag, pose3d);
 			}
+
 			outputStream.putFrame(mat);
 		}
+
 	}
 }
