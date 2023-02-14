@@ -40,7 +40,7 @@ public class SwerveDriveCommand extends CommandBase {
 	public void execute() {
 		ChassisSpeeds speeds = new ChassisSpeeds(
 				-joystick.getX() * SwerveDriveConstants.MAX_SPEED,
-				joystick.getY() * SwerveDriveConstants.MAX_SPEED,
+				-joystick.getY() * SwerveDriveConstants.MAX_SPEED,
 				joystick.getTwist() * SwerveDriveConstants.MAX_ROTATION_SPEED);
 		drivetrain.setSwerveModuleStates(speeds);
 	}

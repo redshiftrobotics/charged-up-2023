@@ -29,10 +29,13 @@ public class SwerveModule extends SubsystemBase {
 	private SwerveModuleState state = new SwerveModuleState();
 	private SwerveModulePosition position = new SwerveModulePosition();
 
-	// Constructor for Swerve Module
-	// Makes 2 Motor classes and a PID Controller for one of the Motors
-	// Makes an Encoder for the same Motor and sets it up with the motor specifics
-	// Parameters: Device Id for Angular Motor, Device Id for Velocity Motor
+	/** Constructor for Swerve Module
+	 * Makes 2 Motor classes and a PID Controller for one of the Motors.
+	 * Makes an Encoder for the same Motor and sets it up with the motor specifics.
+	 * @param angularMotorDeviceID Device ID for angular encoder
+	 * @param velocityMotorDeviceID Device ID for velocity motor
+	 * @param angularEncoderDeviceID Device ID for the angular encoder
+	*/
 	public SwerveModule(
 			int angularMotorDeviceID,
 			int velocityMotorDeviceID,
@@ -53,33 +56,44 @@ public class SwerveModule extends SubsystemBase {
 
 		angularEncoder = new CANCoder(angularEncoderDeviceID, "rio");
 		velocityEncoder = velocityMotor.getEncoder();
-
-	}
-
-	// Returns the Rotation of the Angular Motor
-	// Returns the roations in number of rotations (eg. instead of 2pi or 360 it returns 1)
-	// TODO: add modulo operator with the wheel yaw
-	public double getYawRotation() {
-		return (angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_MOTOR_GEAR_RATIO);
-	}
-
-	// Returns the velocity of the Velocity motor in meters / second of the wheel
-	public double getVelocity() {
-		return velocityEncoder.getVelocity() *
+		velocityEncoder.setPositionConversionFactor(
 				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
-				SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
+						SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		velocityEncoder.setVelocityConversionFactor(
+				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
+						SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+
 	}
 
+	// TODO: add modulo operator with the wheel yaw
+	/** Returns the angle of the swerve module
+	 * @return The rotations in number of rotations - for a full rotation, returns 1 instead of 2pi or 360
+	 */
+	public double getYawRotation() {
+		return (angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO);
+	}
+
+	/** Returns the current velocity of the swerve module
+	 * @return rotation of the wheel in meters/second
+	 */
+	public double getVelocity() {
+		return velocityEncoder.getVelocity();
+	}
+
+	/** Gets the position of the swerve module as a SwerveModulePosition 
+	 * @return SwerveModulePosition from velocity encoder position and angular encoder position
+	 */
 	public SwerveModulePosition getPosition() {
-		return position;
+		return new SwerveModulePosition(velocityEncoder.getPosition(),
+				new Rotation2d(angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO));
 	}
 
-	// Sets the speed of the velocity motor and sets the desired state of the angular motor
-	// Optimizes the path so that the angular motor doesn't take a longer route than need be
-	// Parameters: disered swerve module state
+	/** Sets the speed and desired angle of the module
+	 * Optimizes the rotation of the angular motor to shortest path to a desired angle
+	 * @param desiredState derired state of the SwerveModule
+	 */
 	public void setState(SwerveModuleState desiredState) {
 		state = SwerveModuleState.optimize(desiredState, new Rotation2d(getYawRotation() * 2 * Math.PI));
-
 		angularPIDController.setSetpoint(state.angle.getRotations());
 		velocityPIDController.setSetpoint(state.speedMetersPerSecond);
 	}
@@ -95,6 +109,12 @@ public class SwerveModule extends SubsystemBase {
 
 		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getPosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());
+	}
+
+	// stops motor and ends PID
+	public void stop() {
+		velocityMotor.stopMotor();
+		velocityPIDController.setSetpoint(0);
 	}
 
 }

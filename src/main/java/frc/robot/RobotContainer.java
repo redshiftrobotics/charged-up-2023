@@ -8,7 +8,11 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.DriveDurationCommand;
+import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
+import frc.robot.commands.StopCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
@@ -16,6 +20,9 @@ import frc.robot.subsystems.SwerveModule;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -41,17 +48,23 @@ public class RobotContainer {
 			SwerveDriveConstants.VELOCITY_MOTOR_ID,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
+	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro);
+
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
+	private final Command stopCommand = new StopCommand(drivetrain);
+	private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
+	private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
+			new ChassisSpeeds(1, 0, Math.PI * 2));
+	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
-
-	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
 
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
@@ -79,11 +92,15 @@ public class RobotContainer {
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
+		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		driverJoystick.button(11).onTrue(stopCommand);
+
+		// Test bindings
 		driverJoystick.button(1).onTrue(setModule);
 		driverJoystick.button(2).onTrue(zeroModule);
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
-
-		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
+		driverJoystick.button(5).onTrue(driveDistanceTest);
+		driverJoystick.button(6).onTrue(driveDurationTest);
+		driverJoystick.button(4).onTrue(rotateTest);
 
 	}
 
