@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ArmManager;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -24,7 +23,7 @@ public class SetArmDegree extends CommandBase {
 	}
 
 	// Setting the degrees of top arm and bottom arm
-	// Called everytime the scheduler runs while the command is scheduled
+	// Called every time the scheduler runs while the command is scheduled
 	@Override
 	public void execute() {
 		armManager.bottomArm.setDegree(bottomArmAngle);
