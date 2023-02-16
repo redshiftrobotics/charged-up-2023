@@ -40,11 +40,6 @@ public class SwerveModule extends SubsystemBase {
 	private SwerveModulePosition position = new SwerveModulePosition();
 
 	// private double velocityMotorSpeed = 0;
-
-	// Constructor for Swerve Module
-	// Makes 2 Motor classes and a PID Controller for one of the Motors
-	// Makes an Encoder for the same Motor and sets it up with the motor specifics
-	// Parameters: Device Id for Angular Motor, Device Id for Velocity Motor
 	/** Constructor for Swerve Module
 	 * Makes 2 Motor classes and a PID Controller for one of the Motors.
 	 * Makes an Encoder for the same Motor and sets it up with the motor specifics.

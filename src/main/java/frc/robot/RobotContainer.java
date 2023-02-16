@@ -68,9 +68,6 @@ public class RobotContainer {
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 
-	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-	// private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
-
 	// private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
