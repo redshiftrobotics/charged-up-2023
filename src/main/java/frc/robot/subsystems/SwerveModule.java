@@ -26,6 +26,7 @@ public class SwerveModule extends SubsystemBase {
 	private final CANSparkMax velocityMotor;
 
 	private final CANCoder angularEncoder;
+	// Configuration settings for angularEncoder
 	private final CANCoderConfiguration config = new CANCoderConfiguration();
 
 	private final RelativeEncoder velocityEncoder;
@@ -37,14 +38,9 @@ public class SwerveModule extends SubsystemBase {
 	private final SparkMaxPIDController velocitySparkMaxPIDController;
 
 	private SwerveModuleState state = new SwerveModuleState();
-	private SwerveModulePosition position = new SwerveModulePosition();
 
 	// private double velocityMotorSpeed = 0;
 
-	// Constructor for Swerve Module
-	// Makes 2 Motor classes and a PID Controller for one of the Motors
-	// Makes an Encoder for the same Motor and sets it up with the motor specifics
-	// Parameters: Device Id for Angular Motor, Device Id for Velocity Motor
 	/** Constructor for Swerve Module
 	 * Makes 2 Motor classes and a PID Controller for one of the Motors.
 	 * Makes an Encoder for the same Motor and sets it up with the motor specifics.
@@ -64,11 +60,6 @@ public class SwerveModule extends SubsystemBase {
 
 		angularPIDController.enableContinuousInput(0, 360);
 
-		// velocityPIDController = new PIDController(
-		// SwerveDriveConstants.VELOCITY_PID_P,
-		// SwerveDriveConstants.VELOCITY_PID_I,
-		// SwerveDriveConstants.VELOCITY_PID_D);
-
 		angularMotor = new CANSparkMax(angularMotorDeviceID, MotorType.kBrushless);
 		velocityMotor = new CANSparkMax(velocityMotorDeviceID, MotorType.kBrushless);
 
@@ -82,8 +73,11 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setOutputRange(-1, 1);
 		velocitySparkMaxPIDController.setIZone(0);
 
+		// Rotational units: 4096 / rotation
 		config.sensorCoefficient = 1 / 4096;
+		// Using rotations from encoder
 		config.unitString = "rot";
+		// Encoder uses seconds for time unit - used for angular velocity
 		config.sensorTimeBase = SensorTimeBase.PerSecond;
 
 		SmartDashboard.putNumber("RPM", 0);
@@ -102,19 +96,19 @@ public class SwerveModule extends SubsystemBase {
 
 	}
 
-	// TODO: add modulo operator with the wheel yaw
 	/** Returns the angle of the swerve module
 	 * @return The rotations in number of rotations - for a full rotation, returns 1 instead of 2pi or 360
 	 */
 	public double getYawRotation() {
-		return (angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO);
+		return (angularEncoder.getAbsolutePosition());
 	}
 
 	/** Returns the current velocity of the swerve module
 	 * @return rotation of the wheel in meters/second
 	 */
 	public double getVelocity() {
-		return velocityEncoder.getVelocity();
+		// Convert from RPM to MPS
+		return (velocityEncoder.getVelocity() / 60) * SwerveDriveConstants.WHEEL_CIRCUMFERENCE;
 	}
 
 	/** Gets the position of the swerve module as a SwerveModulePosition 
@@ -122,7 +116,7 @@ public class SwerveModule extends SubsystemBase {
 	 */
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(velocityEncoder.getPosition(),
-				new Rotation2d(angularEncoder.getAbsolutePosition() * SwerveDriveConstants.ANGULAR_ENCODER_GEAR_RATIO));
+				new Rotation2d(angularEncoder.getAbsolutePosition()));
 	}
 
 	/** Sets the speed and desired angle of the module
@@ -143,55 +137,17 @@ public class SwerveModule extends SubsystemBase {
 		angularMotor.set(test);
 		SmartDashboard.putNumber("Angular PID value", test);
 
-		// SmartDashboard.putNumber("state", state.angle.getDegrees());
-
-		// double velocityTest = velocityPIDController.calculate(getVelocity(), state.speedMetersPerSecond);
-
-		// SmartDashboard.putNumber("Velocity PID output", velocityTest);
-
-		// velocityMotorSpeed += velocityTest * Constants.periodicFrequency;
-
-		// SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
-
-		// makes sure speed is under 1 and over -1
-
-		// if (velocityMotorSpeed > 1) {
-		// 	velocityMotorSpeed = 1;
-		// } else if (velocityMotorSpeed < -1) {
-		// 	velocityMotorSpeed = -1;
-		// }
-
-		// SmartDashboard.putNumber("Velocity Motor speed", velocityMotorSpeed);
-
-		// velocityMotor.set(velocityMotorSpeed);
-
-		// SmartDashboard.putNumber("Angular Encoder absolute", angularEncoder.getAbsolutePosition());
-
-		// SmartDashboard.putNumber("Angular Encoder", angularEncoder.getPosition());
-
-		// SmartDashboard.putNumber("Velocity Encoder Velocity", velocityEncoder.getVelocity());
-
-		// SmartDashboard.putNumber("Velocity Encoder", velocityEncoder.getPosition());
-
-		double velocityTest = (state.speedMetersPerSecond / SwerveDriveConstants.WHEEL_CIRCUMFERENCE)
-				/ SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO;
-
-		SmartDashboard.putNumber("Velocity test", velocityTest);
-
-		SmartDashboard.putNumber("Velocity", getVelocity());
-
-		// velocitySparkMaxPIDController.setFF(SmartDashboard.getNumber("Velocity FF", 0));
-
+		// Convert from RPM to MPS
 		velocitySparkMaxPIDController.setReference(
 				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
 				CANSparkMax.ControlType.kVelocity);
 
-		// velocityMotor.set();
 	}
 
 	// stops motor and ends PID
 	public void stop() {
 		velocityMotor.stopMotor();
+		angularMotor.stopMotor();
 		// velocityPIDController.setSetpoint(0);
 	}
 }
