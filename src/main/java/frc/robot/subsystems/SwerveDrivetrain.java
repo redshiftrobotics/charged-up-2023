@@ -14,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.SwerveDriveCommand;
@@ -75,19 +76,48 @@ public class SwerveDrivetrain extends SubsystemBase {
 		this.fieldRelative = fieldRelative;
 	}
 
-	/** Toggle if the robot will move according to field or robot coordinates */
+	/** Toggle the robot movement between relative to the field forward and relative to the robot forward */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
+	}
+
+	/** Return robot position as Pose2d */
+	public Pose2d getRobotPosition() {
+		return pose;
+	}
+
+	/** Return robot rotation speed in radians per second. */
+	public double getRotationSpeed() {
+		return Math.toRadians(gyro.getRate());
+	}
+
+	/** Return robot speed as Translation2d
+	 * Will return speed depending on fieldRelative.
+	 * @return Use getX() and getY() to get the speeds in meters per second. 
+	*/
+	public Translation2d getVelocity() {
+		// Add each module speed to get average robot speed.
+		Translation2d robotVelocity = new Translation2d();
+		robotVelocity.plus(new Translation2d(moduleFL.getVelocity() / 4, moduleFL.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleFR.getVelocity() / 4, moduleFR.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleBL.getVelocity() / 4, moduleBL.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleBR.getVelocity() / 4, moduleBR.getYawRotation()));
+
+		// Returns speed if fieldRelative is false, otherwise rotates it into fieldRelative and returns.
+		if (fieldRelative) {
+			return robotVelocity.rotateBy(gyro.getRotation2d().times(-1));
+		} else {
+			return robotVelocity;
+		}
 	}
 
 	/** Set the SwerveModuleState of all modules
 	 * 
 	 * @param speeds The ChassisSpeeds object to calculate module states
-	 * based off forward-backward, left-right, and rotation speeds.
+	 * 		based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 		if (fieldRelative) {
-			// convert field-relative speeds to robot-relative speeds 
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
 		} else {
 			this.speeds = speeds;
@@ -108,5 +138,17 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleFR.getPosition(),
 						moduleBL.getPosition(),
 						moduleBR.getPosition() });
+		SmartDashboard.putNumber("Gyro reading Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Gyro reading Pitch", gyro.getPitch());
+		SmartDashboard.putNumber("Gyro reading Yaw", gyro.getYaw());
+		SmartDashboard.putNumber("Gyro reading Roll", gyro.getRoll());
+	}
+
+	// stops all swerve modules
+	public void stop() {
+		moduleFL.stop();
+		moduleFR.stop();
+		moduleBL.stop();
+		moduleBR.stop();
 	}
 }

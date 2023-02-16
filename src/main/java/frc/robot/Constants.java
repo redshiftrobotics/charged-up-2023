@@ -6,6 +6,10 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -38,6 +42,8 @@ public final class Constants {
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
+
+		public static final Translation2d DESIRED_DIST_TO_APRILTAG = new Translation2d(-0.75, 0);
 
 		// TESTING ONLY
 		public static final int ANGULAR_MOTOR_ID = 7;
@@ -77,7 +83,8 @@ public final class Constants {
 		// See above site for info
 		public static final double VELOCITY_MOTOR_GEAR_RATIO = 57 / 7;
 
-		public static final double ANGULAR_MOTOR_GEAR_RATIO = 1;
+		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
+		public static final double ANGULAR_ENCODER_GEAR_RATIO = 1;
 
 		public static final double ANGULAR_PID_P = 0.0025;
 		public static final double ANGULAR_PID_I = 0.0;
@@ -87,6 +94,28 @@ public final class Constants {
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
 		public static final double VELOCITY_PID_FF = 0.090944883322;
+
+		public static final double ROBOT_VELOCITY_PID_P = 0.05;
+		public static final double ROBOT_VELOCITY_PID_I = 0;
+		public static final double ROBOT_VELOCITY_PID_D = 0;
+
+		public static final double ROBOT_ANGULAR_PID_P = 0.05;
+		public static final double ROBOT_ANGULAR_PID_I = 0;
+		public static final double ROBOT_ANGULAR_PID_D = 0;
+
+		// The maximum speed and error the robot will stop at for DriveDistanceCommand.
+		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
+		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = 0.1;
+
+		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
+		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
+		public static final double ROBOT_STOP_ROTATION_TOLERANCE = 0.1;
+	}
+
+	public static final class CameraConstants {
+		// TODO get camera position from design.
+		public static final Transform3d CAMERA_POSITION = new Transform3d(new Translation3d(0, 0.5, 0.5),
+				new Rotation3d());
 
 	}
 
