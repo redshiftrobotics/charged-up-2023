@@ -75,9 +75,12 @@ public class RobotContainer {
 	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
 
 	// Commands to set the state of the arm manager 
-	private final Command armCommandOne = new SetArmDegree(armManager, 0, 0);
-	private final Command armCommandTwo = new SetArmDegree(armManager, 0, 0);
-	private final Command armCommandThree = new SetArmDegree(armManager, 0, 0);
+	private final Command armDriveCommand = new SetArmDegree(armManager, 15, 15);
+	private final Command armInspectionComand = new SetArmDegree(armManager, 60, 15);
+	private final Command armIntakeHighCommand = new SetArmDegree(armManager, 60, 120);
+	private final Command armIntakeLowCommand = new SetArmDegree(armManager, 45, 75);
+	private final Command armScoreThreeCommand = new SetArmDegree(armManager, 45, 180);
+	private final Command armScoreTwoCommand = new SetArmDegree(armManager, 90, 90);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -107,9 +110,9 @@ public class RobotContainer {
 		driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		driverJoystick.button(4).onTrue(armCommandOne);
-		driverJoystick.button(5).onTrue(armCommandTwo);
-		driverJoystick.button(6).onTrue(armCommandThree);
+		driverJoystick.button(4).onTrue(armDriveCommand);
+		driverJoystick.button(5).onTrue(armInspectionComand);
+		driverJoystick.button(6).onTrue(armIntakeHighCommand);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
