@@ -4,12 +4,16 @@
 
 package frc.robot;
 
+import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.SetArmDegree;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.ArmManager;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -55,6 +59,26 @@ public class RobotContainer {
 
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
+	// Initialize the bottom arm and top arm
+	private final Arm bottomArm = new Arm(
+			ArmConstants.BOTTOM_ARM_MOTOR_ID,
+			ArmConstants.BOTTOM_ARM_ENCODER_ID,
+			ArmConstants.BOTTOM_ARM_MIN_DEGREE,
+			ArmConstants.BOTTOM_ARM_MAX_DEGREE);
+	private final Arm topArm = new Arm(
+			ArmConstants.TOP_ARM_MOTOR_ID,
+			ArmConstants.TOP_ARM_ENCODER_ID,
+			ArmConstants.TOP_ARM_MIN_DEGREE,
+			ArmConstants.TOP_ARM_MAX_DEGREE);
+
+	// Initialize the arm manager so that setting the degrees of both arms is simpler
+	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
+
+	// Commands to set the state of the arm manager 
+	private final Command armCommandOne = new SetArmDegree(armManager, 0, 0);
+	private final Command armCommandTwo = new SetArmDegree(armManager, 0, 0);
+	private final Command armCommandThree = new SetArmDegree(armManager, 0, 0);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
@@ -82,6 +106,10 @@ public class RobotContainer {
 		driverJoystick.button(1).onTrue(setModule);
 		driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
+
+		driverJoystick.button(4).onTrue(armCommandOne);
+		driverJoystick.button(5).onTrue(armCommandTwo);
+		driverJoystick.button(6).onTrue(armCommandThree);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
