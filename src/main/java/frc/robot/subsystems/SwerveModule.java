@@ -141,6 +141,8 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setReference(
 				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
 				CANSparkMax.ControlType.kVelocity);
+		SmartDashboard.putNumber("Velocity set value",
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
 
 	}
 
