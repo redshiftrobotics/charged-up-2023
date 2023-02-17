@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.HashMap;
 
 import edu.wpi.first.math.geometry.Quaternion;
@@ -17,7 +15,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class Camera extends SubsystemBase {
+public class Camera {
 	private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 	private final NetworkTable table;
 
@@ -25,6 +23,7 @@ public class Camera extends SubsystemBase {
 
 	public Camera(int cameraID) {
 		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+		inst.setServerTeam(8032);
 	}
 
 	/** 
@@ -33,6 +32,12 @@ public class Camera extends SubsystemBase {
 	 * @return 3D pose of tag with specified id.
 	*/
 	public Transform3d getDetectedAprilTagById(int tagId) {
+		if (seenAprilTagPoses.isEmpty()) {
+			throw new Error("Has not recieved any entries from Coprocessor yet");
+		}
+		if (!seenAprilTagPoses.containsKey(tagId)) {
+			throw new Error("Invalid tag key");
+		}
 		return seenAprilTagPoses.get(tagId);
 	}
 
@@ -70,7 +75,6 @@ public class Camera extends SubsystemBase {
 		return pose2d.getNorm();
 	}
 
-	@Override
 	public void periodic() {
 		for (String key : table.getKeys()) {
 			NetworkTableEntry entry = table.getEntry(key);

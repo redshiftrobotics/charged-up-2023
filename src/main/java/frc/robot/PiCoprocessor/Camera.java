@@ -28,8 +28,9 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Camera {
+public class Camera extends SubsystemBase {
 	private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 	private final NetworkTable table;
 
@@ -156,18 +157,18 @@ public class Camera {
 		Imgproc.line(mat, pt3, pt0, VideoDisplayConstants.BOX_OUTLINE_COLOR, 5);
 
 		// draw tag Id on tag
-		addCenteredText(mat, Integer.toString(tag.getId()), 4, 4,
+		Size tagIdTextSize = addCenteredText(mat, Integer.toString(tag.getId()), 4, 4,
 				new Point(tag.getCenterX(), tag.getCenterY()));
 
 		// draw distance to tag under tag Id
 
 		final double distanceFeet = distanceMM / 304.8;
 		addCenteredText(mat, String.format("%.1f ft.", distanceFeet), 1, 2,
-				new Point(tag.getCenterX(), tag.getCenterY() * 1.2));
+				new Point(tag.getCenterX(), tag.getCenterY() + (tagIdTextSize.height * 0.7)));
 	}
 
 	/** add text centerd to point to mat */
-	private void addCenteredText(Mat mat, String text, int fontScale, int thickness, Point org) {
+	private Size addCenteredText(Mat mat, String text, int fontScale, int thickness, Point org) {
 		// get width and height of text
 		final Size textSize = Imgproc.getTextSize(text, VideoDisplayConstants.FONT_TYPE, fontScale, thickness, null);
 
@@ -182,6 +183,7 @@ public class Camera {
 		Imgproc.putText(mat, text, textCenter, VideoDisplayConstants.FONT_TYPE,
 				fontScale, VideoDisplayConstants.TEXT_COLOR, thickness);
 
+		return textSize;
 	}
 
 	/** Check if tag should be consideded by checking if its ID is possible and if its decision margin is high enough  */
@@ -210,7 +212,8 @@ public class Camera {
 		return tagLocations;
 	}
 
-	private void periodic() {
+	@Override
+	public void periodic() {
 		// This method will be called once per scheduler run
 
 		// cvSink.grabFrame stores the camera frame in mat. It returns 0 on error.
