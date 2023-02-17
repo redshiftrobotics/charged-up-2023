@@ -35,7 +35,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
-	private ChassisSpeeds speeds;
+	private ChassisSpeeds speeds = new ChassisSpeeds();
 	private boolean fieldRelative = false;
 
 	// Initialize swerve modules
@@ -142,6 +142,10 @@ public class SwerveDrivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("Gyro reading Pitch", gyro.getPitch());
 		SmartDashboard.putNumber("Gyro reading Yaw", gyro.getYaw());
 		SmartDashboard.putNumber("Gyro reading Roll", gyro.getRoll());
+		SmartDashboard.putBoolean("Field Relative?", fieldRelative);
+		SmartDashboard.putNumber("SpeedsX", speeds.vxMetersPerSecond);
+		SmartDashboard.putNumber("SpeedsY", speeds.vyMetersPerSecond);
+		SmartDashboard.putNumber("SpeedsR", speeds.omegaRadiansPerSecond);
 	}
 
 	// stops all swerve modules
