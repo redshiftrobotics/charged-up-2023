@@ -53,7 +53,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
 
 	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
-	private Pose2d pose; // the position of the robot
+	private Pose2d pose = new Pose2d(); // the position of the robot
 
 	/** Creates the SwerveDrivetrain and initializes odometry
 	 * 
