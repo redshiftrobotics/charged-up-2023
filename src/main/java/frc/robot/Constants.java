@@ -46,9 +46,9 @@ public final class Constants {
 		public static final Translation2d DESIRED_DIST_TO_APRILTAG = new Translation2d(-0.75, 0);
 
 		// TESTING ONLY
-		public static final int ANGULAR_MOTOR_ID = 7;
-		public static final int VELOCITY_MOTOR_ID = 8;
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 26;
+		public static final int ANGULAR_MOTOR_ID = 18;
+		public static final int VELOCITY_MOTOR_ID = 19;
+		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
 		public static final int ANGULAR_MOTOR_ID_FL = 0;
