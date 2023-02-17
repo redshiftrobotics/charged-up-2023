@@ -42,35 +42,35 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-	private final SwerveModule module1 = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID,
-			SwerveDriveConstants.VELOCITY_MOTOR_ID,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+	// private final SwerveModule module1 = new SwerveModule(
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
+	// 		SwerveDriveConstants.VELOCITY_MOTOR_ID,
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
-	// private final AHRS gyro = new AHRS(I2C.Port.kMXP);
-	// // link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-	// private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro);
+	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro);
 
-	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
-	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
-	// private final Command stopCommand = new StopCommand(drivetrain);
-	// private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
-	// private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
-	// 		new ChassisSpeeds(1, 0, Math.PI * 2));
-	// private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
+	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
+	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
+	private final Command stopCommand = new StopCommand(drivetrain);
+	private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
+	private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
+			new ChassisSpeeds(1, 0, Math.PI * 2));
+	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 
-	// private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
+	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
-		// drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
+		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
 		// Configure the trigger bindings
 		configureBindings();
 
 		SmartDashboard.putData(CommandScheduler.getInstance());
-		SmartDashboard.putData(module1);
+		// SmartDashboard.putData(module1);
 
 	}
 
@@ -91,16 +91,16 @@ public class RobotContainer {
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 
-		// driverJoystick.button(3).onTrue(toggleFieldRelative);
-		// driverJoystick.button(11).onTrue(stopCommand);
+		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		driverJoystick.button(11).onTrue(stopCommand);
 
 		// Test bindings
-		driverJoystick.button(1).onTrue(setModule);
-		driverJoystick.button(2).onTrue(zeroModule);
+		// driverJoystick.button(1).onTrue(setModule);
+		// driverJoystick.button(2).onTrue(zeroModule);
 
-		// driverJoystick.button(5).onTrue(driveDistanceTest);
-		// driverJoystick.button(6).onTrue(driveDurationTest);
-		// driverJoystick.button(4).onTrue(rotateTest);
+		driverJoystick.button(5).onTrue(driveDistanceTest);
+		driverJoystick.button(6).onTrue(driveDurationTest);
+		driverJoystick.button(4).onTrue(rotateTest);
 
 	}
 
