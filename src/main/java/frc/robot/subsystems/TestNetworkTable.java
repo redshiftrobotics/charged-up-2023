@@ -22,6 +22,7 @@ public class TestNetworkTable extends SubsystemBase {
 	public void periodic() {
 		double value = subscriber.get();
 		publisher.set(value + 1);
+		SmartDashboard.putNumber("Networktables value",value+1 ) ;
 	}
 
 }
