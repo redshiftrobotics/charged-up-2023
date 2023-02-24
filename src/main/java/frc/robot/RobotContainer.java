@@ -13,7 +13,7 @@ import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.commands.TestCommand;
+import frc.robot.commands.ConstantDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -52,7 +52,7 @@ public class RobotContainer {
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(
 			gyro);
-	private final TestCommand test = new TestCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0));
+	private final ConstantDriveCommand test = new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0));
 	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
 	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	private final Command stopCommand = new StopCommand(drivetrain);
