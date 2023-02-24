@@ -41,16 +41,16 @@ public class SwerveDrivetrain extends SubsystemBase {
 	// Initialize swerve modules
 	private static final SwerveModule moduleFL = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL, SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL, 330);
 	private static final SwerveModule moduleFR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR, SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR, 285);
 	private static final SwerveModule moduleBL = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BL, SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL, 90);
 	private static final SwerveModule moduleBR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR, 80);
 
 	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
 	private Pose2d pose = new Pose2d(); // the position of the robot

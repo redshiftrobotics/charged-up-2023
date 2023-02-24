@@ -39,6 +39,8 @@ public class SwerveModule extends SubsystemBase {
 
 	private SwerveModuleState state = new SwerveModuleState();
 
+	private double angularZero = 0;
+
 	// private double velocityMotorSpeed = 0;
 
 	// private double velocityMotorSpeed = 0;
@@ -52,8 +54,10 @@ public class SwerveModule extends SubsystemBase {
 	public SwerveModule(
 			int angularMotorDeviceID,
 			int velocityMotorDeviceID,
-			int angularEncoderDeviceID) {
+			int angularEncoderDeviceID,
+			double rotationZero) {
 
+		angularZero = rotationZero;
 		angularPIDController = new PIDController(
 				SwerveDriveConstants.ANGULAR_PID_P,
 				SwerveDriveConstants.ANGULAR_PID_I,
@@ -101,7 +105,7 @@ public class SwerveModule extends SubsystemBase {
 	 * @return The rotations in number of rotations - for a full rotation, returns 1 instead of 2pi or 360
 	 */
 	public double getYawRotation() {
-		return (angularEncoder.getAbsolutePosition());
+		return (angularEncoder.getAbsolutePosition() + angularZero);
 	}
 
 	/** Returns the current velocity of the swerve module

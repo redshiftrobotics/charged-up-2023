@@ -13,6 +13,7 @@ import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.TestCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -49,8 +50,9 @@ public class RobotContainer {
 
 	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro);
-
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(
+			gyro);
+	private final TestCommand test = new TestCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0));
 	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
 	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	private final Command stopCommand = new StopCommand(drivetrain);
@@ -93,6 +95,7 @@ public class RobotContainer {
 
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 		driverJoystick.button(11).onTrue(stopCommand);
+		// driverJoystick.button(1).onTrue(test);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);

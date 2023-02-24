@@ -34,11 +34,13 @@ public final class Constants {
 	}
 
 	public static class SwerveDriveConstants {
+
+		public static double JOYSTICK_DEADZONE = 0.05;
 		// Meters per second
-		public static final double MAX_SPEED = 1;
+		public static final double MAX_SPEED = 0.1;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = Math.PI;
+		public static final double MAX_ROTATION_SPEED = Math.PI / 30;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
@@ -90,7 +92,7 @@ public final class Constants {
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 
-		public static final double VELOCITY_PID_P = 0.00001;
+		public static final double VELOCITY_PID_P = 0.000001;
 		public static final double VELOCITY_PID_I = 0;
 		public static final double VELOCITY_PID_D = 0;
 		public static final double VELOCITY_PID_FF = 0.090944883322;
