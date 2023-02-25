@@ -88,7 +88,7 @@ public final class Constants {
 		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
 		public static final double ANGULAR_ENCODER_GEAR_RATIO = 1;
 
-		public static final double ANGULAR_PID_P = 0.0025;
+		public static final double ANGULAR_PID_P = 0.005;
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 

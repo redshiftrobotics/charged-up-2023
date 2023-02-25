@@ -24,13 +24,13 @@ import frc.robot.subsystems.SwerveModule;
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationFR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBR = new Translation2d(
+	private static final Translation2d locationFR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
@@ -41,16 +41,16 @@ public class SwerveDrivetrain extends SubsystemBase {
 	// Initialize swerve modules
 	private static final SwerveModule moduleFL = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL, SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL, 330);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL, 155);
 	private static final SwerveModule moduleFR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR, SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR, 285);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR, 316 - 180);
 	private static final SwerveModule moduleBL = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BL, SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL, 90);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL, 225);
 	private static final SwerveModule moduleBR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR, 80);
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR, 270);
 
 	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
 	private Pose2d pose = new Pose2d(); // the position of the robot
@@ -60,6 +60,11 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 * @param gyro The Gyroscope of the robot. Part of AHRS class corresponding the our gyro.
 	 */
 	public SwerveDrivetrain(AHRS gyro) {
+
+		// SmartDashboard.putNumber("FL", 0);
+		// SmartDashboard.putNumber("FR", 0);
+		// SmartDashboard.putNumber("BL", 0);
+		// SmartDashboard.putNumber("BR", 0);
 		this.gyro = gyro;
 		odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(),
 				new SwerveModulePosition[] {

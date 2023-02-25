@@ -94,8 +94,8 @@ public class RobotContainer {
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
-		driverJoystick.button(11).onTrue(stopCommand);
-		// driverJoystick.button(1).onTrue(test);
+		// driverJoystick.button(11).onTrue(stopCommand);
+		driverJoystick.button(1).onTrue(test);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);
@@ -105,6 +105,12 @@ public class RobotContainer {
 		driverJoystick.button(6).onTrue(driveDurationTest);
 		driverJoystick.button(4).onTrue(rotateTest);
 
+		driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
+		driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
+		driverJoystick.button(9).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0.01, 0, 0)));
+		driverJoystick.button(10).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(-0.01, 0, 0)));
+		driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
+		driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
 	}
 
 	/**

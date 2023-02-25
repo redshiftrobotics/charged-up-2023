@@ -56,7 +56,7 @@ public class SwerveDriveCommand extends CommandBase {
 
 		ChassisSpeeds speeds = new ChassisSpeeds(
 				-speedX * SwerveDriveConstants.MAX_SPEED,
-				-speedY * SwerveDriveConstants.MAX_SPEED,
+				speedY * SwerveDriveConstants.MAX_SPEED,
 				speedR * SwerveDriveConstants.MAX_ROTATION_SPEED);
 		SmartDashboard.putNumber("Joy X", joystick.getX());
 		SmartDashboard.putNumber("Joy Y", joystick.getY());

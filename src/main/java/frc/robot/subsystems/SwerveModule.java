@@ -41,6 +41,10 @@ public class SwerveModule extends SubsystemBase {
 
 	private double angularZero = 0;
 
+	private String smartdashboardID;
+
+	private String testString;
+
 	// private double velocityMotorSpeed = 0;
 
 	// private double velocityMotorSpeed = 0;
@@ -56,7 +60,8 @@ public class SwerveModule extends SubsystemBase {
 			int velocityMotorDeviceID,
 			int angularEncoderDeviceID,
 			double rotationZero) {
-
+		testString = "" + angularEncoderDeviceID;
+		// this.smartdashboardID = dashboardID;
 		angularZero = rotationZero;
 		angularPIDController = new PIDController(
 				SwerveDriveConstants.ANGULAR_PID_P,
@@ -148,7 +153,7 @@ public class SwerveModule extends SubsystemBase {
 				CANSparkMax.ControlType.kVelocity);
 		SmartDashboard.putNumber("Velocity set value",
 				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-
+		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID
