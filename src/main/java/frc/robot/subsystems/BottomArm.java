@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ArmConstants;
@@ -13,8 +14,8 @@ import frc.robot.Constants.ArmConstants;
 public class BottomArm extends SubsystemBase {
 	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotorOne;
-    private final CanSparkMax armMotorTwo;
-    private final MotorControllerGroup armMotorControllerGroup;
+	private final CANSparkMax armMotorTwo;
+	private final MotorControllerGroup armMotorControllerGroup;
 	private final CANCoder armEncoder;
 	private final PIDController armPIDController;
 	private double armDegree;
@@ -27,9 +28,9 @@ public class BottomArm extends SubsystemBase {
 				ArmConstants.BOTTOM_ARM_PID_P,
 				ArmConstants.BOTTOM_ARM_PID_I,
 				ArmConstants.BOTTOM_ARM_PID_D);
-        armMotorOne = new CANSparkMax(armMotorOneId, MotorType.kBrushless);
-        armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
-        armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
+		armMotorOne = new CANSparkMax(armMotorOneId, MotorType.kBrushless);
+		armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
+		armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
 		armEncoder = new CANCoder(armEncoderId);
 		minDegree = inMinDegree;
 		maxDegree = inMaxDegree;

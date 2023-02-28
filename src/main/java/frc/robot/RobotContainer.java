@@ -13,6 +13,7 @@ import frc.robot.commands.SetArmDegree;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.TopArm;
+import frc.robot.subsystems.BottomArm;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
@@ -66,7 +67,7 @@ public class RobotContainer {
 			ArmConstants.BOTTOM_ARM_ENCODER_ID,
 			ArmConstants.BOTTOM_ARM_MIN_DEGREE,
 			ArmConstants.BOTTOM_ARM_MAX_DEGREE);
-	private final BottomArm topArm = new BottomArm(
+	private final TopArm topArm = new TopArm(
 			ArmConstants.TOP_ARM_MOTOR_ID,
 			ArmConstants.TOP_ARM_ENCODER_ID,
 			ArmConstants.TOP_ARM_MIN_DEGREE,
