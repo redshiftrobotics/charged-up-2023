@@ -6,11 +6,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmManager extends SubsystemBase {
-	public final Arm bottomArm;
-	public final Arm topArm;
+	public final BottomArm bottomArm;
+	public final TopArm topArm;
 
 	// Getting the bottom and top arm
-	public ArmManager(Arm bottomArm, Arm topArm) {
+	public ArmManager(BottomArm bottomArm, TopArm topArm) {
 		this.bottomArm = bottomArm;
 		this.topArm = topArm;
 	}

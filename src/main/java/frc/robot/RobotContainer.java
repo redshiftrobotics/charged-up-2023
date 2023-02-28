@@ -12,7 +12,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.SetArmDegree;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
@@ -60,12 +60,13 @@ public class RobotContainer {
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	// Initialize the bottom arm and top arm
-	private final Arm bottomArm = new Arm(
-			ArmConstants.BOTTOM_ARM_MOTOR_ID,
+	private final BottomArm bottomArm = new BottomArm(
+			ArmConstants.BOTTOM_ARM_MOTOR_ONE_ID,
+			ArmConstants.BOTTOM_ARM_MOTOR_TWO_ID,
 			ArmConstants.BOTTOM_ARM_ENCODER_ID,
 			ArmConstants.BOTTOM_ARM_MIN_DEGREE,
 			ArmConstants.BOTTOM_ARM_MAX_DEGREE);
-	private final Arm topArm = new Arm(
+	private final BottomArm topArm = new BottomArm(
 			ArmConstants.TOP_ARM_MOTOR_ID,
 			ArmConstants.TOP_ARM_ENCODER_ID,
 			ArmConstants.TOP_ARM_MIN_DEGREE,
