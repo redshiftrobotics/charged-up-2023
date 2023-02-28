@@ -4,6 +4,7 @@ import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -21,6 +22,12 @@ public class BottomArm extends SubsystemBase {
 	private double armDegree;
 	private double minDegree;
 	private double maxDegree;
+
+	private final ArmFeedforward feedForward = new ArmFeedforward(
+			ArmConstants.BOTTOM_ARM_PID_S,
+			ArmConstants.BOTTOM_ARM_PID_G,
+			ArmConstants.BOTTOM_ARM_PID_V,
+			ArmConstants.BOTTOM_ARM_PID_A);
 
 	// Constructor for the bottom arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum degrees
 	public BottomArm(int armMotorOneId, int armMotorTwoId, int armEncoderId, double inMinDegree, double inMaxDegree) {
@@ -58,6 +65,9 @@ public class BottomArm extends SubsystemBase {
 	// Setting the rotation of the bottom arm
 	@Override
 	public void periodic() {
-		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation(), armDegree));
+		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() + feedForward.calculate(
+				ArmConstants.BOTTOM_ARM_FEEDFORWARD_POS,
+				ArmConstants.BOTTOM_ARM_FEEDFORWARD_VEL,
+				ArmConstants.BOTTOM_ARM_FEEDFORWARD_ACCEL), armDegree));
 	}
 }

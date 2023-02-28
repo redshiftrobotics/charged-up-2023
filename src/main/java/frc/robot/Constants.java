@@ -101,7 +101,7 @@ public final class Constants {
 		public static final double TOP_ARM_PID_P = 0.0005;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
-		
+
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
 		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 0;
@@ -114,6 +114,24 @@ public final class Constants {
 		public static final double TOP_ARM_MIN_DEGREE = 0;
 		public static final double BOTTOM_ARM_MAX_DEGREE = 0;
 		public static final double TOP_ARM_MAX_DEGREE = 0;
+
+		public static final double BOTTOM_ARM_PID_S = 0;
+		public static final double BOTTOM_ARM_PID_G = 0;
+		public static final double BOTTOM_ARM_PID_V = 0;
+		public static final double BOTTOM_ARM_PID_A = 0;
+
+		public static final double TOP_ARM_PID_S = 0;
+		public static final double TOP_ARM_PID_G = 0;
+		public static final double TOP_ARM_PID_V = 0;
+		public static final double TOP_ARM_PID_A = 0;
+
+		public static final double BOTTOM_ARM_FEEDFORWARD_POS = 0;
+		public static final double BOTTOM_ARM_FEEDFORWARD_VEL = 0;
+		public static final double BOTTOM_ARM_FEEDFORWARD_ACCEL = 0;
+
+		public static final double TOP_ARM_FEEDFORWARD_POS = 0;
+		public static final double TOP_ARM_FEEDFORWARD_VEL = 0;
+		public static final double TOP_ARM_FEEDFORWARD_ACCEL = 0;
 	}
 
 }
