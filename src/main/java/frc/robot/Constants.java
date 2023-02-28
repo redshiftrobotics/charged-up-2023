@@ -37,10 +37,10 @@ public final class Constants {
 
 		public static double JOYSTICK_DEADZONE = 0.05;
 		// Meters per second
-		public static final double MAX_SPEED = 0.1;
+		public static final double MAX_SPEED = 0.01;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = Math.PI / 30;
+		public static final double MAX_ROTATION_SPEED = Math.PI / 300;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
@@ -56,18 +56,22 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ID_FL = 7;
 		public static final int VELOCITY_MOTOR_ID_FL = 8;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = 155 - 2;
 
 		public static final int ANGULAR_MOTOR_ID_FR = 5;
 		public static final int VELOCITY_MOTOR_ID_FR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = 316 - 180 - 3;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
 		public static final int VELOCITY_MOTOR_ID_BL = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36;
 
 		public static final int ANGULAR_MOTOR_ID_BR = 18;
 		public static final int VELOCITY_MOTOR_ID_BR = 19;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
