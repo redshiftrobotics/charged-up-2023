@@ -61,6 +61,7 @@ public class Camera extends SubsystemBase {
 	 */
 	public Camera(int cameraID) {
 		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+		inst.setServerTeam(8032);
 
 		// -------------- Set up Camera --------------
 		camera = CameraServer.startAutomaticCapture(cameraID);
