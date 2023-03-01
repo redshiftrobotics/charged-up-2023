@@ -77,10 +77,10 @@ public class RobotContainer {
 	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
 
 	// Commands to set the state of the arm manager 
-	private final Command armDriveCommand = new SetArmDegree(armManager, 15, 15);
-	private final Command armInspectionComand = new SetArmDegree(armManager, 60, 15);
-	private final Command armIntakeHighCommand = new SetArmDegree(armManager, 60, 120);
-	private final Command armIntakeLowCommand = new SetArmDegree(armManager, 45, 75);
+	private final Command armDriveCommand = new SetArmDegree(armManager, 10, 10);
+	private final Command armInspectionComand = new SetArmDegree(armManager, 60, 10);
+	private final Command armIntakeLowCommand = new SetArmDegree(armManager, 75, 280);
+	private final Command armIntakeHighCommand = new SetArmDegree(armManager, 75, 120);
 	private final Command armScoreThreeCommand = new SetArmDegree(armManager, 45, 180);
 	private final Command armScoreTwoCommand = new SetArmDegree(armManager, 90, 90);
 
