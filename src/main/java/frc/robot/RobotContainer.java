@@ -95,7 +95,6 @@ public class RobotContainer {
 
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 		// driverJoystick.button(11).onTrue(stopCommand);
-		driverJoystick.button(1).onTrue(test);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);
