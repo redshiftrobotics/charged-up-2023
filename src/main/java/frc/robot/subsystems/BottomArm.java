@@ -69,5 +69,9 @@ public class BottomArm extends SubsystemBase {
 				ArmConstants.BOTTOM_ARM_FEEDFORWARD_POS,
 				ArmConstants.BOTTOM_ARM_FEEDFORWARD_VEL,
 				ArmConstants.BOTTOM_ARM_FEEDFORWARD_ACCEL), armDegree));
+
+		/*
+		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
+		*/
 	}
 }

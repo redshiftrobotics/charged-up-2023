@@ -64,5 +64,9 @@ public class TopArm extends SubsystemBase {
 				ArmConstants.TOP_ARM_FEEDFORWARD_POS,
 				ArmConstants.TOP_ARM_FEEDFORWARD_VEL,
 				ArmConstants.TOP_ARM_FEEDFORWARD_ACCEL), armDegree));
+
+		/*
+		armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
+		*/
 	}
 }
