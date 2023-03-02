@@ -22,8 +22,12 @@ public class Camera {
 	protected final HashMap<Integer, Transform3d> seenAprilTagPoses = new HashMap<>();
 
 	public Camera(int cameraID) {
-		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+		inst.startClient4("localpiclient");
 		inst.setServerTeam(8032);
+		inst.startDSClient();
+		inst.setServer("localhost");
+
+		table = inst.getTable(String.format("camera-%s-tags", cameraID));
 	}
 
 	/** 

@@ -60,8 +60,12 @@ public class Camera extends SubsystemBase {
 	 * @param cameraID ID of the camera
 	 */
 	public Camera(int cameraID) {
-		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+		inst.startClient4("localpiclient");
 		inst.setServerTeam(8032);
+		inst.startDSClient();
+		inst.setServer("localhost");
+
+		table = inst.getTable(String.format("camera-%s-tags", cameraID));
 
 		// -------------- Set up Camera --------------
 		camera = CameraServer.startAutomaticCapture(cameraID);
