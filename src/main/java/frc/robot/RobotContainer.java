@@ -8,8 +8,10 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
+import frc.robot.commands.SetClawDirection;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -43,6 +45,12 @@ public class RobotContainer {
 
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
+
+	private final Claw claw = new Claw(0);
+
+	private final Command clawClose = new SetClawDirection(claw, -1)
+	private final Command clawOpen = new SetClawDirection(claw, 1)
+	private final Command clawIdle = new SetClawDirection(claw, 0)
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
