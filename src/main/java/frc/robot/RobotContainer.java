@@ -48,9 +48,9 @@ public class RobotContainer {
 
 	private final Claw claw = new Claw(0);
 
-	private final Command clawClose = new SetClawDirection(claw, -1)
-	private final Command clawOpen = new SetClawDirection(claw, 1)
-	private final Command clawIdle = new SetClawDirection(claw, 0)
+	private final Command clawClose = new SetClawDirection(claw, -1);
+	private final Command clawOpen = new SetClawDirection(claw, 1);
+	private final Command clawIdle = new SetClawDirection(claw, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -93,6 +93,10 @@ public class RobotContainer {
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
+		driverJoystick.button(4).onTrue(clawClose);
+		driverJoystick.button(5).onTrue(clawOpen);
+		driverJoystick.button(4).onFalse(clawIdle);
+		driverJoystick.button(5).onFalse(clawIdle);
 	}
 
 	/**
