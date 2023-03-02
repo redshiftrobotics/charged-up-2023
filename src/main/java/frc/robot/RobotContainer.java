@@ -114,7 +114,10 @@ public class RobotContainer {
 
 		driverJoystick.button(4).onTrue(armDriveCommand);
 		driverJoystick.button(5).onTrue(armInspectionComand);
-		driverJoystick.button(6).onTrue(armIntakeHighCommand);
+		driverJoystick.button(6).onTrue(armIntakeLowCommand);
+		driverJoystick.button(7).onTrue(armIntakeHighCommand);
+		driverJoystick.button(8).onTrue(armScoreThreeCommand);
+		driverJoystick.button(9).onTrue(armScoreTwoCommand);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
