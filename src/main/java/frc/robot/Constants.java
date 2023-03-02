@@ -28,6 +28,8 @@ public final class Constants {
 
 	public static final Pose2d STARTING_POSITION = new Pose2d(0, 0, new Rotation2d(0)); // x, y, theta
 
+	public static final Pose2d CHARGE_STATION_POSITION = new Pose2d(0, 0, new Rotation2d(0));
+
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
