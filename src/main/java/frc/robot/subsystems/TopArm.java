@@ -58,6 +58,7 @@ public class TopArm extends SubsystemBase {
 	}
 
 	// Setting the rotation of the top arm
+	// Uncomment the bottom comment and comment the top code to slow down the arm for testing
 	@Override
 	public void periodic() {
 		armMotor.set(armPIDController.calculate(getEncoderRotation() + feedForward.calculate(

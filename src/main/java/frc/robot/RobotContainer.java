@@ -84,6 +84,8 @@ public class RobotContainer {
 	private final Command armScoreThreeCommand = new SetArmDegree(armManager, 45, 180);
 	private final Command armScoreTwoCommand = new SetArmDegree(armManager, 90, 90);
 
+	private final Command armTestCommand = new SetArmDegree(armManager, 90, 360);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
@@ -118,6 +120,8 @@ public class RobotContainer {
 		driverJoystick.button(7).onTrue(armIntakeHighCommand);
 		driverJoystick.button(8).onTrue(armScoreThreeCommand);
 		driverJoystick.button(9).onTrue(armScoreTwoCommand);
+
+		driverJoystick.button(10).onTrue(armTestCommand);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
