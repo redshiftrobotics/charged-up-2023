@@ -4,7 +4,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.SwerveDrivetrain;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 /**
  * Rotate the robot to a given rotation relative to the field and drive forward a given distance in meters.
