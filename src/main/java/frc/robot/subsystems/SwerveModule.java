@@ -16,8 +16,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -39,8 +37,15 @@ public class SwerveModule extends SubsystemBase {
 
 	private SwerveModuleState state = new SwerveModuleState();
 
+	private double angularZero = 0;
+
+	private String smartdashboardID;
+
+	private String testString;
+
 	// private double velocityMotorSpeed = 0;
 
+	// private double velocityMotorSpeed = 0;
 	/** Constructor for Swerve Module
 	 * Makes 2 Motor classes and a PID Controller for one of the Motors.
 	 * Makes an Encoder for the same Motor and sets it up with the motor specifics.
@@ -51,8 +56,11 @@ public class SwerveModule extends SubsystemBase {
 	public SwerveModule(
 			int angularMotorDeviceID,
 			int velocityMotorDeviceID,
-			int angularEncoderDeviceID) {
-
+			int angularEncoderDeviceID,
+			double rotationZero) {
+		testString = "" + angularEncoderDeviceID;
+		// this.smartdashboardID = dashboardID;
+		angularZero = rotationZero;
 		angularPIDController = new PIDController(
 				SwerveDriveConstants.ANGULAR_PID_P,
 				SwerveDriveConstants.ANGULAR_PID_I,
@@ -100,7 +108,7 @@ public class SwerveModule extends SubsystemBase {
 	 * @return The rotations in number of rotations - for a full rotation, returns 1 instead of 2pi or 360
 	 */
 	public double getYawRotation() {
-		return (angularEncoder.getAbsolutePosition());
+		return (angularEncoder.getAbsolutePosition() + angularZero);
 	}
 
 	/** Returns the current velocity of the swerve module
@@ -143,7 +151,7 @@ public class SwerveModule extends SubsystemBase {
 				CANSparkMax.ControlType.kVelocity);
 		SmartDashboard.putNumber("Velocity set value",
 				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-
+		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID

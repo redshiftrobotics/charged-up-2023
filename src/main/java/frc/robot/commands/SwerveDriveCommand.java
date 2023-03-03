@@ -7,6 +7,7 @@ package frc.robot.commands;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDrivetrain;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -38,10 +39,29 @@ public class SwerveDriveCommand extends CommandBase {
 	// Gets joystick input and sends it to the drivetrain
 	@Override
 	public void execute() {
+
+		double speedX = joystick.getX();
+		double speedY = joystick.getY();
+		double speedR = joystick.getZ();
+
+		if (speedX < SwerveDriveConstants.JOYSTICK_DEADZONE && speedX > -SwerveDriveConstants.JOYSTICK_DEADZONE) {
+			speedX = 0;
+		}
+		if (speedY < SwerveDriveConstants.JOYSTICK_DEADZONE && speedY > -SwerveDriveConstants.JOYSTICK_DEADZONE) {
+			speedY = 0;
+		}
+		if (speedR < SwerveDriveConstants.JOYSTICK_DEADZONE && speedR > -SwerveDriveConstants.JOYSTICK_DEADZONE) {
+			speedR = 0;
+		}
+
 		ChassisSpeeds speeds = new ChassisSpeeds(
-				-joystick.getX() * SwerveDriveConstants.MAX_SPEED,
-				-joystick.getY() * SwerveDriveConstants.MAX_SPEED,
-				joystick.getTwist() * SwerveDriveConstants.MAX_ROTATION_SPEED);
+				-speedX * SwerveDriveConstants.MAX_SPEED,
+				speedY * SwerveDriveConstants.MAX_SPEED,
+				speedR * SwerveDriveConstants.MAX_ROTATION_SPEED);
+		SmartDashboard.putNumber("Joy X", joystick.getX());
+		SmartDashboard.putNumber("Joy Y", joystick.getY());
+		SmartDashboard.putNumber("Joy R", joystick.getTwist());
+
 		drivetrain.setSwerveModuleStates(speeds);
 	}
 
