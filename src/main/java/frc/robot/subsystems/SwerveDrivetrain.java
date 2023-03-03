@@ -39,18 +39,10 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private boolean fieldRelative = false;
 
 	// Initialize swerve modules
-	private static final SwerveModule moduleFL = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL, SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL, SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FL);
-	private static final SwerveModule moduleFR = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR, SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR, SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FR);
-	private static final SwerveModule moduleBL = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_BL, SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL, SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BL);
-	private static final SwerveModule moduleBR = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR, SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
+	private final SwerveModule moduleFL;
+	private final SwerveModule moduleFR;
+	private final SwerveModule moduleBL;
+	private final SwerveModule moduleBR;
 
 	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
 	private Pose2d pose = new Pose2d(); // the position of the robot
@@ -59,13 +51,13 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 * 
 	 * @param gyro The Gyroscope of the robot. Part of AHRS class corresponding the our gyro.
 	 */
-	public SwerveDrivetrain(AHRS gyro) {
-
-		// SmartDashboard.putNumber("FL", 0);
-		// SmartDashboard.putNumber("FR", 0);
-		// SmartDashboard.putNumber("BL", 0);
-		// SmartDashboard.putNumber("BR", 0);
+	public SwerveDrivetrain(AHRS gyro, SwerveModule swerveModuleFL, SwerveModule swerveModuleFR,
+			SwerveModule swerveModuleBL, SwerveModule swerveModuleBR) {
 		this.gyro = gyro;
+		moduleFL = swerveModuleFL;
+		moduleFR = swerveModuleFR;
+		moduleBL = swerveModuleBL;
+		moduleBR = swerveModuleBR;
 		odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(),
 				new SwerveModulePosition[] {
 						moduleFL.getPosition(),
