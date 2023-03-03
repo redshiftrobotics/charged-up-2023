@@ -25,7 +25,6 @@ public class Intake extends SubsystemBase {
 
 	// turn intake on/offn
 	public void toggle() {
-		//TODO: figure out which motor needs to be negative
 		if (isOn) {
 			motorTop.set(0);
 			motorBottom.set(0);

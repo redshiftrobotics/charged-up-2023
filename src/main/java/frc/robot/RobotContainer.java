@@ -10,7 +10,6 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
-import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ConstantDriveCommand;
@@ -23,8 +22,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -47,14 +44,35 @@ public class RobotContainer {
 	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
 	// 		SwerveDriveConstants.VELOCITY_MOTOR_ID,
 	// 		SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
+	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
+
+	private final SwerveModule swerveModuleFL = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FL);
+	private final SwerveModule swerveModuleFR = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FR);
+	private final SwerveModule swerveModuleBL = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BL);
+	private final SwerveModule swerveModuleBR = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
 
 	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(
-			gyro);
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro, swerveModuleFL,
+			swerveModuleFR, swerveModuleBL, swerveModuleBR);
 	private final ConstantDriveCommand test = new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0));
-	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
-	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 	private final Command stopCommand = new StopCommand(drivetrain);
 	private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
 	private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
