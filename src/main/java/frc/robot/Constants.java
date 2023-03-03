@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import org.opencv.core.Scalar;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,6 +32,68 @@ public final class Constants {
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
+	}
+
+	public static final class CameraConstants {
+
+		// Understading the focal length values: https://en.wikipedia.org/wiki/Camera_resectioning, https://en.wikipedia.org/wiki/Cardinal_point_(optics)
+
+		// Microsoft LifeCam HD-3000 stuff https://github.com/FIRST-Tech-Challenge/FtcRobotController/blob/master/TeamCode/src/main/res/xml/teamwebcamcalibrations.xml
+		public static final int CAMERA_RESOLUTION_WIDTH = 640;
+		public static final int CAMERA_RESOLUTION_HEIGHT = 480;
+
+		// public static final int CAMERA_RESOLUTION_WIDTH = 1280;
+		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
+
+		public static final double CAMERA_FOCAL_LENGTH_X = 678.154f;
+		public static final double CAMERA_FOCAL_LENGTH_Y = 678.17;
+
+		public static final double CAMERA_FOCAL_CENTER_X = 318.135;
+		public static final double CAMERA_FOCAL_CENTER_Y = 228.374;
+
+		// LimeLight stuff https://docs.limelightvision.io/en/latest/vision_pipeline_tuning.html
+		// public static final int CAMERA_RESOLUTION_WIDTH = 960;
+		// public static final int CAMERA_RESOLUTION_HEIGHT = 720;
+
+		// public static final double CAMERA_FOCAL_LENGTH_X = 772.53876202;
+		// public static final double CAMERA_FOCAL_LENGTH_Y = 769.052151477;
+
+		// public static final double CAMERA_FOCAL_CENTER_X = 479.132337442;
+		// public static final double CAMERA_FOCAL_CENTER_Y = 359.143001808;
+
+		// width and height of April Tag
+		public static final double APRIL_TAG_SIZE_MM = 152.4;
+
+		// What Gaussian blur should be applied to the segmented image
+		// important for noisy images
+		public static final float QUAD_SIGMA = 0.8f;
+
+		// if a cluster of pixels is smaller than this value it is ignored
+		public static final int MIN_CLUSTER_PIXELS = 250;
+
+		// The yaw rotation of an object before it is ignored
+		public static final double CRITICAL_ANGLE = Math.toRadians(45);
+
+		// How square an object needs to be to be considered
+		public static final float MAX_LINE_FIT_MSE = 15f;
+
+		// the April Tag family we are using
+		public static final String TAG_FAMILY = "tag16h5";
+
+		public static final Transform3d CAMERA_POSITION = new Transform3d(new Translation3d(0, 0.5, 0.5),
+				new Rotation3d());
+	}
+
+	public static final class VideoDisplayConstants {
+		public static final Scalar RED = new Scalar(0, 0, 255);
+		public static final Scalar GREEN = new Scalar(0, 255, 0);
+		public static final Scalar BLUE = new Scalar(255, 0, 0);
+		public static final Scalar WHITE = new Scalar(0, 0, 0);
+		public static final Scalar BLACK = new Scalar(255, 255, 255);
+
+		public static final Scalar TEXT_COLOR = VideoDisplayConstants.GREEN;
+		public static final Scalar BOX_OUTLINE_COLOR = VideoDisplayConstants.RED;
+
 	}
 
 	public static class SwerveDriveConstants {
@@ -116,13 +179,6 @@ public final class Constants {
 		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
 		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
 		public static final double ROBOT_STOP_ROTATION_TOLERANCE = 0.1;
-	}
-
-	public static final class CameraConstants {
-		// TODO get camera position from design.
-		public static final Transform3d CAMERA_POSITION = new Transform3d(new Translation3d(0, 0.5, 0.5),
-				new Rotation3d());
-
 	}
 
 	public static class IntakeConstants {

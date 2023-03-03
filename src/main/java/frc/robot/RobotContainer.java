@@ -65,17 +65,6 @@ public class RobotContainer {
 
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
-	/** The container for the robot. Contains subsystems, OI devices, and commands. */
-	public RobotContainer() {
-		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
-		// Configure the trigger bindings
-		configureBindings();
-
-		SmartDashboard.putData(CommandScheduler.getInstance());
-		// SmartDashboard.putData(module1);
-
-	}
-
 	/**
 	 * Use this method to define your trigger->command mappings. Triggers can be created via the
 	 * {@link Trigger#Trigger(java.util.function.BooleanSupplier)} constructor with an arbitrary

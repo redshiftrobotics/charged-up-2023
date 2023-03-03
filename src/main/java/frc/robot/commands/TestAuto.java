@@ -9,8 +9,8 @@ class TestAuto extends SequentialCommandGroup {
 
 		addRequirements(drivetrain);
 
-		addCommands(
-				new DriveDurationCommand(drivetrain, 1, SwerveDriveConstants.MAX_SPEED),
-				new DriveDurationCommand(drivetrain, 1, -Constants.MAX_SPEED));
+		// addCommands(
+		// 		new DriveDurationCommand(drivetrain, 1, SwerveDriveConstants.MAX_SPEED),
+		// 		new DriveDurationCommand(drivetrain, 1, -Constants.MAX_SPEED));
 	}
 }
