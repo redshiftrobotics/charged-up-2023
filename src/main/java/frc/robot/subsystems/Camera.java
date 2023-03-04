@@ -55,12 +55,12 @@ public class Camera {
 	}
 
 	/** converts position of tag relative to camera.
-	 * 2d pose of tag is Translation2d(x: +foward, y: -right to +left)
+	 * 2d pose of tag is Translation2d(x: -right to +left, y: +foward)
 	 * @param pose3d a 3d pose of a tag
 	 * @return 2d pose of a tag (ignoring verticle).
 	 */
 	public Translation2d makePose2d(Transform3d pose3d) {
-		return new Translation2d(pose3d.getZ(), pose3d.getX());
+		return new Translation2d(pose3d.getX(), pose3d.getZ());
 	}
 
 	/** returns distance to pose in mm
