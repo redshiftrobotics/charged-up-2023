@@ -14,8 +14,9 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Camera {
+public class Camera extends SubsystemBase {
 	private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
 	private final NetworkTable table;
 
