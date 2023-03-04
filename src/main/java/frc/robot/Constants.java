@@ -41,10 +41,10 @@ public final class Constants {
 
 		public static double JOYSTICK_DEADZONE = 0.05;
 		// Meters per second
-		public static final double MAX_SPEED = 0.01;
+		public static final double MAX_SPEED = 0.02;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = Math.PI / 300;
+		public static final double MAX_ROTATION_SPEED = 0.02;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
