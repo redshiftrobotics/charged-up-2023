@@ -3,6 +3,8 @@
 // import com.revrobotics.AbsoluteEncoder;
 // import com.revrobotics.CANSparkMax;
 // import com.revrobotics.SparkMaxAbsoluteEncoder;
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.RelativeEncoder;
 // import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 // import edu.wpi.first.math.controller.PIDController;
@@ -12,7 +14,7 @@
 
 // public class Arm extends SubsystemBase {
 // 	private final CANSparkMax armMotor;
-// 	private final AbsoluteEncoder armEncoder;
+// 	private final RelativeEncoder armEncoder;
 // 	private final PIDController armPIDController;
 
 // 	//definds the arm and its berriors
