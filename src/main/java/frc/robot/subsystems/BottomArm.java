@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -13,6 +14,9 @@ import frc.robot.Constants.ArmConstants;
 
 // The subsystem for controlling the bottom arm
 public class BottomArm extends SubsystemBase {
+
+	// private final Joystick joy = new Joystick(0);
+
 	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotorOne;
 	private final CANSparkMax armMotorTwo;
@@ -74,5 +78,12 @@ public class BottomArm extends SubsystemBase {
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 		*/
+
+		// if (joy.getRawButton(5)) {
+		// 	armMotorControllerGroup.set(0.01);
+		// }
+		// if (joy.getRawButton(6)) {
+		// 	armMotorControllerGroup.set(-0.01);
+		// }
 	}
 }
