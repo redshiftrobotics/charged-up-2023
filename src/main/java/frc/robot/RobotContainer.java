@@ -124,8 +124,8 @@ public class RobotContainer {
 
 		driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
 		driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
-		driverJoystick.button(9).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0.01, 0, 0)));
-		driverJoystick.button(10).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(-0.01, 0, 0)));
+		driverJoystick.button(9).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(-0.01, 0, 0)));
+		driverJoystick.button(10).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0.01, 0, 0)));
 		driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
 		driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
 	}

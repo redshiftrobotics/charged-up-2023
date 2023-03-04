@@ -146,6 +146,7 @@ public class SwerveModule extends SubsystemBase {
 		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
 		angularMotor.set(test);
 		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
+		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition())
 
 		// Convert from RPM to MPS
 		velocitySparkMaxPIDController.setReference(
