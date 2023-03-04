@@ -31,6 +31,9 @@ public class RotateByCommand extends CommandBase {
 		this.desiredRotation = desiredRotation;
 		initialRotation = drivetrain.getRobotPosition().getRotation();
 
+		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
+
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(drivetrain);
 	}
@@ -59,10 +62,6 @@ public class RotateByCommand extends CommandBase {
 	// Returns true when the error is low enough and the speed is slow enough to stop.
 	@Override
 	public boolean isFinished() {
-		if (pidController.getPositionError() < SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE &
-				drivetrain.getRotationSpeed() < SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE) {
-			return true;
-		}
-		return false;
+		return pidController.atSetpoint();
 	}
 }

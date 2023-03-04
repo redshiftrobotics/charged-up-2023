@@ -55,6 +55,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 		// If given is not field-relative, rotate by the rotation to make it field-relative.
 		this.desiredRotation = (fieldRelativeRotation) ? desiredRotation : desiredRotation.plus(rotation);
 
+		pidRotation.enableContinuousInput(0, 2 * Math.PI);
 		pidRotation.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
 		pidVelocity.setTolerance(SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE,
@@ -67,8 +68,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 		drivetrain.setFieldRelative(true);
 		rotation = drivetrain.getRobotPosition().getRotation();
 		// Do one calculation so the pidControllers have error values for execute()
-		pidRotation.calculate(
-				((rotation.getRadians() - desiredRotation.getRadians() + Math.PI) % Math.PI * 2) - Math.PI);
+		pidRotation.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		pidVelocity.calculate(driveDistance.getNorm());
 	}
 
@@ -79,12 +79,9 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 		rotation = drivetrain.getRobotPosition().getRotation();
 		double rotationSpeed = 0;
 
-		// If robot is not already at the correct rotation, set the new rotation speed.
+		// If robot is not already at the correct rotation, set the new rotation speed from the PID.
 		if (!pidRotation.atSetpoint()) {
-			// Get the difference in position and alter it to make the PIDController take the shortest path.
-			// https://www.desmos.com/calculator/40g32n3myv
-			rotationSpeed = pidRotation.calculate(
-					((rotation.getRadians() - desiredRotation.getRadians() + Math.PI) % Math.PI * 2) - Math.PI);
+			rotationSpeed = pidRotation.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		}
 
 		position = drivetrain.getRobotPosition().getTranslation();
