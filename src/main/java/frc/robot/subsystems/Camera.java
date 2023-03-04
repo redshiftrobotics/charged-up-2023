@@ -91,6 +91,8 @@ public class Camera {
 									new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])))
 							: null);
 		}
-
+		for (int key : seenAprilTagPoses.keySet()) {
+			System.out.println(String.format("%s: %s", key, seenAprilTagPoses.get(key)));
+		}
 	}
 }
