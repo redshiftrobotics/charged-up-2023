@@ -14,6 +14,11 @@ public class ConstantDriveCommand extends CommandBase {
 	}
 
 	@Override
+	public void initialize() {
+		drivetrain.setFieldRelative(false);
+	}
+
+	@Override
 	public boolean isFinished() {
 		return false;
 	}
