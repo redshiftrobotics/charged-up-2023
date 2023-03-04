@@ -11,24 +11,39 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.AprilTagConstants;
 
 public class Camera extends SubsystemBase {
-	private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
+	private final NetworkTableInstance inst;
 	private final NetworkTable table;
 
-	protected final HashMap<Integer, Transform3d> seenAprilTagPoses = new HashMap<>();
+	protected final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
 
 	public Camera(int cameraID) {
+		inst = NetworkTableInstance.getDefault();
+
 		inst.startClient4("localpiclient");
 		inst.setServerTeam(8032);
 		inst.startDSClient();
 		inst.setServer("localhost");
 
 		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+
+		for (int i = AprilTagConstants.MIN_TAG_ID; i <= AprilTagConstants.MAX_TAG_ID; i++) {
+			final DoubleArraySubscriber sub = table.getDoubleArrayTopic(Integer.toString(i)).subscribe(new double[] {});
+			aprilTagSubs.put(i, sub);
+		}
+	}
+
+	private Transform3d convertToTransform3d(double[] values) {
+		return values.length == 0 ? null
+				: new Transform3d(
+						new Translation3d(values[0], values[1], values[2]),
+						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
 	/** 
@@ -37,23 +52,23 @@ public class Camera extends SubsystemBase {
 	 * @return 3D pose of tag with specified id.
 	*/
 	public Transform3d getDetectedAprilTagById(int tagId) {
-		if (seenAprilTagPoses.isEmpty()) {
+		if (aprilTagSubs.isEmpty()) {
 			throw new Error("Has not recieved any entries from Coprocessor yet");
 		}
-		if (!seenAprilTagPoses.containsKey(tagId)) {
+		if (!aprilTagSubs.containsKey(tagId)) {
 			throw new Error("Invalid tag key");
 		}
-		return seenAprilTagPoses.get(tagId);
+		return convertToTransform3d(aprilTagSubs.get(tagId).get());
 	}
 
-	/** 
-	 * Get tranform3d location of all detect tags.
-	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
-	 * @return Map with keys as tag id and values as 3D pose of tag. HashMap<tagId, pose3d>.
-	*/
-	public HashMap<Integer, Transform3d> getDetectedAprilTags() {
-		return seenAprilTagPoses;
-	}
+	// /** 
+	//  * Get tranform3d location of all detect tags.
+	//  * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
+	//  * @return Map with keys as tag id and values as 3D pose of tag. HashMap<tagId, pose3d>.
+	// */
+	// public HashMap<Integer, Transform3d> getDetectedAprilTags() {
+	// 	return seenAprilTagPoses;
+	// }
 
 	/** converts position of tag relative to camera.
 	 * 2d pose of tag is Translation2d(x: -right to +left, y: +foward)
@@ -81,19 +96,10 @@ public class Camera extends SubsystemBase {
 	}
 
 	public void periodic() {
-		for (String key : table.getKeys()) {
-			NetworkTableEntry entry = table.getEntry(key);
-			final double[] values = entry.getDoubleArray(new double[] {});
-
-			seenAprilTagPoses.put(Integer.valueOf(key),
-					values.length == 0
-							? new Transform3d(
-									new Translation3d(values[0], values[1], values[2]),
-									new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])))
-							: null);
-		}
-		for (int key : seenAprilTagPoses.keySet()) {
-			System.out.println(String.format("%s: %s", key, seenAprilTagPoses.get(key)));
-		}
+		aprilTagSubs.forEach((id, sub) -> {
+			final double[] value = sub.get(null);
+			System.out.println(String.format("%s: %s", id, value));
+		});
+		System.out.println();
 	}
 }
