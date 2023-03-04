@@ -55,10 +55,10 @@ public class RobotContainer {
 	private final SwerveModule swerveModuleFR = new SwerveModule(
 			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR,
 			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
-			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FR);
 	private final SwerveModule swerveModuleBL = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_BL,
 			SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BL);
