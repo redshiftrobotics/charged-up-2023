@@ -7,6 +7,9 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -18,48 +21,47 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.SwerveModule;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SwerveDriveConstants;
 
 /* The robot drivetrain using Swerve Drive */
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationFR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBR = new Translation2d(
+	private static final Translation2d locationFR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
-	private ChassisSpeeds speeds;
+	private ChassisSpeeds speeds = new ChassisSpeeds();
 	private boolean fieldRelative = false;
 
-	// Initialize swerve modules
-	private static final SwerveModule moduleFL = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL, SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL);
-	private static final SwerveModule moduleFR = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR, SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FR);
-	private static final SwerveModule moduleBL = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_BL, SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL);
-	private static final SwerveModule moduleBR = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR, SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR);
+	private final SwerveModule moduleFL;
+	private final SwerveModule moduleFR;
+	private final SwerveModule moduleBL;
+	private final SwerveModule moduleBR;
 
 	private final AHRS gyro; // the gyroscope of the robot - using naxX2 with SPI protocol
-	private Pose2d pose; // the position of the robot
+	private Pose2d pose = new Pose2d(); // the position of the robot
 
 	/** Creates the SwerveDrivetrain and initializes odometry
 	 * 
 	 * @param gyro The Gyroscope of the robot. Part of AHRS class corresponding the our gyro.
 	 */
-	public SwerveDrivetrain(AHRS gyro) {
+	public SwerveDrivetrain(AHRS gyro, SwerveModule swerveModuleFL, SwerveModule swerveModuleFR,
+			SwerveModule swerveModuleBL, SwerveModule swerveModuleBR) {
 		this.gyro = gyro;
+		moduleFL = swerveModuleFL;
+		moduleFR = swerveModuleFR;
+		moduleBL = swerveModuleBL;
+		moduleBR = swerveModuleBR;
 		odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation2d(),
 				new SwerveModulePosition[] {
 						moduleFL.getPosition(),
@@ -75,19 +77,48 @@ public class SwerveDrivetrain extends SubsystemBase {
 		this.fieldRelative = fieldRelative;
 	}
 
-	/** Toggle if the robot will move according to field or robot coordinates */
+	/** Toggle the robot movement between relative to the field forward and relative to the robot forward */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
+	}
+
+	/** Return robot position as Pose2d */
+	public Pose2d getRobotPosition() {
+		return pose;
+	}
+
+	/** Return robot rotation speed in radians per second. */
+	public double getRotationSpeed() {
+		return Math.toRadians(gyro.getRate());
+	}
+
+	/** Return robot speed as Translation2d
+	 * Will return speed depending on fieldRelative.
+	 * @return Use getX() and getY() to get the speeds in meters per second. 
+	*/
+	public Translation2d getVelocity() {
+		// Add each module speed to get average robot speed.
+		Translation2d robotVelocity = new Translation2d();
+		robotVelocity.plus(new Translation2d(moduleFL.getVelocity() / 4, moduleFL.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleFR.getVelocity() / 4, moduleFR.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleBL.getVelocity() / 4, moduleBL.getYawRotation()));
+		robotVelocity.plus(new Translation2d(moduleBR.getVelocity() / 4, moduleBR.getYawRotation()));
+
+		// Returns speed if fieldRelative is false, otherwise rotates it into fieldRelative and returns.
+		if (fieldRelative) {
+			return robotVelocity.rotateBy(gyro.getRotation2d().times(-1));
+		} else {
+			return robotVelocity;
+		}
 	}
 
 	/** Set the SwerveModuleState of all modules
 	 * 
 	 * @param speeds The ChassisSpeeds object to calculate module states
-	 * based off forward-backward, left-right, and rotation speeds.
+	 * 		based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 		if (fieldRelative) {
-			// convert field-relative speeds to robot-relative speeds 
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
 		} else {
 			this.speeds = speeds;
@@ -108,5 +139,21 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleFR.getPosition(),
 						moduleBL.getPosition(),
 						moduleBR.getPosition() });
+		SmartDashboard.putNumber("Gyro reading Angle", gyro.getAngle());
+		SmartDashboard.putNumber("Gyro reading Pitch", gyro.getPitch());
+		SmartDashboard.putNumber("Gyro reading Yaw", gyro.getYaw());
+		SmartDashboard.putNumber("Gyro reading Roll", gyro.getRoll());
+		SmartDashboard.putBoolean("Field Relative?", fieldRelative);
+		SmartDashboard.putNumber("SpeedsX", speeds.vxMetersPerSecond);
+		SmartDashboard.putNumber("SpeedsY", speeds.vyMetersPerSecond);
+		SmartDashboard.putNumber("SpeedsR", speeds.omegaRadiansPerSecond);
+	}
+
+	/** stops all swerve modules */
+	public void stop() {
+		moduleFL.stop();
+		moduleFR.stop();
+		moduleBL.stop();
+		moduleBR.stop();
 	}
 }

@@ -15,6 +15,12 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
 import frc.robot.subsystems.ArmManager;
+import frc.robot.commands.DriveDistanceCommand;
+import frc.robot.commands.DriveDurationCommand;
+import frc.robot.commands.RotateByCommand;
+import frc.robot.commands.StopCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ConstantDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -24,6 +30,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -41,22 +53,47 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-	private final SwerveModule module1 = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID,
-			SwerveDriveConstants.VELOCITY_MOTOR_ID,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+	// private final SwerveModule module1 = new SwerveModule(
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
+	// 		SwerveDriveConstants.VELOCITY_MOTOR_ID,
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI / 2, 1);
+	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 
-	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
-	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
-	// Replace with CommandPS4Controller or CommandJoystick if needed
-	// private final CommandXboxController driverController = new CommandXboxController(
-	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
+	private final SwerveModule swerveModuleFL = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_FL,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_FL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FL);
+	private final SwerveModule swerveModuleFR = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_FR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_FR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_FR);
+	private final SwerveModule swerveModuleBL = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_BL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BL,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BL);
+	private final SwerveModule swerveModuleBR = new SwerveModule(
+			SwerveDriveConstants.ANGULAR_MOTOR_ID_BR,
+			SwerveDriveConstants.VELOCITY_MOTOR_ID_BR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID_BR,
+			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
+
+	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro, swerveModuleFL,
+			swerveModuleFR, swerveModuleBL, swerveModuleBR);
+	private final ConstantDriveCommand test = new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0));
+	private final Command stopCommand = new StopCommand(drivetrain);
+	private final Command driveDistanceTest = new DriveDistanceCommand(drivetrain, new Translation2d(1, 1), true);
+	private final Command driveDurationTest = new DriveDurationCommand(drivetrain, 3,
+			new ChassisSpeeds(1, 0, Math.PI * 2));
+	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
-
-	//  Initialize drivetrain object - AHRS is the class for the gyroscope
-	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(new AHRS());
 
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
@@ -91,6 +128,10 @@ public class RobotContainer {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
 		// Configure the trigger bindings
 		configureBindings();
+
+		SmartDashboard.putData(CommandScheduler.getInstance());
+		// SmartDashboard.putData(module1);
+
 	}
 
 	/**
@@ -106,12 +147,9 @@ public class RobotContainer {
 		// Schedule `ExampleCommand` when `exampleCondition` changes to `true`
 		// new Trigger(exampleSubsystem::exampleCondition)
 		// 		.onTrue(new ExampleCommand(exampleSubsystem));
-
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-		driverJoystick.button(1).onTrue(setModule);
-		driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
 		driverJoystick.button(4).onTrue(armDriveCommand);
@@ -125,6 +163,23 @@ public class RobotContainer {
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
+		// driverJoystick.button(3).onTrue(toggleFieldRelative);
+		// driverJoystick.button(2).onTrue(stopCommand);
+
+		// Test bindings
+		// driverJoystick.button(1).onTrue(setModule);
+		// driverJoystick.button(2).onTrue(zeroModule);
+
+		// driverJoystick.button(5).onTrue(driveDistanceTest);
+		// driverJoystick.button(6).onTrue(driveDurationTest);
+		// driverJoystick.button(4).onTrue(rotateTest);
+
+		// driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
+		// driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
+		// driverJoystick.button(9).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0.01, 0, 0)));
+		// driverJoystick.button(10).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(-0.01, 0, 0)));
+		// driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
+		// driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
 	}
 
 	/**
