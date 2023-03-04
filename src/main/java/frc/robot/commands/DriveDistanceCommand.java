@@ -34,6 +34,8 @@ public class DriveDistanceCommand extends CommandBase {
 		position = initialPosition;
 		distance = driveDistance;
 		this.isFieldRelative = isFieldRelative;
+		pidController.setTolerance(SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE);
 
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(drivetrain);
@@ -73,11 +75,6 @@ public class DriveDistanceCommand extends CommandBase {
 	// and when the speed is slow enough to not drift off target.
 	@Override
 	public boolean isFinished() {
-
-		if (distance.getNorm() < SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE
-				& drivetrain.getVelocity().getNorm() < SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE) {
-			return true;
-		}
-		return false;
+		return pidController.atSetpoint();
 	}
 }

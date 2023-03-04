@@ -20,9 +20,9 @@ public class GoToTagCommand extends RotateAndDriveSimultaneousCommand {
 		// Transform3d aprilTag = sub.get();
 		Transform3d tagPose = aprilTag.plus(CameraConstants.CAMERA_POSITION);
 		Rotation2d tagRotation = new Rotation2d(-tagPose.getRotation().getY());
-		Translation2d driveDistance = new Translation2d(tagPose.getZ(), tagPose.getX());
-		driveDistance.plus(desiredDistToTag.rotateBy(tagRotation));
-		return new GoToTagCommand(null, null, null);
+		Translation2d driveDistance = new Translation2d(tagPose.getX(), tagPose.getZ());
+		driveDistance = driveDistance.plus(desiredDistToTag.rotateBy(tagRotation));
+		return new GoToTagCommand(drivetrain, tagRotation, driveDistance);
 	}
 
 	public GoToTagCommand(SwerveDrivetrain drivetrain, Rotation2d tagRotation, Translation2d driveDistance) {
