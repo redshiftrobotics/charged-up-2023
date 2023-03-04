@@ -65,17 +65,17 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ID_FR = 5;
 		public static final int VELOCITY_MOTOR_ID_FR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = 316 - 180 - 3;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = 316 - 180 - 2;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
 		public static final int VELOCITY_MOTOR_ID_BL = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36 - 180 + 98;
 
 		public static final int ANGULAR_MOTOR_ID_BR = 18;
 		public static final int VELOCITY_MOTOR_ID_BR = 19;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16 + 180 + 28;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
@@ -96,7 +96,7 @@ public final class Constants {
 		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
 		public static final double ANGULAR_ENCODER_GEAR_RATIO = 1;
 
-		public static final double ANGULAR_PID_P = 0.005;
+		public static final double ANGULAR_PID_P = 0.0075;
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 
