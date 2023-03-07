@@ -46,8 +46,8 @@ public final class Constants {
 		// Radians per second
 		public static final double MAX_ROTATION_SPEED = Math.PI / 300;
 
-		public static final double MODULE_LOCATION_X = 0.25;
-		public static final double MODULE_LOCATION_Y = 0.25;
+		public static final double MODULE_LOCATION_X = 22;
+		public static final double MODULE_LOCATION_Y = 34;
 
 		public static final Translation2d DESIRED_DIST_TO_APRILTAG = new Translation2d(-0.75, 0);
 
