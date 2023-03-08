@@ -48,6 +48,8 @@ public class RobotContainer {
 
 	private final Claw claw = new Claw(0);
 
+	// TODO find out if a posative or negative direction is open/ close 
+
 	private final Command clawClose = new SetClawDirection(claw, -0.01);
 	private final Command clawOpen = new SetClawDirection(claw, 0.01);
 	private final Command clawIdle = new SetClawDirection(claw, 0);
