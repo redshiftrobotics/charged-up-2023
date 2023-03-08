@@ -9,7 +9,7 @@ import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.SetArmDegree;
+import frc.robot.commands.SetArmDegreeCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.TopArm;
@@ -114,14 +114,14 @@ public class RobotContainer {
 	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
 
 	// Commands to set the state of the arm manager 
-	private final Command armDriveCommand = new SetArmDegree(armManager, 10, 10);
-	private final Command armInspectionComand = new SetArmDegree(armManager, 60, 10);
-	private final Command armIntakeLowCommand = new SetArmDegree(armManager, 75, 280);
-	private final Command armIntakeHighCommand = new SetArmDegree(armManager, 75, 120);
-	private final Command armScoreThreeCommand = new SetArmDegree(armManager, 45, 180);
-	private final Command armScoreTwoCommand = new SetArmDegree(armManager, 90, 90);
+	private final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
+	private final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
+	private final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
+	private final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
+	private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
+	private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
-	private final Command armTestCommand = new SetArmDegree(armManager, 90, 360);
+	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 360);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
