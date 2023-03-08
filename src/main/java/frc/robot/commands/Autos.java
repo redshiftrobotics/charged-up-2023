@@ -18,7 +18,7 @@ public final class Autos {
 	// }
 
 	public static SequentialCommandGroup auto1(SwerveDrivetrain drivetrain) {
-		return new testAuto(drivetrain);
+		return new TestAuto(drivetrain);
 	}
 
 	private Autos() {

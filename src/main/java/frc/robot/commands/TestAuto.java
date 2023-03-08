@@ -11,6 +11,6 @@ class TestAuto extends SequentialCommandGroup {
 
 		addCommands(
 				new DriveDurationCommand(drivetrain, 1, SwerveDriveConstants.MAX_SPEED),
-				new DriveDurationCommand(drivetrain, 1, -Constants.MAX_SPEED));
+				new DriveDurationCommand(drivetrain, 1, -SwerveDriveConstants.MAX_SPEED));
 	}
 }
