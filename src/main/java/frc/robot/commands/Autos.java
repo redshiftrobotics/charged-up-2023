@@ -4,12 +4,11 @@
 
 package frc.robot.commands;
 
-import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.SwerveDrivetrain;
-import autos.testAuto
+import frc.robot.commands.Autos;
 
 public final class Autos {
 	/** Example static factory for an autonomous command. */
