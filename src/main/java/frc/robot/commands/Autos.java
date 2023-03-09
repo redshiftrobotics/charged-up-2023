@@ -20,8 +20,8 @@ public final class Autos {
 		return new TestAuto(drivetrain);
 	}
 
-	public static SequentialCommandGroup auto2(SwerveDrivetrain drivetrain) {
-		return new TestAuto(drivetrain);
+	public static SequentialCommandGroup rotateAndDriveAuto(SwerveDrivetrain drivetrain) {
+		return new TestRotateAndDriveAuto(drivetrain);
 	}
 
 	private Autos() {
