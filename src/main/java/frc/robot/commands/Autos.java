@@ -20,6 +20,10 @@ public final class Autos {
 		return new TestAuto(drivetrain);
 	}
 
+	public static SequentialCommandGroup auto2(SwerveDrivetrain drivetrain) {
+		return new TestAuto(drivetrain);
+	}
+
 	private Autos() {
 		throw new UnsupportedOperationException("This is a utility class!");
 	}
