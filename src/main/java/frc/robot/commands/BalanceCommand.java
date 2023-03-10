@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -19,9 +15,9 @@ public class BalanceCommand extends CommandBase {
 	// make new PID controler
 
 	private final PIDController pidController = new PIDController(
-			SwerveDriveConstants.VELOCITY_PID_P,
-			SwerveDriveConstants.VELOCITY_PID_I,
-			SwerveDriveConstants.VELOCITY_PID_D);
+			SwerveDriveConstants.ROBOT_BALANCE_PID_P,
+			SwerveDriveConstants.ROBOT_BALANCE_PID_I,
+			SwerveDriveConstants.ROBOT_BALANCE_PID_D);
 
 	/**
 	 * Moves the robot to the center of the Charge Station and keeps it balanced, \\
@@ -33,22 +29,22 @@ public class BalanceCommand extends CommandBase {
 		this.drivetrain = drivetrain;
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(drivetrain);
+		pidController.setTolerance(SwerveDriveConstants.ROBOT_PITCH_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_PITCH_TOLERANCE);
 
 	}
 
 	// get destination position 
 	@Override
 	public void initialize() {
-		// TODO: Figure out if center of mass should be added or subtracted
-		pidController.setSetpoint(Constants.CHARGE_STATION_POSITION.getX() + Constants.CENTER_OF_MASS_OFFSET);
-
+		drivetrain.setFieldRelative(true);
 	}
 
 	// get robot position and calculate speed 
 	@Override
 	public void execute() {
-		double speed = pidController.calculate(drivetrain.getRobotPosition().getX());
-		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed, 0, 0));
+		double speed = pidController.calculate(drivetrain.getRobotPitchRotation());
+		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, speed, 0));
 	}
 
 	// // Called once the command ends or is interrupted.
@@ -58,6 +54,7 @@ public class BalanceCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return false;
+		return pidController.atSetpoint() &
+				drivetrain.getVelocity().getNorm() < SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE;
 	}
 }

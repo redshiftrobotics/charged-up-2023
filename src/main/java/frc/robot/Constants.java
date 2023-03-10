@@ -113,6 +113,10 @@ public final class Constants {
 		public static final double ROBOT_ANGULAR_PID_I = 0;
 		public static final double ROBOT_ANGULAR_PID_D = 0;
 
+		public static final double ROBOT_BALANCE_PID_P = 0.05;
+		public static final double ROBOT_BALANCE_PID_I = 0;
+		public static final double ROBOT_BALANCE_PID_D = 0;
+
 		// The maximum speed and error the robot will stop at for DriveDistanceCommand.
 		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
 		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = 0.1;
@@ -120,6 +124,10 @@ public final class Constants {
 		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
 		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
 		public static final double ROBOT_STOP_ROTATION_TOLERANCE = 0.1;
+
+		// The maximum pitch-rotation speed and pitch error the robot will stop at for BalanceCommand
+		public static final double ROBOT_PITCH_TOLERANCE = 0.01;
+		public static final double ROBOT_STOP_PITCH_TOLERANCE = 0.01;
 	}
 
 	public static final class CameraConstants {
