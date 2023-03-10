@@ -24,6 +24,8 @@ public class Camera extends SubsystemBase {
 	protected final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
 
 	public Camera(int cameraID) {
+
+		// Sets up and connects roboRio to the pi network table
 		inst = NetworkTableInstance.getDefault();
 
 		inst.startClient4("localpiclient");
@@ -33,12 +35,17 @@ public class Camera extends SubsystemBase {
 
 		table = inst.getTable(String.format("camera-%s-tags", cameraID));
 
+		// Sets subscribers for topics
 		for (int i = AprilTagConstants.MIN_TAG_ID; i <= AprilTagConstants.MAX_TAG_ID; i++) {
 			final DoubleArraySubscriber sub = table.getDoubleArrayTopic(Integer.toString(i)).subscribe(new double[] {});
 			aprilTagSubs.put(i, sub);
 		}
 	}
 
+	/** Makes and returns a new transform3d made up of passed in values
+	 * @param double[] of values (0: x, 1: y, 2: z, 3-6: quaternion values)
+	 * @return new Transform3d of values
+	 */
 	private Transform3d convertToTransform3d(double[] values) {
 		return values.length == 0 ? null
 				: new Transform3d(
@@ -46,8 +53,7 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** 
-	 * Get tranform3d location of tag with specified ID. If it is not found it returns null.
+	/** Get tranform3d location of tag with specified ID. If it is not found it returns null.
 	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
 	 * @return 3D pose of tag with specified id.
 	*/
@@ -61,16 +67,7 @@ public class Camera extends SubsystemBase {
 		return convertToTransform3d(aprilTagSubs.get(tagId).get());
 	}
 
-	// /** 
-	//  * Get tranform3d location of all detect tags.
-	//  * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
-	//  * @return Map with keys as tag id and values as 3D pose of tag. HashMap<tagId, pose3d>.
-	// */
-	// public HashMap<Integer, Transform3d> getDetectedAprilTags() {
-	// 	return seenAprilTagPoses;
-	// }
-
-	/** converts position of tag relative to camera.
+	/** Converts position of tag relative to camera.
 	 * 2d pose of tag is Translation2d(x: -right to +left, y: +foward)
 	 * @param pose3d a 3d pose of a tag
 	 * @return 2d pose of a tag (ignoring verticle).
@@ -79,7 +76,7 @@ public class Camera extends SubsystemBase {
 		return new Translation2d(pose3d.getX(), pose3d.getZ());
 	}
 
-	/** returns distance to pose in mm
+	/** Returns distance to pose in mm
 	 * @param pose3d a 3d pose of tag
 	 * @return distance to tag in mm
 	 */
@@ -87,7 +84,7 @@ public class Camera extends SubsystemBase {
 		return pose3d.getTranslation().getNorm();
 	}
 
-	/**  distance to pose in mm without verticle distance
+	/** Distance to pose in mm without verticle distance
 	 * @param pose2d a 2d pose of tag
 	 * @return distance to tag in mm (ignoring verticle distance)
 	 */
@@ -96,6 +93,8 @@ public class Camera extends SubsystemBase {
 	}
 
 	public void periodic() {
+
+		// Loops through subscribers and outputs values
 		aprilTagSubs.forEach((id, sub) -> {
 			final double[] value = sub.get(null);
 			System.out.println(String.format("%s: %s", id, value));
