@@ -128,6 +128,8 @@ public final class Constants {
 		// The maximum pitch-rotation speed and pitch error the robot will stop at for BalanceCommand
 		public static final double ROBOT_PITCH_TOLERANCE = 0.01;
 		public static final double ROBOT_STOP_PITCH_TOLERANCE = 0.01;
+
+		public static final double ROBOT_MINIMUM_RAMP_ANGLE = Math.toRadians(10);
 	}
 
 	public static final class CameraConstants {

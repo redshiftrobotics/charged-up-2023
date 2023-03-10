@@ -4,7 +4,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.sensors.CANCoder;
@@ -39,8 +38,6 @@ public class SwerveModule extends SubsystemBase {
 
 	private double angularZero = 0;
 
-	private String smartdashboardID;
-
 	private String testString;
 
 	// private double velocityMotorSpeed = 0;
@@ -65,8 +62,6 @@ public class SwerveModule extends SubsystemBase {
 				SwerveDriveConstants.ANGULAR_PID_P,
 				SwerveDriveConstants.ANGULAR_PID_I,
 				SwerveDriveConstants.ANGULAR_PID_D);
-
-		smartdashboardID = "" + angularEncoderDeviceID;
 
 		angularPIDController.enableContinuousInput(0, 360);
 
@@ -145,8 +140,7 @@ public class SwerveModule extends SubsystemBase {
 	public void periodic() {
 		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
 		angularMotor.set(test);
-		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
-		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
+		SmartDashboard.putNumber("Angular PID value", test);
 
 		// Convert from RPM to MPS
 		velocitySparkMaxPIDController.setReference(
