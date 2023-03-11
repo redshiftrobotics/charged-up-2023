@@ -168,12 +168,18 @@ public final class Constants {
 		public static final double TOP_ARM_PID_A = 0;
 
 		public static final double BOTTOM_ARM_FEEDFORWARD_POS = 0;
-		public static final double BOTTOM_ARM_FEEDFORWARD_VEL = 0;
+		public static final double BOTTOM_ARM_FEEDFORWARD_VEL = 1;
 		public static final double BOTTOM_ARM_FEEDFORWARD_ACCEL = 0;
 
 		public static final double TOP_ARM_FEEDFORWARD_POS = 0;
-		public static final double TOP_ARM_FEEDFORWARD_VEL = 0;
+		public static final double TOP_ARM_FEEDFORWARD_VEL = 1;
 		public static final double TOP_ARM_FEEDFORWARD_ACCEL = 0;
+
+		public static final double TOP_ARM_MAX_VELOCITY = 1;
+		public static final double TOP_ARM_MAX_ACCEL = .1;
+
+		public static final double BOTTOM_ARM_MAX_VELOCITY = 1;
+		public static final double BOTTOM_ARM_MAX_ACCEL = .1;
 	}
 
 }
