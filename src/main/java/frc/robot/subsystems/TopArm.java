@@ -77,9 +77,7 @@ public class TopArm extends SubsystemBase {
 								armAngleRotation2d.getRadians(),
 								armPIDController.getSetpoint().velocity));
 
-		/*
-		armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
-		*/
+		// armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 
 		// if (joy.getRawButton(3)) {
 		// 	armMotor.set(0.01);
