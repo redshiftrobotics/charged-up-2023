@@ -43,9 +43,9 @@ public class Camera extends SubsystemBase {
 		}
 	}
 
-	/** Makes and returns a new transform3d made up of passed in values
-	 * @param value double[] of values [Translation3d.x, Translation3d.y, Translation3d.z, Rotation3d.Quaternion.w, Rotation3d.Quaternion.x, Rotation3d.Quaternion.y, Rotation3d.Quaternion.z]
-	 * @return new Transform3d of values
+	/** Makes and returns a new {@link edu.wpi.first.math.geometry.Transform3d Transform3d} made up of passed in values
+	 * @param values double[] of values [Translation3d.x, Translation3d.y, Translation3d.z, Rotation3d.Quaternion.w, Rotation3d.Quaternion.x, Rotation3d.Quaternion.y, Rotation3d.Quaternion.z]
+	 * @return new {@link edu.wpi.first.math.geometry.Transform3d Transform3d} made from values
 	 */
 	private Transform3d convertToTransform3d(double[] values) {
 		return values.length == 0 ? null
@@ -54,8 +54,10 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** Get Tranform3d location of tag with specified ID. If it is not found it returns null.
-	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
+	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of tag with specified ID. If it is not found it returns null.
+	 * 3D pose of tag is <code>Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
+	 * @see <a href="https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png">Translation3d image</a>
+	 * @see <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png">Rotation3d Quaternion image</a>
 	 * @return 3D pose of tag with specified id.
 	*/
 	public Transform3d getDetectedAprilTagById(int tagId) {
@@ -65,9 +67,9 @@ public class Camera extends SubsystemBase {
 		return convertToTransform3d(aprilTagSubs.get(tagId).get());
 	}
 
-	/** Get Tranform3d location of all found tags. If it is not found it's value will be null.
-	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
-	 * @return HashMap with tag id as key and Tranform3d tag location as value
+	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of all found tags. If it is not found it's value will be null.
+	 * 3D pose of tag is <code>Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
+	 * @return HashMap with tag id as key and {@link edu.wpi.first.math.geometry.Transform3d Transform3d} tag location as value
 	*/
 	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
 		return aprilTags;
@@ -80,7 +82,7 @@ public class Camera extends SubsystemBase {
 	/** Converts position of tag relative to camera.
 	 * 2d pose of tag is Translation2d(x: -right to +left, y: +foward)
 	 * @param pose3d a 3d pose of a tag
-	 * @return 2d pose of a tag (ignoring verticle).
+	 * @return Translation2d 2d pose of a tag (ignoring verticle).
 	 */
 	public Translation2d makePose2d(Transform3d pose3d) {
 		return new Translation2d(pose3d.getX(), pose3d.getZ());
