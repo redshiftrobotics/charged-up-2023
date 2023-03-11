@@ -25,11 +25,9 @@ public class Camera extends SubsystemBase {
 
 	public Camera(int cameraID) {
 		inst = NetworkTableInstance.getDefault();
-
-		inst.startClient4("localpiclient");
 		inst.setServerTeam(8032);
 		inst.startDSClient();
-		inst.setServer("localhost");
+		inst.startServer();
 
 		table = inst.getTable(String.format("camera-%s-tags", cameraID));
 
@@ -96,10 +94,15 @@ public class Camera extends SubsystemBase {
 	}
 
 	public void periodic() {
-		aprilTagSubs.forEach((id, sub) -> {
+		aprilTagSubs.forEach((tagId, sub) -> {
 			final double[] value = sub.get(null);
-			System.out.println(String.format("%s: %s", id, value));
+
+			if (value != null) {
+				final Transform3d tagTranform = convertToTransform3d(value);
+				if (tagTranform != null) {
+					System.out.println(String.format("(%s) Found April Tag %s", sub.getAtomic().timestamp, tagId));
+				}
+			}
 		});
-		System.out.println();
 	}
 }
