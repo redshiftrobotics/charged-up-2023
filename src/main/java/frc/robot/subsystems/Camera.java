@@ -18,30 +18,33 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AprilTagConstants;
 
 public class Camera extends SubsystemBase {
-	private final NetworkTableInstance inst;
-	private final NetworkTable table;
+	private final NetworkTableInstance networkTableInst;
+	private final NetworkTable networkTable;
 
-	protected final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
+	private final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
+	private final HashMap<Integer, Transform3d> aprilTags = new HashMap<>();
 
 	public Camera(int cameraID) {
-
 		// Sets up and connects roboRio to the pi network table
-		inst = NetworkTableInstance.getDefault();
-		inst.setServerTeam(8032);
-		inst.startDSClient();
-		inst.startServer();
+		networkTableInst = NetworkTableInstance.getDefault();
+		networkTableInst.setServerTeam(8032);
+		networkTableInst.startDSClient();
+		networkTableInst.startServer();
 
-		table = inst.getTable(String.format("camera-%s-tags", cameraID));
+		networkTable = networkTableInst.getTable(String.format("camera-%s-tags", cameraID));
 
 		// Sets subscribers for topics
 		for (int i = AprilTagConstants.MIN_TAG_ID; i <= AprilTagConstants.MAX_TAG_ID; i++) {
-			final DoubleArraySubscriber sub = table.getDoubleArrayTopic(Integer.toString(i)).subscribe(new double[] {});
+			final DoubleArraySubscriber sub = networkTable.getDoubleArrayTopic(Integer.toString(i))
+					.subscribe(new double[] {});
 			aprilTagSubs.put(i, sub);
+
+			aprilTags.put(i, null);
 		}
 	}
 
 	/** Makes and returns a new transform3d made up of passed in values
-	 * @param double[] of values (0: x, 1: y, 2: z, 3-6: quaternion values)
+	 * @param double[] of values [x, y, z, ]
 	 * @return new Transform3d of values
 	 */
 	private Transform3d convertToTransform3d(double[] values) {
@@ -51,18 +54,23 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** Get tranform3d location of tag with specified ID. If it is not found it returns null.
+	/** Get Tranform3d location of tag with specified ID. If it is not found it returns null.
 	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
 	 * @return 3D pose of tag with specified id.
 	*/
 	public Transform3d getDetectedAprilTagById(int tagId) {
-		if (aprilTagSubs.isEmpty()) {
-			throw new Error("Has not recieved any entries from Coprocessor yet");
-		}
 		if (!aprilTagSubs.containsKey(tagId)) {
 			throw new Error("Invalid tag key");
 		}
 		return convertToTransform3d(aprilTagSubs.get(tagId).get());
+	}
+
+	/** Get Tranform3d location of all found tags. If it is not found it's value will be null.
+	 * 3D pose of tag is Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))
+	 * @return HashMap with tag id as key and Tranform3d tag location as value
+	*/
+	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
+		return aprilTags;
 	}
 
 	/** Converts position of tag relative to camera.
@@ -91,14 +99,17 @@ public class Camera extends SubsystemBase {
 	}
 
 	public void periodic() {
+		// Loops through subscribers to store and outputs values
 		aprilTagSubs.forEach((tagId, sub) -> {
-			final double[] value = sub.get(null);
+			final double[] value = sub.get();
+			final Transform3d tagLocation = convertToTransform3d(value);
 
-			if (value != null) {
-				final Transform3d tagTranform = convertToTransform3d(value);
-				if (tagTranform != null) {
-					System.out.println(String.format("(%s) Found April Tag %s", sub.getAtomic().timestamp, tagId));
-				}
+			aprilTags.put(tagId, tagLocation);
+
+			if (tagLocation != null) {
+				// prints time since proggram started, april tag id, and distance to said tag in feet
+				System.out.println(String.format("%s\tFound April Tag #%s at distance of %s feet",
+						sub.getAtomic().timestamp, tagId, getDistance(tagLocation) / 304.8));
 			}
 		});
 	}
