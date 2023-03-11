@@ -44,7 +44,7 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** Makes and returns a new transform3d made up of passed in values
-	 * @param double[] of values [x, y, z, ]
+	 * @param value double[] of values [Translation3d.x, Translation3d.y, Translation3d.z, Rotation3d.Quaternion.w, Rotation3d.Quaternion.x, Rotation3d.Quaternion.y, Rotation3d.Quaternion.z]
 	 * @return new Transform3d of values
 	 */
 	private Transform3d convertToTransform3d(double[] values) {
@@ -71,6 +71,10 @@ public class Camera extends SubsystemBase {
 	*/
 	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
 		return aprilTags;
+		// private final HashMap<Integer, Transform3d> aprilTags = new HashMap<>();
+		// for (Integer tagId : aprilTagSubs.keySet()) {
+		// 	aprilTags.put(tagId, getDetectedAprilTagById(tagId));
+		// }		
 	}
 
 	/** Converts position of tag relative to camera.
