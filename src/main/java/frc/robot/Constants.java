@@ -18,6 +18,8 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
 
 	public static class AprilTagConstants {
+		public static final int CAMERA_PORT = 0;
+
 		public static final int MIN_TAG_ID = 1;
 		public static final int MAX_TAG_ID = 8;
 	}

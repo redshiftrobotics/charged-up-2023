@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import frc.robot.Constants.AprilTagConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Camera;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,7 +28,7 @@ public class RobotContainer {
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 
-	private final Camera camera = new Camera(0);
+	private final Camera camera = new Camera(AprilTagConstants.CAMERA_PORT);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
