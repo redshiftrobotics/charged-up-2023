@@ -122,7 +122,7 @@ public class Camera extends SubsystemBase {
 				foundNoTags = false;
 			}
 		}
-		;
+
 		if (foundNoTags) {
 			System.out.println("No tags found");
 		}
