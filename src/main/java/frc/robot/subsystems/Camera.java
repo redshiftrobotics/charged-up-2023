@@ -105,8 +105,10 @@ public class Camera extends SubsystemBase {
 	}
 
 	public void periodic() {
-		// Loops through subscribers to store and outputs values
-		boolean foundNoTags = true;
+		// Loops through subscribers to store and output values
+
+		boolean tagFound = false;
+
 		for (Integer tagId : aprilTagSubs.keySet()) {
 			final DoubleArraySubscriber sub = aprilTagSubs.get(tagId);
 
@@ -117,14 +119,13 @@ public class Camera extends SubsystemBase {
 
 			if (tagLocation != null) {
 				// prints time since proggram started, april tag id, and distance to said tag in feet
-				System.out.println(String.format("%s\tFound April Tag #%s at distance of %.1f feet",
-						sub.getAtomic().timestamp, tagId, getDistance(tagLocation) / 304.8));
-				foundNoTags = false;
+				System.out.println(String.format("Rio: Found April Tag #%s at distance of %.1f feet [%s]",
+						tagId, getDistance(tagLocation) / 304.8, System.currentTimeMillis()));
+				tagFound = true;
 			}
 		}
-
-		if (foundNoTags) {
-			System.out.println("No tags found");
+		if (!tagFound) {
+			System.out.println(String.format("Rio: No Tags [%s]", System.currentTimeMillis()));
 		}
 
 	}
