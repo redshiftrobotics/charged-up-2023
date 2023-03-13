@@ -104,6 +104,7 @@ public class Camera extends SubsystemBase {
 		return pose2d.getNorm();
 	}
 
+	@Override
 	public void periodic() {
 		// Loops through subscribers to store and output values
 
