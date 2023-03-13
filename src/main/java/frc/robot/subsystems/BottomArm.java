@@ -31,11 +31,13 @@ public class BottomArm extends SubsystemBase {
 	private Rotation2d minAngleRotation2d;
 	private Rotation2d maxAngleRotation2d;
 
+	/*
 	private final ArmFeedforward feedForward = new ArmFeedforward(
 			ArmConstants.BOTTOM_ARM_PID_S,
 			ArmConstants.BOTTOM_ARM_PID_G,
 			ArmConstants.BOTTOM_ARM_PID_V,
 			ArmConstants.BOTTOM_ARM_PID_A);
+	*/
 
 	// Constructor for the bottom arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum degrees
 	public BottomArm(int armMotorOneId, int armMotorTwoId, int armEncoderId, double inMinDegree, double inMaxDegree) {
