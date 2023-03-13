@@ -40,18 +40,12 @@ public class TopArm extends SubsystemBase {
 
 	// Constructor for the top arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum degrees
 	public TopArm(int armMotorId, int armEncoderId, double inMinDegree, double inMaxDegree) {
-		/* 
+
 		armPIDController = new ProfiledPIDController(
 				ArmConstants.TOP_ARM_PID_P,
 				ArmConstants.TOP_ARM_PID_I,
 				ArmConstants.TOP_ARM_PID_D,
 				new TrapezoidProfile.Constraints(ArmConstants.TOP_ARM_MAX_VELOCITY, ArmConstants.TOP_ARM_MAX_ACCEL));
-		*/
-
-		armPIDController = new ProfiledPIDController(
-				ArmConstants.TOP_ARM_PID_P,
-				ArmConstants.TOP_ARM_PID_I,
-				ArmConstants.TOP_ARM_PID_D);
 
 		armMotor = new CANSparkMax(armMotorId, MotorType.kBrushless);
 		armMotor.setIdleMode(IdleMode.kBrake);
