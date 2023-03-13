@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
@@ -10,6 +11,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ArmConstants;
@@ -17,7 +19,7 @@ import frc.robot.Constants.ArmConstants;
 // The subsystem for controlling the bottom arm
 public class BottomArm extends SubsystemBase {
 
-	// private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(0);
 
 	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotorOne;
@@ -45,6 +47,10 @@ public class BottomArm extends SubsystemBase {
 						ArmConstants.BOTTOM_ARM_MAX_ACCEL));
 		armMotorOne = new CANSparkMax(armMotorOneId, MotorType.kBrushless);
 		armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
+		armMotorOne.setIdleMode(IdleMode.kBrake);
+		armMotorTwo.setIdleMode(IdleMode.kBrake);
+		armMotorOne.setInverted(true);
+
 		armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
 		armEncoder = new CANCoder(armEncoderId);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
@@ -74,24 +80,41 @@ public class BottomArm extends SubsystemBase {
 	// Uncomment the bottom comment and comment the top code to slow down the arm for testing
 	@Override
 	public void periodic() {
-		armMotorControllerGroup.setVoltage(
-				armPIDController.calculate(
-						getEncoderRotation().getRadians(),
-						armAngleRotation2d.getRadians())
-						+
-						feedForward.calculate(
-								armAngleRotation2d.getRadians(),
-								armPIDController.getSetpoint().velocity));
+		// armMotorControllerGroup.setVoltage(
+		// 		armPIDController.calculate(
+		// 				getEncoderRotation().getRadians(),
+		// 				armAngleRotation2d.getRadians())
+		// 				+
+		// 				feedForward.calculate(
+		// 						armAngleRotation2d.getRadians(),
+		// 						armPIDController.getSetpoint().velocity));
 
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 		*/
 
 		// if (joy.getRawButton(5)) {
-		// 	armMotorControllerGroup.set(0.01);
+		// 	armMotorControllerGroup.set(0.5);
 		// }
 		// if (joy.getRawButton(6)) {
-		// 	armMotorControllerGroup.set(-0.01);
+		// 	armMotorControllerGroup.set(-0.5);
+		// }
+
+		SmartDashboard.putNumber("Bottom Encoder", armEncoder.getAbsolutePosition());
+
+		// if (joy.getRawButton(9)) {
+		// 	armMotorOne.set(0.1);
+		// } else if (joy.getRawButton(10)) {
+		// 	armMotorOne.set(-0.1);
+		// } else {
+		// 	armMotorOne.set(0);
+		// }
+		// if (joy.getRawButton(11)) {
+		// 	armMotorTwo.set(0.1);
+		// } else if (joy.getRawButton(12)) {
+		// 	armMotorTwo.set(-0.1);
+		// } else {
+		// 	armMotorTwo.set(0);
 		// }
 	}
 }

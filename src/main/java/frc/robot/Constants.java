@@ -57,23 +57,23 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
-		public static final int ANGULAR_MOTOR_ID_FL = 7;
-		public static final int VELOCITY_MOTOR_ID_FL = 8;
+		public static final int ANGULAR_MOTOR_ID_FL = 12;
+		public static final int VELOCITY_MOTOR_ID_FL = 4;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = 155 - 2;
 
-		public static final int ANGULAR_MOTOR_ID_FR = 5;
-		public static final int VELOCITY_MOTOR_ID_FR = 6;
+		public static final int ANGULAR_MOTOR_ID_FR = 8;
+		public static final int VELOCITY_MOTOR_ID_FR = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = 316 - 180 - 3;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
-		public static final int VELOCITY_MOTOR_ID_BL = 1;
+		public static final int VELOCITY_MOTOR_ID_BL = 31;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36;
 
-		public static final int ANGULAR_MOTOR_ID_BR = 18;
-		public static final int VELOCITY_MOTOR_ID_BR = 19;
+		public static final int ANGULAR_MOTOR_ID_BR = 19;
+		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16;
 
@@ -140,32 +140,32 @@ public final class Constants {
 		public static final double BOTTOM_ARM_PID_I = 0;
 		public static final double BOTTOM_ARM_PID_D = 0;
 
-		public static final double TOP_ARM_PID_P = 0.0005;
+		public static final double TOP_ARM_PID_P = -1.5;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
 
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
-		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 0;
-		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 0;
-		public static final int TOP_ARM_MOTOR_ID = 0;
-		public static final int BOTTOM_ARM_ENCODER_ID = 0;
-		public static final int TOP_ARM_ENCODER_ID = 0;
+		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 7;
+		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 5;
+		public static final int TOP_ARM_MOTOR_ID = 13;
+		public static final int BOTTOM_ARM_ENCODER_ID = 29;
+		public static final int TOP_ARM_ENCODER_ID = 30;
 
 		public static final double BOTTOM_ARM_MIN_DEGREE = 0;
 		public static final double TOP_ARM_MIN_DEGREE = 0;
-		public static final double BOTTOM_ARM_MAX_DEGREE = 0;
-		public static final double TOP_ARM_MAX_DEGREE = 0;
+		public static final double BOTTOM_ARM_MAX_DEGREE = 48;
+		public static final double TOP_ARM_MAX_DEGREE = 211;
 
-		public static final double BOTTOM_ARM_PID_S = 0;
-		public static final double BOTTOM_ARM_PID_G = 0;
-		public static final double BOTTOM_ARM_PID_V = 0;
-		public static final double BOTTOM_ARM_PID_A = 0;
+		public static final double BOTTOM_ARM_PID_S = 0.0001;
+		public static final double BOTTOM_ARM_PID_G = 2.04;
+		public static final double BOTTOM_ARM_PID_V = 3.12;
+		public static final double BOTTOM_ARM_PID_A = .11;
 
-		public static final double TOP_ARM_PID_S = 0;
-		public static final double TOP_ARM_PID_G = 0;
-		public static final double TOP_ARM_PID_V = 0;
-		public static final double TOP_ARM_PID_A = 0;
+		public static final double TOP_ARM_PID_S = 0.0001;
+		public static final double TOP_ARM_PID_G = 2.14;
+		public static final double TOP_ARM_PID_V = 3.12;
+		public static final double TOP_ARM_PID_A = .22;
 
 		public static final double BOTTOM_ARM_FEEDFORWARD_POS = 0;
 		public static final double BOTTOM_ARM_FEEDFORWARD_VEL = 1;
@@ -175,11 +175,11 @@ public final class Constants {
 		public static final double TOP_ARM_FEEDFORWARD_VEL = 1;
 		public static final double TOP_ARM_FEEDFORWARD_ACCEL = 0;
 
-		public static final double TOP_ARM_MAX_VELOCITY = 1;
-		public static final double TOP_ARM_MAX_ACCEL = .1;
+		public static final double TOP_ARM_MAX_VELOCITY = 0.1;
+		public static final double TOP_ARM_MAX_ACCEL = .01;
 
-		public static final double BOTTOM_ARM_MAX_VELOCITY = 1;
-		public static final double BOTTOM_ARM_MAX_ACCEL = .1;
+		public static final double BOTTOM_ARM_MAX_VELOCITY = 0.1;
+		public static final double BOTTOM_ARM_MAX_ACCEL = .01;
 	}
 
 }

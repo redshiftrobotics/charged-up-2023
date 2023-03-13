@@ -2,7 +2,9 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.SparkMaxAnalogSensor.Mode;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -13,11 +15,13 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 import frc.robot.Constants.ArmConstants;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 // The subsystem for controlling the top arm
 public class TopArm extends SubsystemBase {
 	// Initializing the motor, encoder, and PID controller
 
-	// private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(0);
 
 	private final CANSparkMax armMotor;
 	private final CANCoder armEncoder;
@@ -40,9 +44,11 @@ public class TopArm extends SubsystemBase {
 				ArmConstants.TOP_ARM_PID_D,
 				new TrapezoidProfile.Constraints(ArmConstants.TOP_ARM_MAX_VELOCITY, ArmConstants.TOP_ARM_MAX_ACCEL));
 		armMotor = new CANSparkMax(armMotorId, MotorType.kBrushless);
+		armMotor.setIdleMode(IdleMode.kBrake);
 		armEncoder = new CANCoder(armEncoderId);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
+		armAngleRotation2d = Rotation2d.fromDegrees(100);
 	}
 
 	// Getting the rotation of the encoder
@@ -72,18 +78,21 @@ public class TopArm extends SubsystemBase {
 				armPIDController.calculate(
 						getEncoderRotation().getRadians(),
 						armAngleRotation2d.getRadians())
-						+
-						feedForward.calculate(
-								armAngleRotation2d.getRadians(),
-								armPIDController.getSetpoint().velocity));
+		// +
+		// feedForward.calculate(
+		// 		armAngleRotation2d.getRadians(),
+		// 		armPIDController.getSetpoint().velocity)
+		);
 
 		// armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 
 		// if (joy.getRawButton(3)) {
-		// 	armMotor.set(0.01);
+		// 	armMotor.set(0.1);
+		// } else if (joy.getRawButton(4)) {
+		// 	armMotor.set(-0.1);
+		// } else {
+		// 	armMotor.set(0);
 		// }
-		// if (joy.getRawButton(4)) {
-		// 	armMotor.set(-0.01);
-		// }
+		SmartDashboard.putNumber("Top Encoder", armEncoder.getAbsolutePosition());
 	}
 }
