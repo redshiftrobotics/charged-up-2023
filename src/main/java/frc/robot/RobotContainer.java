@@ -8,7 +8,6 @@ import frc.robot.Constants.AprilTagConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Camera;
 import frc.robot.Constants.SwerveDriveConstants;
-import frc.robot.commands.Autos;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
@@ -46,9 +45,8 @@ public class RobotContainer {
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
-
 	private final Camera camera = new Camera(AprilTagConstants.CAMERA_PORT);
+
 	// private final SwerveModule module1 = new SwerveModule(
 	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
 	// 		SwerveDriveConstants.VELOCITY_MOTOR_ID,
