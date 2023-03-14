@@ -85,6 +85,10 @@ public class RobotContainer {
 
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
+	// private final Command extendArm = new ExtendArmCommand(arm);
+	// private final Command bendArm = new BendArmCommand(arm);
+	// private final Command grabObject = new ClawGrabCommand(arm);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
