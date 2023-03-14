@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 // The subsystem for controlling the top arm
 public class TopArm extends SubsystemBase {
-	// Initializing the motor, encoder, and PID controller
+	// Initializing the motor, encoder, and PID controller & rotation privates
 
 	private final Joystick joy = new Joystick(0);
 
@@ -55,12 +55,12 @@ public class TopArm extends SubsystemBase {
 		armAngleRotation2d = Rotation2d.fromDegrees(100);
 	}
 
-	// Getting the rotation of the encoder
+	// Getting the rotation of the encoder for movement
 	public Rotation2d getEncoderRotation() {
 		return Rotation2d.fromDegrees(armEncoder.getAbsolutePosition() * ArmConstants.ARM_MOTOR_GEAR_RATIO);
 	}
 
-	// Setting the desired degree for the top arm
+	// Setting the desired degree for the top arm to avoid breking and movement
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		// Minimum degree will not always be set to zero. 

@@ -59,12 +59,12 @@ public class BottomArm extends SubsystemBase {
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
 	}
 
-	// Getting the rotation of the encoder
+	// Getting the rotation of the encoder witch will be used for movement and boundries
 	public Rotation2d getEncoderRotation() {
 		return Rotation2d.fromDegrees(armEncoder.getAbsolutePosition() * ArmConstants.ARM_MOTOR_GEAR_RATIO);
 	}
 
-	// Setting the desired degree for the bottom arm
+	// Setting the desired degree for the bottom arm 
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		// Minimum degree will not always be set to zero. 
