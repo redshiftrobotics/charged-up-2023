@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import java.util.HashMap;
 
 import edu.wpi.first.math.geometry.Quaternion;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -80,12 +82,13 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** Converts position of tag relative to camera.
-	 * 2d pose of tag is Translation2d(x: -right to +left, y: +foward)
+	 * 2d pose of tag is Transform2d(Translation2d(x: -right to +left, y: +foward), Rotation2d(value: yaw of object))
 	 * @param pose3d a 3d pose of a tag
-	 * @return Translation2d 2d pose of a tag (ignoring verticle).
+	 * @return 2d pose of a tag (ignoring verticle).
 	 */
-	public Translation2d makePose2d(Transform3d pose3d) {
-		return new Translation2d(pose3d.getX(), pose3d.getZ());
+	public Transform2d makePose2d(Transform3d pose3d) {
+		return new Transform2d(new Translation2d(pose3d.getX(), pose3d.getZ()),
+				new Rotation2d(pose3d.getRotation().getZ()));
 	}
 
 	/** Returns distance to pose in mm
@@ -100,8 +103,8 @@ public class Camera extends SubsystemBase {
 	 * @param pose2d a 2d pose of tag
 	 * @return distance to tag in mm (ignoring verticle distance)
 	 */
-	public double getDistance(Translation2d pose2d) {
-		return pose2d.getNorm();
+	public double getDistance(Transform2d pose2d) {
+		return pose2d.getTranslation().getNorm();
 	}
 
 	@Override

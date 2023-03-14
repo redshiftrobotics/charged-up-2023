@@ -2,8 +2,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.SwerveDriveConstants;
@@ -32,6 +34,14 @@ public class FollowTagCommand extends CommandBase {
 		this.camera = camera;
 		this.desiredDistToTag = desiredDistToTag;
 		this.desiredTag = desiredTag;
+
+		pidRotation.enableContinuousInput(0, 2 * Math.PI);
+		pidRotation.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
+		pidVelocity.setTolerance(SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE);
+
+		addRequirements(drivetrain);
 	}
 
 	@Override
@@ -45,9 +55,14 @@ public class FollowTagCommand extends CommandBase {
 
 		tagPose = tagPose.plus(CameraConstants.CAMERA_POSITION);
 		Rotation2d tagRotation = new Rotation2d(-tagPose.getRotation().getY());
-		Translation2d driveDistance = camera.makePose2d(tagPose);
-
+		Translation2d driveDistance = new Translation2d(tagPose.getX(), tagPose.getZ());
 		driveDistance = driveDistance.plus(desiredDistToTag.rotateBy(tagRotation));
+
+		// final Transform3d tagPose = camera.getDetectedAprilTagById(desiredTag);
+		// final Transform2d tagPose2d = camera.makePose2d(tagPose);
+
+		// drivetrain.setSwerveModuleStates(
+		// 		new ChassisSpeeds(tagPose2d.getX(), tagPose2d.getY(), tagPose2d.getRotation().getRadians()));
 
 	}
 
@@ -58,6 +73,6 @@ public class FollowTagCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-
+		return false;
 	}
 }
