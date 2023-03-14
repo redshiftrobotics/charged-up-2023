@@ -60,7 +60,7 @@ public class TopArm extends SubsystemBase {
 		return Rotation2d.fromDegrees(armEncoder.getAbsolutePosition() * ArmConstants.ARM_MOTOR_GEAR_RATIO);
 	}
 
-	// Setting the desired degree for the top arm to avoid breking and movement
+	// Setting the desired degree for the top arm to avoid breaking and movement
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		// Minimum degree will not always be set to zero. 

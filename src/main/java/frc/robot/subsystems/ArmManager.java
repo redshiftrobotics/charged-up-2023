@@ -15,13 +15,13 @@ public class ArmManager extends SubsystemBase {
 		this.topArm = topArm;
 	}
 
-	// Setting the degree of both arms for mathamatics for their repective functions
+	// Setting the degree of both arms for their mathamatics and their respective functions
 	public void setBothArmDegree(double desiredBottomArmDegree, double desiredTopArmDegree) {
 		bottomArm.setDegree(desiredBottomArmDegree);
 		topArm.setDegree(desiredTopArmDegree);
 	}
 
-	// Getting the degree of both arms for rotations of imput, reading, and execution
+	// Getting the degree of both arms for rotations of input, reading, and execution
 	public String getBothArmDegree() {
 		return bottomArm.getEncoderRotation() + ", " + topArm.getEncoderRotation();
 	}
