@@ -1,5 +1,3 @@
-// TODO make sure are XYZ are what we think they are
-
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -72,8 +70,8 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of all found tags. If it is not found it's value will be null.
-	 * 3D pose of tag is <code>Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
-	 * @return HashMap with tag id as key and {@link edu.wpi.first.math.geometry.Transform3d Transform3d} tag location as value
+	 * 3D pose of tag is <code>Transform3d(Translation3d(x: +left to -right, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
+	 * @return HashMap with ag id as key and {@link edu.wpi.first.math.geometry.Transform3d Transform3d} tag location as value
 	*/
 	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
 		return aprilTags;
@@ -84,29 +82,29 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** Converts position of tag relative to camera.
-	 * 2d pose of tag is Transform2d(Translation2d(x: -right to +left, y: +foward), Rotation2d(value: yaw of object))
-	 * @param pose3d a 3d pose of a tag
+	 * 2d pose of tag is Transform2d(Translation2d(x: +left to -right, y: +foward), Rotation2d(value: yaw of object))
+	 * @param transform a 3d pose of a tag
 	 * @return 2d pose of a tag (ignoring verticle).
 	 */
-	public Transform2d makePose2d(Transform3d pose3d) {
-		return new Transform2d(new Translation2d(pose3d.getX(), pose3d.getZ()),
-				new Rotation2d(pose3d.getRotation().getZ()));
+	public Transform2d makeTransformInto2d(Transform3d transform) {
+		return new Transform2d(new Translation2d(transform.getX(), transform.getZ()),
+				new Rotation2d(transform.getRotation().getZ()));
 	}
 
 	/** Returns distance to pose in mm
-	 * @param pose3d a 3d pose of tag
+	 * @param transform a 3d pose of tag
 	 * @return distance to tag in mm
 	 */
-	public double getDistance(Transform3d pose3d) {
-		return pose3d.getTranslation().getNorm();
+	public double getDistance(Transform3d transform) {
+		return transform.getTranslation().getNorm();
 	}
 
 	/** Distance to pose in mm without verticle distance
-	 * @param pose2d a 2d pose of tag
+	 * @param transform a 2d pose of tag
 	 * @return distance to tag in mm (ignoring verticle distance)
 	 */
-	public double getDistance(Transform2d pose2d) {
-		return pose2d.getTranslation().getNorm();
+	public double getDistance(Transform2d transform) {
+		return transform.getTranslation().getNorm();
 	}
 
 	@Override
