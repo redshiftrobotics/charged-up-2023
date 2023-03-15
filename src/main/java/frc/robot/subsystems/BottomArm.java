@@ -68,13 +68,18 @@ public class BottomArm extends SubsystemBase {
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		// Minimum degree will not always be set to zero. 
-		if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees()) {
-			armAngleRotation2d = maxAngleRotation2d;
-		}
-		if (minAngleRotation2d.getDegrees() + desiredDegree < minAngleRotation2d.getDegrees()) {
-			armAngleRotation2d = minAngleRotation2d;
+
+		if (maxAngleRotation2d.getDegrees() < minAngleRotation2d.getDegrees()) {
+
 		} else {
-			armAngleRotation2d = Rotation2d.fromDegrees(minAngleRotation2d.getDegrees() + desiredDegree);
+			if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees()) {
+				armAngleRotation2d = maxAngleRotation2d;
+			}
+			if (minAngleRotation2d.getDegrees() + desiredDegree < minAngleRotation2d.getDegrees()) {
+				armAngleRotation2d = minAngleRotation2d;
+			} else {
+				armAngleRotation2d = Rotation2d.fromDegrees(minAngleRotation2d.getDegrees() + desiredDegree);
+			}
 		}
 	}
 
