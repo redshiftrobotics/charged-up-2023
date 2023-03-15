@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants.ArmConstants;
 
-// The subsystem for controlling the bottom arm
+// The subsystem for controlling the bottom arm and motors associated with it
 public class BottomArm extends SubsystemBase {
 
 	private final Joystick joy = new Joystick(0);
@@ -39,7 +39,9 @@ public class BottomArm extends SubsystemBase {
 			ArmConstants.BOTTOM_ARM_PID_A);
 	*/
 
-	// Constructor for the bottom arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum degrees
+	/* Constructor for the bottom arm, which takes in ID's for the motor and encoder as well as for the minimum and maximum
+	 degrees
+	*/
 	public BottomArm(int armMotorOneId, int armMotorTwoId, int armEncoderId, double inMinDegree, double inMaxDegree) {
 		armPIDController = new ProfiledPIDController(
 				ArmConstants.BOTTOM_ARM_PID_P,
@@ -64,13 +66,22 @@ public class BottomArm extends SubsystemBase {
 		return Rotation2d.fromDegrees(armEncoder.getAbsolutePosition() * ArmConstants.ARM_MOTOR_GEAR_RATIO);
 	}
 
-	// Setting the desired degree for the bottom arm
+	// Setting the desired degree for the bottom arm (only used for when/ if max degree is set to 0)
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
-		// Minimum degree will not always be set to zero. 
+		/* Minimum degree will not always be set to zero, it could be set to what the max could be and when/ if that situation
+		   occors, this code will be in place of that and can fix that problems.
+		*/
 
 		if (maxAngleRotation2d.getDegrees() < minAngleRotation2d.getDegrees()) {
-
+			if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees() + 360) {
+				armAngleRotation2d = maxAngleRotation2d;
+			}
+			if (minAngleRotation2d.getDegrees() + desiredDegree < minAngleRotation2d.getDegrees()) {
+				armAngleRotation2d = minAngleRotation2d;
+			} else {
+				armAngleRotation2d = Rotation2d.fromDegrees(minAngleRotation2d.getDegrees() + desiredDegree);
+			}
 		} else {
 			if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees()) {
 				armAngleRotation2d = maxAngleRotation2d;
@@ -84,7 +95,7 @@ public class BottomArm extends SubsystemBase {
 	}
 
 	// Setting the rotation of the bottom arm
-	// Uncomment the bottom comment and comment the top code to slow down the arm for testing
+	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
 		// armMotorControllerGroup.setVoltage(
@@ -125,3 +136,4 @@ public class BottomArm extends SubsystemBase {
 		// }
 	}
 }
+// TomarTopia CC 2023
