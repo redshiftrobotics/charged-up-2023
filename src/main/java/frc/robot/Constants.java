@@ -146,8 +146,8 @@ public final class Constants {
 
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
-		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 7;
-		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 5;
+		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 18;
+		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 9;
 		public static final int TOP_ARM_MOTOR_ID = 13;
 		public static final int BOTTOM_ARM_ENCODER_ID = 29;
 		public static final int TOP_ARM_ENCODER_ID = 30;
