@@ -10,6 +10,8 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -31,6 +33,45 @@ public final class Constants {
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
+	}
+
+	public static class FieldConstants {
+		// IN = inches, no unit in name means it's in meters
+		// All translation2ds should be in meters
+		// Inches to meters constant
+		private static final double IN_TO_M = 0.0254;
+		public static final double FIELD_LENGTH_IN = 651.25;
+		public static final double FIELD_WIDTH_IN = 315.5;
+		public static final double FIELD_LENGTH = FIELD_LENGTH_IN * IN_TO_M;
+		public static final double FIELD_WIDTH = FIELD_WIDTH_IN * IN_TO_M;
+
+		public static final Map<Integer, Translation2d> TAGS = Map.of(
+				1, new Translation2d(610.77 * IN_TO_M, 42.19 * IN_TO_M),
+				2, new Translation2d(610.77 * IN_TO_M, 108.19 * IN_TO_M),
+				3, new Translation2d(610.77 * IN_TO_M, 174.19 * IN_TO_M),
+				4, new Translation2d(636.96 * IN_TO_M, 265.74 * IN_TO_M),
+				5, new Translation2d(14.25 * IN_TO_M, 265.74 * IN_TO_M),
+				6, new Translation2d(40.45 * IN_TO_M, 174.19 * IN_TO_M),
+				7, new Translation2d(40.45 * IN_TO_M, 108.19 * IN_TO_M),
+				8, new Translation2d(40.45 * IN_TO_M, 42.19 * IN_TO_M));
+
+		public static final Translation2d CENTER = new Translation2d(FIELD_LENGTH / 2, FIELD_WIDTH / 2);
+
+		// Staging marks are from bottom to top (1 is bottom most 4 is top most)
+		public static final Translation2d RED_STAGING_MARK_1 = new Translation2d(386.77 * IN_TO_M, 36.19 * IN_TO_M);
+		public static final Translation2d RED_STAGING_MARK_2 = new Translation2d(386.77 * IN_TO_M, 84.19 * IN_TO_M);
+		public static final Translation2d RED_STAGING_MARK_3 = new Translation2d(386.77 * IN_TO_M, 132.19 * IN_TO_M);
+		public static final Translation2d RED_STAGING_MARK_4 = new Translation2d(386.77 * IN_TO_M, 180.19 * IN_TO_M);
+
+		public static final Translation2d BLUE_STAGING_MARK_1 = new Translation2d(264.45 * IN_TO_M, 36.19 * IN_TO_M);
+		public static final Translation2d BLUE_STAGING_MARK_2 = new Translation2d(264.45 * IN_TO_M, 84.19 * IN_TO_M);
+		public static final Translation2d BLUE_STAGING_MARK_3 = new Translation2d(264.45 * IN_TO_M, 132.19 * IN_TO_M);
+		public static final Translation2d BLUE_STAGING_MARK_4 = new Translation2d(264.45 * IN_TO_M, 180.19 * IN_TO_M);
+
+		public static final Translation2d BLUE_CHARGE_STATION = new Translation2d(137.2 * IN_TO_M, 107.39 * IN_TO_M);
+		public static final Translation2d RED_CHARGE_STATION = new Translation2d();
+		// public static final Translation2d RED_CHARGE_STATION = new Translation2d();
+		// public static final Translation2d RED_CHARGE_STATION = new Translation2d();
 	}
 
 	public static class SwerveDriveConstants {
