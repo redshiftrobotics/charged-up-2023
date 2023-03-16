@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -56,7 +55,6 @@ public final class Constants {
 				8, new Translation2d(40.45 * IN_TO_M, 42.19 * IN_TO_M));
 
 		public static final Translation2d CENTER = new Translation2d(FIELD_LENGTH / 2, FIELD_WIDTH / 2);
-
 		// Staging marks are from bottom to top (1 is bottom most 4 is top most)
 		public static final Translation2d RED_STAGING_MARK_1 = new Translation2d(386.77 * IN_TO_M, 36.19 * IN_TO_M);
 		public static final Translation2d RED_STAGING_MARK_2 = new Translation2d(386.77 * IN_TO_M, 84.19 * IN_TO_M);
@@ -69,9 +67,19 @@ public final class Constants {
 		public static final Translation2d BLUE_STAGING_MARK_4 = new Translation2d(264.45 * IN_TO_M, 180.19 * IN_TO_M);
 
 		public static final Translation2d BLUE_CHARGE_STATION = new Translation2d(137.2 * IN_TO_M, 107.39 * IN_TO_M);
-		public static final Translation2d RED_CHARGE_STATION = new Translation2d();
-		// public static final Translation2d RED_CHARGE_STATION = new Translation2d();
-		// public static final Translation2d RED_CHARGE_STATION = new Translation2d();
+		public static final Translation2d RED_CHARGE_STATION = new Translation2d(514.05 * IN_TO_M, 107.39 * IN_TO_M);
+
+		// nodes are from bottom to top, currently only marking the middle nodes for each group
+		public static final Translation2d RED_GRID_NODE_2 = new Translation2d(593.77 * IN_TO_M, 42.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_5 = new Translation2d(593.77 * IN_TO_M, 108.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_8 = new Translation2d(593.77 * IN_TO_M, 174.19 * IN_TO_M);
+
+		public static final Translation2d BLUE_GRID_NODE_2 = new Translation2d(57.45 * IN_TO_M, 42.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_5 = new Translation2d(57.45 * IN_TO_M, 108.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_8 = new Translation2d(57.45 * IN_TO_M, 174.19 * IN_TO_M);
+
+		public static final Translation2d RED_SUBSTATION = new Translation2d(636.96 * IN_TO_M, 265.74 * IN_TO_M);
+		public static final Translation2d BLUE_SUBSTATION = new Translation2d(14.25 * IN_TO_M, 265.74 * IN_TO_M);
 	}
 
 	public static class SwerveDriveConstants {
