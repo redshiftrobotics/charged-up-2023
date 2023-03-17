@@ -27,11 +27,16 @@ public final class Constants {
 
 	public static final double periodicFrequency = 0.02;
 
-	public static final Pose2d STARTING_POSITION = new Pose2d(0, 0, new Rotation2d(0)); // x, y, theta
-
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
+	}
+
+	public static class RobotConstants {
+		// in inches
+		public static final double BUMPER_WIDTH = 0;
+		public static final double ROBOT_WIDTH = 24 + BUMPER_WIDTH * 2;
+		public static final double ROBOT_HEIGHT = 36 + BUMPER_WIDTH * 2;
 	}
 
 	public static class FieldConstants {
