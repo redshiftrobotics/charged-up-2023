@@ -57,8 +57,8 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
-		public static final int ANGULAR_MOTOR_ID_FL = 12;
-		public static final int VELOCITY_MOTOR_ID_FL = 4;
+		public static final int ANGULAR_MOTOR_ID_FL = 4;
+		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = 155 - 2;
 
@@ -72,7 +72,7 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36;
 
-		public static final int ANGULAR_MOTOR_ID_BR = 19;
+		public static final int ANGULAR_MOTOR_ID_BR = 3;
 		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16;
@@ -140,21 +140,21 @@ public final class Constants {
 		public static final double BOTTOM_ARM_PID_I = 0;
 		public static final double BOTTOM_ARM_PID_D = 0;
 
-		public static final double TOP_ARM_PID_P = -1.5;
+		public static final double TOP_ARM_PID_P = 0.7;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
 
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
-		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 18;
-		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 9;
+		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 5;
+		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 19;
 		public static final int TOP_ARM_MOTOR_ID = 13;
 		public static final int BOTTOM_ARM_ENCODER_ID = 29;
 		public static final int TOP_ARM_ENCODER_ID = 30;
 
-		public static final double BOTTOM_ARM_MIN_DEGREE = 0;
+		public static final double BOTTOM_ARM_MIN_DEGREE = 313;
 		public static final double TOP_ARM_MIN_DEGREE = 0;
-		public static final double BOTTOM_ARM_MAX_DEGREE = 48;
+		public static final double BOTTOM_ARM_MAX_DEGREE = 116;
 		public static final double TOP_ARM_MAX_DEGREE = 211;
 
 		public static final double BOTTOM_ARM_PID_S = 0.0001;

@@ -145,17 +145,17 @@ public class SwerveModule extends SubsystemBase {
 	// Calculates the next output value of each PID controller and sets motors to them
 	@Override
 	public void periodic() {
-		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
-		angularMotor.set(test);
-		SmartDashboard.putNumber("Angular PID value", test);
+		// double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
+		// angularMotor.set(test);
+		// SmartDashboard.putNumber("Angular PID value", test);
 
-		// Convert from RPM to MPS
-		velocitySparkMaxPIDController.setReference(
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
-				CANSparkMax.ControlType.kVelocity);
-		SmartDashboard.putNumber("Velocity set value",
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
+		// // Convert from RPM to MPS
+		// velocitySparkMaxPIDController.setReference(
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
+		// 		CANSparkMax.ControlType.kVelocity);
+		// SmartDashboard.putNumber("Velocity set value",
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		// SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID
