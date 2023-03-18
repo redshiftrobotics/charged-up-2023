@@ -136,11 +136,11 @@ public final class Constants {
 	}
 
 	public static class ArmConstants {
-		public static final double BOTTOM_ARM_PID_P = 0.0005;
+		public static final double BOTTOM_ARM_PID_P = -2;
 		public static final double BOTTOM_ARM_PID_I = 0;
 		public static final double BOTTOM_ARM_PID_D = 0;
 
-		public static final double TOP_ARM_PID_P = 1.2;
+		public static final double TOP_ARM_PID_P = -2;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
 

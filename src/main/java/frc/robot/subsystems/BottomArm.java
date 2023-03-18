@@ -57,8 +57,10 @@ public class BottomArm extends SubsystemBase {
 
 		armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
 		armEncoder = new CANCoder(armEncoderId);
+		armPIDController.enableContinuousInput(0, 2 * Math.PI);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
+		armAngleRotation2d = Rotation2d.fromDegrees(290);
 	}
 
 	// Getting the rotation of the encoder which will be used for moving the arm and setting limits for the arm
@@ -98,24 +100,26 @@ public class BottomArm extends SubsystemBase {
 	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		// armMotorControllerGroup.setVoltage(
-		// 		armPIDController.calculate(
-		// 				getEncoderRotation().getRadians(),
-		// 				armAngleRotation2d.getRadians())
+		armMotorControllerGroup.setVoltage(
+				armPIDController.calculate(
+						getEncoderRotation().getRadians(),
+						armAngleRotation2d.getRadians())
 		// 				+
 		// 				feedForward.calculate(
 		// 						armAngleRotation2d.getRadians(),
-		// 						armPIDController.getSetpoint().velocity));
+		// 						armPIDController.getSetpoint().velocity)
+		);
 
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 		*/
 
 		// if (joy.getRawButton(5)) {
-		// 	armMotorControllerGroup.set(0.5);
-		// }
-		// if (joy.getRawButton(6)) {
-		// 	armMotorControllerGroup.set(-0.5);
+		// 	armMotorControllerGroup.set(0.05);
+		// } else if (joy.getRawButton(6)) {
+		// 	armMotorControllerGroup.set(-0.05);
+		// } else {
+		// 	armMotorControllerGroup.set(0);
 		// }
 
 		SmartDashboard.putNumber("Bottom Encoder", armEncoder.getAbsolutePosition());
