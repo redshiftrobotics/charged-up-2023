@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.sensors.CANCoder;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorTimeBase;
 
@@ -36,6 +39,7 @@ public class SwerveModule extends SubsystemBase {
 	private final SparkMaxPIDController velocitySparkMaxPIDController;
 
 	private SwerveModuleState state = new SwerveModuleState();
+	private SwerveModulePosition position = new SwerveModulePosition();
 
 	private double angularZero = 0;
 
@@ -148,13 +152,13 @@ public class SwerveModule extends SubsystemBase {
 		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
 		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
-		// Convert from RPM to MPS
-		velocitySparkMaxPIDController.setReference(
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
-				CANSparkMax.ControlType.kVelocity);
-		SmartDashboard.putNumber("Velocity set value",
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
+		// // Convert from RPM to MPS
+		// velocitySparkMaxPIDController.setReference(
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
+		// 		CANSparkMax.ControlType.kVelocity);
+		// SmartDashboard.putNumber("Velocity set value",
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		// SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID
