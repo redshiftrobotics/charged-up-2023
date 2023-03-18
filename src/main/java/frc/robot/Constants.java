@@ -25,10 +25,9 @@ import java.util.Map;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-
+	// Inches to meters constant
+	private static double IN_TO_M = 0.0024;
 	public static final double periodicFrequency = 0.02;
-
-	public static final Pose2d STARTING_POSITION = new Pose2d(0, 0, new Rotation2d(0)); // x, y, theta
 
 	public static final Pose2d CHARGE_STATION_POSITION = new Pose2d(0, 0, new Rotation2d(0));
 
@@ -101,17 +100,17 @@ public final class Constants {
 	}
 
 	public static class RobotConstants {
-		// in inches
 		public static final double BUMPER_WIDTH = 0;
-		public static final double ROBOT_WIDTH = 24 + BUMPER_WIDTH * 2;
-		public static final double ROBOT_HEIGHT = 36 + BUMPER_WIDTH * 2;
+		public static final double WIDTH = (24 + BUMPER_WIDTH * 2) * IN_TO_M;
+		public static final double LENGTH = (36 + BUMPER_WIDTH * 2) * IN_TO_M;
+		public static final Translation2d CORNER_TO_CENTER = new Translation2d(WIDTH / 2, LENGTH / 2);
 	}
 
 	public static class FieldConstants {
-		// IN = inches, no unit in name means it's in meters
-		// All translation2ds should be in meters
-		// Inches to meters constant
-		private static final double IN_TO_M = 0.0254;
+		// all numbers are in inches and then converted to meters, 
+		// as most documentation uses inches but Translation2d uses meters by default
+
+		// Document containing all positions on field in Slack programming channel sent by Josh
 		public static final double FIELD_LENGTH_IN = 651.25;
 		public static final double FIELD_WIDTH_IN = 315.5;
 		public static final double FIELD_LENGTH = FIELD_LENGTH_IN * IN_TO_M;
@@ -142,15 +141,28 @@ public final class Constants {
 		public static final Translation2d BLUE_CHARGE_STATION = new Translation2d(137.2 * IN_TO_M, 107.39 * IN_TO_M);
 		public static final Translation2d RED_CHARGE_STATION = new Translation2d(514.05 * IN_TO_M, 107.39 * IN_TO_M);
 
-		// nodes are from bottom to top, currently only marking the middle nodes for each group
+		// nodes are from bottom to top
+		public static final Translation2d RED_GRID_NODE_1 = new Translation2d(593.77 * IN_TO_M, 20.19 * IN_TO_M);
 		public static final Translation2d RED_GRID_NODE_2 = new Translation2d(593.77 * IN_TO_M, 42.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_3 = new Translation2d(593.77 * IN_TO_M, 64.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_4 = new Translation2d(593.77 * IN_TO_M, 86.19 * IN_TO_M);
 		public static final Translation2d RED_GRID_NODE_5 = new Translation2d(593.77 * IN_TO_M, 108.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_6 = new Translation2d(593.77 * IN_TO_M, 130.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_7 = new Translation2d(593.77 * IN_TO_M, 152.19 * IN_TO_M);
 		public static final Translation2d RED_GRID_NODE_8 = new Translation2d(593.77 * IN_TO_M, 174.19 * IN_TO_M);
+		public static final Translation2d RED_GRID_NODE_9 = new Translation2d(593.77 * IN_TO_M, 196.19 * IN_TO_M);
 
+		public static final Translation2d BLUE_GRID_NODE_1 = new Translation2d(57.45 * IN_TO_M, 20.19 * IN_TO_M);
 		public static final Translation2d BLUE_GRID_NODE_2 = new Translation2d(57.45 * IN_TO_M, 42.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_3 = new Translation2d(57.45 * IN_TO_M, 64.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_4 = new Translation2d(57.45 * IN_TO_M, 86.19 * IN_TO_M);
 		public static final Translation2d BLUE_GRID_NODE_5 = new Translation2d(57.45 * IN_TO_M, 108.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_6 = new Translation2d(57.45 * IN_TO_M, 130.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_7 = new Translation2d(57.45 * IN_TO_M, 152.19 * IN_TO_M);
 		public static final Translation2d BLUE_GRID_NODE_8 = new Translation2d(57.45 * IN_TO_M, 174.19 * IN_TO_M);
+		public static final Translation2d BLUE_GRID_NODE_9 = new Translation2d(57.45 * IN_TO_M, 196.19 * IN_TO_M);
 
+		// Same as tags 4 and 5, just for readability
 		public static final Translation2d RED_SUBSTATION = new Translation2d(636.96 * IN_TO_M, 265.74 * IN_TO_M);
 		public static final Translation2d BLUE_SUBSTATION = new Translation2d(14.25 * IN_TO_M, 265.74 * IN_TO_M);
 	}

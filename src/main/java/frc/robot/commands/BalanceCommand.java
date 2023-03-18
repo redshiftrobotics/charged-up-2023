@@ -40,7 +40,7 @@ public class BalanceCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		// TODO: Figure out if center of mass should be added or subtracted
-		pidController.setSetpoint(Constants.CHARGE_STATION_POSITION.getX() + Constants.CENTER_OF_MASS_OFFSET);
+		pidController.setSetpoint(FieldConstants.CHARGE_STATION_POSITION.getX() + Constants.CENTER_OF_MASS_OFFSET);
 
 	}
 

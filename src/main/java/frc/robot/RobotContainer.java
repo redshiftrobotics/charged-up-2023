@@ -96,28 +96,28 @@ public class RobotContainer {
 	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
 
 	// Initialize the bottom arm and top arm
-	private final BottomArm bottomArm = new BottomArm(
+	private static final BottomArm bottomArm = new BottomArm(
 			ArmConstants.BOTTOM_ARM_MOTOR_ONE_ID,
 			ArmConstants.BOTTOM_ARM_MOTOR_TWO_ID,
 			ArmConstants.BOTTOM_ARM_ENCODER_ID,
 			ArmConstants.BOTTOM_ARM_MIN_DEGREE,
 			ArmConstants.BOTTOM_ARM_MAX_DEGREE);
-	private final TopArm topArm = new TopArm(
+	private static final TopArm topArm = new TopArm(
 			ArmConstants.TOP_ARM_MOTOR_ID,
 			ArmConstants.TOP_ARM_ENCODER_ID,
 			ArmConstants.TOP_ARM_MIN_DEGREE,
 			ArmConstants.TOP_ARM_MAX_DEGREE);
 
 	// Initialize the arm manager so that setting the degrees of both arms is simpler
-	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
+	private static final ArmManager armManager = new ArmManager(bottomArm, topArm);
 
 	// Commands to set the state of the arm manager 
-	private final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
-	private final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
-	private final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
-	private final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
-	private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
-	private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
+	public static final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
+	public static final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
+	public static final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
+	public static final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
+	public static final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
+	public static final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
 	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 360);
 
@@ -189,6 +189,6 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
-		return Autos.auto1(drivetrain);
+		return Autos.basicAuto(drivetrain, armManager);
 	}
 }
