@@ -42,7 +42,7 @@ public class SwerveDriveCommand extends CommandBase {
 
 		double speedX = -joystick.getX();
 		double speedY = -joystick.getY();
-		double speedR = joystick.getZ();
+		double speedR = -joystick.getZ();
 
 		if (speedX < SwerveDriveConstants.JOYSTICK_DEADZONE && speedX > -SwerveDriveConstants.JOYSTICK_DEADZONE) {
 			speedX = 0;
