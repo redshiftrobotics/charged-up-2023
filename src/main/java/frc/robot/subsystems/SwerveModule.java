@@ -70,6 +70,8 @@ public class SwerveModule extends SubsystemBase {
 				SwerveDriveConstants.ANGULAR_PID_I,
 				SwerveDriveConstants.ANGULAR_PID_D);
 
+		smartdashboardID = "" + angularEncoderDeviceID;
+
 		angularPIDController.enableContinuousInput(0, 360);
 
 		angularMotor = new CANSparkMax(angularMotorDeviceID, MotorType.kBrushless);
@@ -145,9 +147,10 @@ public class SwerveModule extends SubsystemBase {
 	// Calculates the next output value of each PID controller and sets motors to them
 	@Override
 	public void periodic() {
-		// double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
-		// angularMotor.set(test);
-		// SmartDashboard.putNumber("Angular PID value", test);
+		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
+		angularMotor.set(test);
+		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
+		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
 		// // Convert from RPM to MPS
 		// velocitySparkMaxPIDController.setReference(

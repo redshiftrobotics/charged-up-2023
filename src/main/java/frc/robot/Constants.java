@@ -41,10 +41,10 @@ public final class Constants {
 
 		public static double JOYSTICK_DEADZONE = 0.05;
 		// Meters per second
-		public static final double MAX_SPEED = 0.01;
+		public static final double MAX_SPEED = 0.02;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = Math.PI / 300;
+		public static final double MAX_ROTATION_SPEED = 0.02;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
@@ -60,22 +60,22 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ID_FL = 4;
 		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = 155 - 2;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90;
 
 		public static final int ANGULAR_MOTOR_ID_FR = 8;
 		public static final int VELOCITY_MOTOR_ID_FR = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = 316 - 180 - 3;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
 		public static final int VELOCITY_MOTOR_ID_BL = 31;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = 225 + 36;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_BR = 3;
 		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = 270 + 16;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
@@ -96,7 +96,7 @@ public final class Constants {
 		public static final double ANGULAR_MOTOR_GEAR_RATIO = 12.8;
 		public static final double ANGULAR_ENCODER_GEAR_RATIO = 1;
 
-		public static final double ANGULAR_PID_P = 0.005;
+		public static final double ANGULAR_PID_P = 0.0075;
 		public static final double ANGULAR_PID_I = 0.0;
 		public static final double ANGULAR_PID_D = 0;
 

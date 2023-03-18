@@ -29,7 +29,9 @@ public class RotateToCommand extends CommandBase {
 		this.drivetrain = drivetrain;
 		this.desiredRotation = desiredRotation;
 		rotation = drivetrain.getRobotPosition().getRotation();
-
+		pidController.enableContinuousInput(0, 2 * Math.PI);
+		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
+				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(drivetrain);
 	}
@@ -45,10 +47,7 @@ public class RotateToCommand extends CommandBase {
 	@Override
 	public void execute() {
 		rotation = drivetrain.getRobotPosition().getRotation();
-		// Get the difference in position and alter it to make the PIDController take the shortest path.
-		// https://www.desmos.com/calculator/40g32n3myv
-		double rotationSpeed = pidController.calculate(
-				((rotation.getRadians() - desiredRotation.getRadians() + Math.PI) % (Math.PI * 2)) - Math.PI);
+		double rotationSpeed = pidController.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, 0, rotationSpeed));
 	}
 
@@ -61,10 +60,6 @@ public class RotateToCommand extends CommandBase {
 	// Returns true when the error is low enough and the speed is slow enough to stop.
 	@Override
 	public boolean isFinished() {
-		if (pidController.getPositionError() < SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE &
-				drivetrain.getRotationSpeed() < SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE) {
-			return true;
-		}
-		return false;
+		return pidController.atSetpoint();
 	}
 }
