@@ -100,15 +100,15 @@ public class BottomArm extends SubsystemBase {
 	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		armMotorControllerGroup.setVoltage(
-				armPIDController.calculate(
-						getEncoderRotation().getRadians(),
-						armAngleRotation2d.getRadians())
+		// armMotorControllerGroup.setVoltage(
+		// 		armPIDController.calculate(
+		// 				getEncoderRotation().getRadians(),
+		// 				armAngleRotation2d.getRadians())
 		// 				+
 		// 				feedForward.calculate(
 		// 						armAngleRotation2d.getRadians(),
 		// 						armPIDController.getSetpoint().velocity)
-		);
+		// );
 
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));

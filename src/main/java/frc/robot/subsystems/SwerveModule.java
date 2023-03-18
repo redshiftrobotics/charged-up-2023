@@ -153,12 +153,12 @@ public class SwerveModule extends SubsystemBase {
 		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
 		// // Convert from RPM to MPS
-		// velocitySparkMaxPIDController.setReference(
-		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
-		// 		CANSparkMax.ControlType.kVelocity);
-		// SmartDashboard.putNumber("Velocity set value",
-		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-		// SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
+		velocitySparkMaxPIDController.setReference(
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
+				CANSparkMax.ControlType.kVelocity);
+		SmartDashboard.putNumber("Velocity set value",
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID

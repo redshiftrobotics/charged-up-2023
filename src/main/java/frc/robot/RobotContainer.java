@@ -14,6 +14,7 @@ import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
+import frc.robot.subsystems.DriveCamera;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -82,6 +84,9 @@ public class RobotContainer {
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
 
 	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+
+	private final DriveCamera driveCamera = new DriveCamera();
+
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro, swerveModuleFL,
 			swerveModuleFR, swerveModuleBL, swerveModuleBR);
