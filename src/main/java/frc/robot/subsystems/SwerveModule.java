@@ -13,11 +13,14 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.ctre.phoenix.sensors.CANCoderConfiguration;
+import com.ctre.phoenix.sensors.SensorTimeBase;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.Constants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 public class SwerveModule extends SubsystemBase {
@@ -67,6 +70,8 @@ public class SwerveModule extends SubsystemBase {
 				SwerveDriveConstants.ANGULAR_PID_P,
 				SwerveDriveConstants.ANGULAR_PID_I,
 				SwerveDriveConstants.ANGULAR_PID_D);
+
+		smartdashboardID = "" + angularEncoderDeviceID;
 
 		angularPIDController.enableContinuousInput(0, 360);
 
@@ -145,15 +150,16 @@ public class SwerveModule extends SubsystemBase {
 	public void periodic() {
 		double test = angularPIDController.calculate(getYawRotation(), state.angle.getDegrees());
 		angularMotor.set(test);
-		SmartDashboard.putNumber("Angular PID value", test);
+		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
+		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
-		// Convert from RPM to MPS
-		velocitySparkMaxPIDController.setReference(
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
-				CANSparkMax.ControlType.kVelocity);
-		SmartDashboard.putNumber("Velocity set value",
-				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
+		// // Convert from RPM to MPS
+		// velocitySparkMaxPIDController.setReference(
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
+		// 		CANSparkMax.ControlType.kVelocity);
+		// SmartDashboard.putNumber("Velocity set value",
+		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		// SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID
