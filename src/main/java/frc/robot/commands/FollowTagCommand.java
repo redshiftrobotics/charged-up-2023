@@ -7,7 +7,6 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.CameraConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.SwerveDrivetrain;
@@ -53,16 +52,13 @@ public class FollowTagCommand extends CommandBase {
 	public void execute() {
 
 		// get 3d pose of tag
-		final Transform3d tagTransform3d = camera.getDetectedAprilTagById(targetTagId);
+		Transform3d tagTransform3d = camera.getDetectedAprilTagById(targetTagId);
 
-		// Quality link to what is happening:
-		// https://docs.google.com/presentation/d/1-SesKPdsZrPE4WUMpFoU9UIIiOYIwO94OG4yPuYZS1s/edit?usp=sharing
+		// remove the extra distance from transform origin being at very center of robot
+		tagTransform3d = camera.adjustTransformToRobotFrontCenter(tagTransform3d);
 
 		// make fixed tag pose into 2d
 		Transform2d tagPose2d = camera.makeTransformInto2d(tagTransform3d);
-
-		// remove the extra distance from being placed a certain distance away from the very front and center of the robot
-		tagPose2d = tagPose2d.plus(camera.makeTransformInto2d(CameraConstants.CAMERA_POSITION));
 
 		// create a desired location that accounts for tags rotation
 		final Transform2d rotatedDesiredTransformToTag = new Transform2d(

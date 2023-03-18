@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.Constants.AprilTagConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.subsystems.Camera;
 import frc.robot.Constants.SwerveDriveConstants;
@@ -45,7 +45,7 @@ public class RobotContainer {
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
 
-	private final Camera camera = new Camera(AprilTagConstants.CAMERA_PORT);
+	private final Camera camera = new Camera(VisionConstants.CAMERA_PORT);
 
 	// private final SwerveModule module1 = new SwerveModule(
 	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,

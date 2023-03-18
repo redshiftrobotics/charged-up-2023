@@ -14,10 +14,11 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.networktables.DoubleArraySubscriber;
+import edu.wpi.first.networktables.DoubleArrayTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.AprilTagConstants;
+import frc.robot.Constants.VisionConstants;
 
 public class Camera extends SubsystemBase {
 	private final NetworkTableInstance networkTableInst;
@@ -36,12 +37,14 @@ public class Camera extends SubsystemBase {
 		networkTable = networkTableInst.getTable(String.format("camera-%s-tags", cameraID));
 
 		// Sets subscribers for topics
-		for (int i = AprilTagConstants.MIN_TAG_ID; i <= AprilTagConstants.MAX_TAG_ID; i++) {
-			final DoubleArraySubscriber sub = networkTable.getDoubleArrayTopic(Integer.toString(i))
-					.subscribe(new double[] {});
-			aprilTagSubs.put(i, sub);
+		// TODO test if this works
+		for (String topicName : networkTable.getKeys()) {
+			final DoubleArrayTopic topic = networkTable.getDoubleArrayTopic(topicName);
+			final DoubleArraySubscriber sub = topic.subscribe(new double[] {});
 
-			aprilTags.put(i, null);
+			final int tagId = Integer.getInteger(topicName);
+			aprilTagSubs.put(tagId, sub);
+			aprilTags.put(tagId, null);
 		}
 	}
 
@@ -49,11 +52,19 @@ public class Camera extends SubsystemBase {
 	 * @param values double[] of values [Translation3d.x, Translation3d.y, Translation3d.z, Rotation3d.Quaternion.w, Rotation3d.Quaternion.x, Rotation3d.Quaternion.y, Rotation3d.Quaternion.z]
 	 * @return new {@link edu.wpi.first.math.geometry.Transform3d Transform3d} made from values
 	 */
-	private Transform3d convertToTransform3d(double[] values) {
+	private Transform3d reconstructTransform3d(double[] values) {
 		return values.length == 0 ? null
 				: new Transform3d(
 						new Translation3d(values[0], values[1], values[2]),
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
+	}
+
+	/** Convert tag location transform with origin at center of robot to a transform with origin at very center front of robot
+	 * @param tranformFromCenter transform3d with origin at center of robot
+	 * @return transform3d with origin at very front and center of robot
+	 */
+	public Transform3d adjustTransformToRobotFrontCenter(Transform3d tranformFromCenter) {
+		return tranformFromCenter.plus(VisionConstants.CENTER_CENTER_TO_FRONT_CENTER);
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of tag with specified ID. If it is not found it returns null.
@@ -66,7 +77,7 @@ public class Camera extends SubsystemBase {
 		if (!aprilTagSubs.containsKey(tagId)) {
 			throw new Error("Invalid tag key");
 		}
-		return convertToTransform3d(aprilTagSubs.get(tagId).get());
+		return reconstructTransform3d(aprilTagSubs.get(tagId).get());
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of all found tags. If it is not found it's value will be null.
@@ -117,7 +128,7 @@ public class Camera extends SubsystemBase {
 			final DoubleArraySubscriber sub = aprilTagSubs.get(tagId);
 
 			final double[] value = sub.get();
-			final Transform3d tagLocation = convertToTransform3d(value);
+			Transform3d tagLocation = reconstructTransform3d(value);
 
 			aprilTags.put(tagId, tagLocation);
 
@@ -128,6 +139,7 @@ public class Camera extends SubsystemBase {
 				anyTagFound = true;
 			}
 		}
+
 		if (!anyTagFound) {
 			System.out.println(String.format("Rio: No Tags [%s]", System.currentTimeMillis()));
 		}

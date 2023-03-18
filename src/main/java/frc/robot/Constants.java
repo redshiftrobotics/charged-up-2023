@@ -31,11 +31,12 @@ public final class Constants {
 
 	public static final double CENTER_OF_MASS_OFFSET = 0;
 
-	public static class AprilTagConstants {
+	public static class VisionConstants {
 		public static final int CAMERA_PORT = 0;
 
-		public static final int MIN_TAG_ID = 1;
-		public static final int MAX_TAG_ID = 8;
+		public static final Transform3d CENTER_CENTER_TO_FRONT_CENTER = new Transform3d(
+				new Translation3d(0, 0.5, 0.5),
+				new Rotation3d());
 	}
 
 	public static class OperatorConstants {
@@ -129,9 +130,6 @@ public final class Constants {
 	}
 
 	public static final class CameraConstants {
-		// TODO get camera position from design.
-		public static final Transform3d CAMERA_POSITION = new Transform3d(new Translation3d(0, 0.5, 0.5),
-				new Rotation3d());
 
 	}
 
