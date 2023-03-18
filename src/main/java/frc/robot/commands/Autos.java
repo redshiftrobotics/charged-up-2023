@@ -24,22 +24,25 @@ public final class Autos {
 	// }
 
 	// 
+	private static Translation2d findRelativeOffset(Translation2d start, Translation2d goal) {
+		return goal.minus(start);
+	}
+
 	public static SequentialCommandGroup basicAuto(SwerveDrivetrain drivetrain, ArmManager armManager) {
 		// starts in front of bottom Grid node, aligned with it and pushed up against barriers	
-		Translation2d START_POS = FieldConstants.BLUE_GRID_NODE_1.plus(
+		final Translation2d START_POS = FieldConstants.BLUE_GRID_NODE_1.plus(
 				new Translation2d(RobotConstants.WIDTH / 2, 0));
 
 		// hideous abombination
 		return new SequentialCommandGroup(
 				// place cube on 3rd level of Grid
 				RobotContainer.armScoreThreeCommand,
-
 				// turn around and drive to staging point 1
 				new ParallelCommandGroup(
 						RobotContainer.armDriveCommand,
 						new RotateAndDriveSimultaneousCommand(
 								drivetrain,
-								new Rotation2d(180), true,
+								new Rotation2d(Math.PI), false,
 								FieldConstants.BLUE_STAGING_MARK_1.minus(START_POS), true)),
 
 				// grab new game object
@@ -48,13 +51,26 @@ public final class Autos {
 				// drive back to Grid node 2
 				new ParallelCommandGroup(
 						RobotContainer.armDriveCommand,
-						new DriveDistanceCommand(drivetrain,
-								FieldConstants.BLUE_GRID_NODE_2.plus(new Translation2d(RobotConstants.LENGTH / 2, 0)),
+						new RotateAndDriveSimultaneousCommand(drivetrain, new Rotation2d(Math.PI), false,
+								findRelativeOffset(
+										FieldConstants.BLUE_STAGING_MARK_1.minus(RobotConstants.PICKUP_OFFSET),
+										FieldConstants.BLUE_GRID_NODE_2.plus(RobotConstants.LENGTH_OFFSET)),
 								true)),
 
 				// score at level 3 at node 2
-				RobotContainer.armScoreThreeCommand);
+				RobotContainer.armScoreThreeCommand,
 
+				new DriveDistanceCommand(drivetrain,
+						findRelativeOffset(
+								// Left of the charge station by the distance from center to edge and half the length of robot
+								FieldConstants.BLUE_CHARGE_STATION.minus(
+										FieldConstants.CHARGE_STATION_RAMP_OFFSET.minus(RobotConstants.LENGTH_OFFSET)),
+								FieldConstants.BLUE_GRID_NODE_2.plus(RobotConstants.LENGTH_OFFSET)),
+						true),
+
+				new BalanceCommand(drivetrain)
+
+		);
 	}
 
 	private Autos() {

@@ -103,7 +103,11 @@ public final class Constants {
 		public static final double BUMPER_WIDTH = 0;
 		public static final double WIDTH = (24 + BUMPER_WIDTH * 2) * IN_TO_M;
 		public static final double LENGTH = (36 + BUMPER_WIDTH * 2) * IN_TO_M;
-		public static final Translation2d CORNER_TO_CENTER = new Translation2d(WIDTH / 2, LENGTH / 2);
+		public static final Translation2d LENGTH_OFFSET = new Translation2d(LENGTH / 2, 0);
+
+		// X value should be how far away the robot needs to be to pick up an object
+		public static final Translation2d PICKUP_OFFSET = new Translation2d(0, 0);
+
 	}
 
 	public static class FieldConstants {
@@ -140,6 +144,8 @@ public final class Constants {
 
 		public static final Translation2d BLUE_CHARGE_STATION = new Translation2d(137.2 * IN_TO_M, 107.39 * IN_TO_M);
 		public static final Translation2d RED_CHARGE_STATION = new Translation2d(514.05 * IN_TO_M, 107.39 * IN_TO_M);
+		// offset to ramp of charge station from center
+		public static final Translation2d CHARGE_STATION_RAMP_OFFSET = new Translation2d(36.06, 0);
 
 		// nodes are from bottom to top
 		public static final Translation2d RED_GRID_NODE_1 = new Translation2d(593.77 * IN_TO_M, 20.19 * IN_TO_M);
