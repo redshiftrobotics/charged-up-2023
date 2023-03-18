@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -68,11 +69,22 @@ public class FollowTagCommand extends CommandBase {
 				desiredTransformToTag.getTranslation().rotateBy(tagPose2d.getRotation()),
 				desiredTransformToTag.getRotation());
 
-		// get to desired distance away from tag
+		// include desired distance away from tag
 		tagPose2d = tagPose2d.plus(rotatedDesiredTransformToTag);
 
-		drivetrain.setSwerveModuleStates(
-				new ChassisSpeeds(tagPose2d.getX(), tagPose2d.getY(), tagPose2d.getRotation().getRadians()));
+		pidRotation.setSetpoint(tagPose2d.getRotation().getRadians());
+		pidVelocity.setSetpoint(tagPose2d.getTranslation().getNorm());
+
+		final Rotation2d drivetrainRotation = drivetrain.getRobotPosition().getRotation();
+
+		final double rotationSpeed = pidRotation
+				.calculate(drivetrainRotation.minus(tagPose2d.getRotation()).getRadians());
+
+		final Translation2d velocity = new Translation2d(
+				pidVelocity.calculate(tagPose2d.getTranslation().getNorm()),
+				drivetrainRotation);
+
+		drivetrain.setSwerveModuleStates(new ChassisSpeeds(velocity.getX(), velocity.getY(), rotationSpeed));
 
 	}
 
