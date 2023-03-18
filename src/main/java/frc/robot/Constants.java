@@ -109,9 +109,9 @@ public final class Constants {
 		public static final double ROBOT_VELOCITY_PID_I = 0;
 		public static final double ROBOT_VELOCITY_PID_D = 0;
 
-		public static final double ROBOT_ANGULAR_PID_P = 0.05;
+		public static final double ROBOT_ANGULAR_PID_P = -0.2;
 		public static final double ROBOT_ANGULAR_PID_I = 0;
-		public static final double ROBOT_ANGULAR_PID_D = 0;
+		public static final double ROBOT_ANGULAR_PID_D = -0.005;
 
 		// The maximum speed and error the robot will stop at for DriveDistanceCommand.
 		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
@@ -138,7 +138,7 @@ public final class Constants {
 	public static class ArmConstants {
 		public static final double BOTTOM_ARM_PID_P = -2;
 		public static final double BOTTOM_ARM_PID_I = 0;
-		public static final double BOTTOM_ARM_PID_D = 0;
+		public static final double BOTTOM_ARM_PID_D = -0.5;
 
 		public static final double TOP_ARM_PID_P = -2;
 		public static final double TOP_ARM_PID_I = 0;

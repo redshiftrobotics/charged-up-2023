@@ -168,8 +168,8 @@ public class RobotContainer {
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
-		// driverJoystick.button(3).onTrue(toggleFieldRelative);
-		// driverJoystick.button(2).onTrue(stopCommand);
+		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		driverJoystick.button(2).whileTrue(stopCommand);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);

@@ -5,6 +5,7 @@ import frc.robot.subsystems.SwerveDrivetrain;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 /** A command that rotates the robot a given amount in place. */
@@ -28,8 +29,9 @@ public class RotateByCommand extends CommandBase {
 	 */
 	public RotateByCommand(SwerveDrivetrain drivetrain, Rotation2d desiredRotation) {
 		this.drivetrain = drivetrain;
-		this.desiredRotation = desiredRotation;
+
 		initialRotation = drivetrain.getRobotPosition().getRotation();
+		this.desiredRotation = Rotation2d.fromDegrees(initialRotation.getDegrees() + desiredRotation.getDegrees());
 
 		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
@@ -51,6 +53,8 @@ public class RotateByCommand extends CommandBase {
 		rotation = drivetrain.getRobotPosition().getRotation().minus(initialRotation);
 		double rotationSpeed = pidController.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, 0, rotationSpeed));
+		SmartDashboard.putNumber("Rotate by current", rotation.getDegrees());
+		SmartDashboard.putNumber("Rotate by destination", desiredRotation.getDegrees());
 	}
 
 	// Stop robot when command ends.
