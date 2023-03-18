@@ -57,8 +57,8 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
-		public static final int ANGULAR_MOTOR_ID_FL = 7;
-		public static final int VELOCITY_MOTOR_ID_FL = 8;
+		public static final int ANGULAR_MOTOR_ID_FL = 4;
+		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90;
 
@@ -72,8 +72,8 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90;
 
-		public static final int ANGULAR_MOTOR_ID_BR = 18;
-		public static final int VELOCITY_MOTOR_ID_BR = 19;
+		public static final int ANGULAR_MOTOR_ID_BR = 3;
+		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90;
 
