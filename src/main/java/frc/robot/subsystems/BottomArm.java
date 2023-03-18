@@ -60,7 +60,7 @@ public class BottomArm extends SubsystemBase {
 		armPIDController.enableContinuousInput(0, 2 * Math.PI);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
-		armAngleRotation2d = Rotation2d.fromDegrees(290);
+		armAngleRotation2d = Rotation2d.fromDegrees(310);
 	}
 
 	// Getting the rotation of the encoder which will be used for moving the arm and setting limits for the arm
