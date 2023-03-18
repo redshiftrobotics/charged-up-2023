@@ -62,13 +62,13 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90;
 
-		public static final int ANGULAR_MOTOR_ID_FR = 5;
-		public static final int VELOCITY_MOTOR_ID_FR = 6;
+		public static final int ANGULAR_MOTOR_ID_FR = 8;
+		public static final int VELOCITY_MOTOR_ID_FR = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
-		public static final int VELOCITY_MOTOR_ID_BL = 1;
+		public static final int VELOCITY_MOTOR_ID_BL = 31;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90;
 
