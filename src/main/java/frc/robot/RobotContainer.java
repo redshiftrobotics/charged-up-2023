@@ -175,9 +175,9 @@ public class RobotContainer {
 		// driverJoystick.button(1).onTrue(setModule);
 		// driverJoystick.button(2).onTrue(zeroModule);
 
-		// driverJoystick.button(5).onTrue(driveDistanceTest);
-		// driverJoystick.button(6).onTrue(driveDurationTest);
-		// driverJoystick.button(4).onTrue(rotateTest);
+		driverJoystick.button(5).onTrue(driveDistanceTest);
+		driverJoystick.button(6).onTrue(driveDurationTest);
+		driverJoystick.button(4).onTrue(rotateTest);
 
 		// driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
 		// driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
