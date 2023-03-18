@@ -46,7 +46,7 @@ public class TopArm extends SubsystemBase {
 				ArmConstants.TOP_ARM_PID_I,
 				ArmConstants.TOP_ARM_PID_D,
 				new TrapezoidProfile.Constraints(ArmConstants.TOP_ARM_MAX_VELOCITY, ArmConstants.TOP_ARM_MAX_ACCEL));
-
+		armPIDController.enableContinuousInput(0, 2 * Math.PI);
 		armMotor = new CANSparkMax(armMotorId, MotorType.kBrushless);
 		armMotor.setIdleMode(IdleMode.kBrake);
 		armEncoder = new CANCoder(armEncoderId);
