@@ -40,7 +40,7 @@ public class SwerveDriveCommand extends CommandBase {
 	@Override
 	public void execute() {
 
-		double speedX = -joystick.getX();
+		double speedX = joystick.getX();
 		double speedY = -joystick.getY();
 		double speedR = -joystick.getZ();
 
@@ -55,9 +55,9 @@ public class SwerveDriveCommand extends CommandBase {
 		}
 
 		ChassisSpeeds speeds = new ChassisSpeeds(
-				-speedX * SwerveDriveConstants.MAX_SPEED,
-				speedY * SwerveDriveConstants.MAX_SPEED,
-				speedR * SwerveDriveConstants.MAX_ROTATION_SPEED);
+				speedX,
+				speedY,
+				speedR);
 		SmartDashboard.putNumber("Joy X", joystick.getX());
 		SmartDashboard.putNumber("Joy Y", joystick.getY());
 		SmartDashboard.putNumber("Joy R", joystick.getTwist());

@@ -84,7 +84,7 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setI(SwerveDriveConstants.VELOCITY_PID_I);
 		velocitySparkMaxPIDController.setD(SwerveDriveConstants.VELOCITY_PID_D);
 		velocitySparkMaxPIDController.setFF(SwerveDriveConstants.VELOCITY_PID_FF);
-		velocitySparkMaxPIDController.setOutputRange(-1, 1);
+		velocitySparkMaxPIDController.setOutputRange(-SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_SPEED);
 		velocitySparkMaxPIDController.setIZone(0);
 
 		// Rotational units: 4096 / rotation

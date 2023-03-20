@@ -39,12 +39,13 @@ public final class Constants {
 
 	public static class SwerveDriveConstants {
 
-		public static double JOYSTICK_DEADZONE = 0.05;
+		public static double JOYSTICK_DEADZONE = 0.1;
+
 		// Meters per second
 		public static final double MAX_SPEED = 0.02;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = 0.02;
+		// public static final double MAX_ROTATION_SPEED = 0.02;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
@@ -114,8 +115,8 @@ public final class Constants {
 		public static final double ROBOT_ANGULAR_PID_D = -0.005;
 
 		// The maximum speed and error the robot will stop at for DriveDistanceCommand.
-		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
-		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = 0.1;
+		public static final double ROBOT_DISTANCE_TOLERANCE = 0.5;
+		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = .05;
 
 		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
 		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
