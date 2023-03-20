@@ -12,6 +12,7 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.SetArmDegreeCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ToggleFieldRelativeCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
 import frc.robot.subsystems.DriveCamera;
@@ -100,7 +101,7 @@ public class RobotContainer {
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
+	private final Command toggleFieldRelative = new ToggleFieldRelativeCommand(drivetrain);
 
 	// Initialize the bottom arm and top arm
 	private final BottomArm bottomArm = new BottomArm(
