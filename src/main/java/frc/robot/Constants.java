@@ -61,22 +61,22 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ID_FL = 4;
 		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_FR = 8;
 		public static final int VELOCITY_MOTOR_ID_FR = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
 		public static final int VELOCITY_MOTOR_ID_BL = 31;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_BR = 3;
 		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90 - 90;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
