@@ -55,6 +55,10 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 		// If given is not field-relative, rotate by the rotation to make it field-relative.
 		this.desiredRotation = (fieldRelativeRotation) ? desiredRotation : desiredRotation.plus(rotation);
 
+		if (fieldRelativeRotation) {
+			pidRotation.enableContinuousInput(0, 2 * Math.PI);
+		}
+
 		pidRotation.enableContinuousInput(0, 2 * Math.PI);
 		pidRotation.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
