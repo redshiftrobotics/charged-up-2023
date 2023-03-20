@@ -87,10 +87,9 @@ public final class Constants {
 
 	}
 
-	public static class IntakeConstants {
-		public static final double INTAKE_MOTOR_SPEED = 0.5;
-		public static final int TOP_MOTOR_ID = 0;
-		public static final int BOTTOM_MOTOR_ID = 1;
+	public static class ClawConstants {
+		public static final int clawMotor1Id = 0;
+		public static final int clawMotor2Id = 1;
 	}
 
 }

@@ -1,14 +1,18 @@
 package frc.robot.commands;
 
-import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.JakeClaw;
+import frc.robot.subsystems.SpringClaw;
+
+import javax.swing.Spring;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class SetClawDirection extends CommandBase {
+public class SetSpringClawDirection extends CommandBase {
 	@SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-	private final Claw claw;
+	private final SpringClaw claw;
 	private double desiredClawDirection;
 
-	public SetClawDirection(Claw claw, double desiredClawDirection) {
+	public SetSpringClawDirection(SpringClaw claw, double desiredClawDirection) {
 		this.claw = claw;
 		this.desiredClawDirection = desiredClawDirection;
 		addRequirements(claw);
@@ -16,7 +20,7 @@ public class SetClawDirection extends CommandBase {
 
 	@Override
 	public void execute() {
-		claw.setDirection(desiredClawDirection);
+		claw.setSpeed(desiredClawDirection);
 	}
 
 	@Override

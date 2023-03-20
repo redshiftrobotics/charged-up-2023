@@ -4,14 +4,14 @@
 
 package frc.robot;
 
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ClawConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.commands.Autos;
-import frc.robot.commands.SetClawDirection;
+import frc.robot.commands.SetJakeClawDirection;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
-import frc.robot.subsystems.Claw;
+import frc.robot.subsystems.JakeClaw;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
 
@@ -46,13 +46,13 @@ public class RobotContainer {
 	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
 	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 
-	private final Claw claw = new Claw(0);
+	private final JakeClaw claw = new JakeClaw(ClawConstants.clawMotor1Id, ClawConstants.clawMotor2Id);
 
 	// TODO find out if a posative or negative direction is open/ close 
 
-	private final Command clawClose = new SetClawDirection(claw, -0.01);
-	private final Command clawOpen = new SetClawDirection(claw, 0.01);
-	private final Command clawIdle = new SetClawDirection(claw, 0);
+	private final Command clawClose = new SetJakeClawDirection(claw, -0.01);
+	private final Command clawOpen = new SetJakeClawDirection(claw, 0.01);
+	private final Command clawIdle = new SetJakeClawDirection(claw, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
 	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
@@ -97,7 +97,7 @@ public class RobotContainer {
 
 		driverJoystick.button(4).onTrue(clawClose);
 		driverJoystick.button(5).onTrue(clawOpen);
-		driverJoystick.button(6).onFalse(clawIdle);
+		driverJoystick.button(5).or(driverJoystick.button(4)).onFalse(clawIdle);
 	}
 
 	/**

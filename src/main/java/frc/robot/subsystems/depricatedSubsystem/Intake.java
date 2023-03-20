@@ -7,7 +7,7 @@ package frc.robot.subsystems.depricatedSubsystem;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import frc.robot.Constants.IntakeConstants;
+import frc.robot.Constants.ClawConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 // spins wheels to intake cones and cubes
@@ -31,8 +31,8 @@ public class Intake extends SubsystemBase {
 			motorBottom.set(0);
 			isOn = false;
 		} else {
-			motorTop.set(direction * IntakeConstants.INTAKE_MOTOR_SPEED);
-			motorBottom.set(-direction * IntakeConstants.INTAKE_MOTOR_SPEED);
+			motorTop.set(direction);
+			motorBottom.set(-direction);
 			isOn = true;
 		}
 	}
