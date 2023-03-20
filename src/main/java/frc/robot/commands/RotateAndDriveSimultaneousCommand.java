@@ -58,8 +58,10 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 		pidRotation.enableContinuousInput(0, 2 * Math.PI);
 		pidRotation.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
+		pidRotation.setSetpoint(desiredRotation.getRadians());
 		pidVelocity.setTolerance(SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE);
+		pidVelocity.setTolerance(driveDistance.getNorm());
 	}
 
 	// Called when the command is initially scheduled.
@@ -81,7 +83,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 
 		// If robot is not already at the correct rotation, set the new rotation speed from the PID.
 		if (!pidRotation.atSetpoint()) {
-			rotationSpeed = pidRotation.calculate(rotation.getRadians() - desiredRotation.getRadians());
+			rotationSpeed = pidRotation.calculate(rotation.getRadians());
 		}
 
 		position = drivetrain.getRobotPosition().getTranslation();
@@ -90,7 +92,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 
 		// If robot is not already at the correct position, set the new velocity.
 		if (!pidVelocity.atSetpoint()) {
-			velocity = new Translation2d(pidVelocity.calculate(distance.getNorm()), rotation);
+			velocity = new Translation2d(pidVelocity.calculate(distance.getNorm()), distance.getAngle());
 		}
 
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(velocity.getX(), velocity.getY(), rotationSpeed));

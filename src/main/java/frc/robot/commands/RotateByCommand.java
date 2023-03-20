@@ -35,6 +35,7 @@ public class RotateByCommand extends CommandBase {
 
 		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
+		pidController.setSetpoint(desiredRotation.getRadians());
 
 		// Use addRequirements() here to declare subsystem dependencies.
 		addRequirements(drivetrain);
@@ -51,7 +52,7 @@ public class RotateByCommand extends CommandBase {
 	@Override
 	public void execute() {
 		rotation = drivetrain.getRobotPosition().getRotation().minus(initialRotation);
-		double rotationSpeed = pidController.calculate(rotation.getRadians() - desiredRotation.getRadians());
+		double rotationSpeed = pidController.calculate(rotation.getRadians());
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, 0, rotationSpeed));
 		SmartDashboard.putNumber("Rotate by current", rotation.getDegrees());
 		SmartDashboard.putNumber("Rotate by destination", desiredRotation.getDegrees());
