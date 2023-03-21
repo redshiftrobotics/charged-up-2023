@@ -130,7 +130,7 @@ public class SwerveModule extends SubsystemBase {
 	 */
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(velocityEncoder.getPosition(),
-				new Rotation2d(angularEncoder.getAbsolutePosition()));
+				Rotation2d.fromDegrees(angularEncoder.getAbsolutePosition()));
 	}
 
 	/** Sets the speed and desired angle of the module

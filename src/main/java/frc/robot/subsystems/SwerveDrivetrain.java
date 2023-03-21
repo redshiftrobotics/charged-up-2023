@@ -29,13 +29,13 @@ import frc.robot.Constants.SwerveDriveConstants;
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationFR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBR = new Translation2d(
+	private static final Translation2d locationFR = new Translation2d(
 			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBL = new Translation2d(
+			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
@@ -147,6 +147,9 @@ public class SwerveDrivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("SpeedsX", speeds.vxMetersPerSecond);
 		SmartDashboard.putNumber("SpeedsY", speeds.vyMetersPerSecond);
 		SmartDashboard.putNumber("SpeedsR", speeds.omegaRadiansPerSecond);
+
+		SmartDashboard.putNumber("Robot X", pose.getX());
+		SmartDashboard.putNumber("Robot Y", pose.getY());
 	}
 
 	/** stops all swerve modules */
