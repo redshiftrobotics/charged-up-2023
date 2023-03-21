@@ -59,12 +59,21 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** Convert tag location transform with origin at center of robot to a transform with origin at very center front of robot
-	 * @param tranformFromCenter transform3d with origin at center of robot
-	 * @return transform3d with origin at very front and center of robot
+	/** Convert tag location transform with origin at center of robot to a transform with origin at very center front of robot.
+	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center of robot
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at very front and center of robot
 	 */
-	public Transform3d adjustTransformToRobotFrontCenter(Transform3d tranformFromCenter) {
+	public Transform3d adjustTransformToRobotFront(Transform3d tranformFromCenter) {
 		return tranformFromCenter.plus(VisionConstants.CENTER_CENTER_TO_FRONT_CENTER);
+	}
+
+	/** Convert tag location transform with origin at camera to a transform with origin at very center front of robot.
+	 * This method is called to change all {@link edu.wpi.first.math.geometry.Transform3d Transform3d}s to tags as soon as they are gotten from pi coprocessor.
+	 * @param tranformFromCamera {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at camera
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at very center of robot
+	 */
+	private Transform3d adjustTransformToRobotCenter(Transform3d tranformFromCamera) {
+		return tranformFromCamera.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER);
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of tag with specified ID. If it is not found it returns null.
