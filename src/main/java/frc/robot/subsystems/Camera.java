@@ -136,21 +136,24 @@ public class Camera extends SubsystemBase {
 		for (Integer tagId : aprilTagSubs.keySet()) {
 			final DoubleArraySubscriber sub = aprilTagSubs.get(tagId);
 
+			// get deconstructed transform3d values from subscriber. 
 			final double[] value = sub.get();
-			Transform3d tagLocation = reconstructTransform3d(value);
+
+			// reconstruct transform3d and adjust it so its not centered at camera but instead at very center of robot
+			Transform3d tagLocation = adjustTransformToRobotCenter(reconstructTransform3d(value));
 
 			aprilTags.put(tagId, tagLocation);
 
 			if (tagLocation != null) {
 				// prints time since proggram started, april tag id, and distance to said tag in feet
-				System.out.println(String.format("Rio: Found April Tag #%s at distance of %.1f feet [%s]",
+				System.out.println(String.format("Found April Tag #%s at distance of %.1f feet [%s]",
 						tagId, getDistance(tagLocation) / 304.8, System.currentTimeMillis()));
 				anyTagFound = true;
 			}
 		}
 
 		if (!anyTagFound) {
-			System.out.println(String.format("Rio: No Tags [%s]", System.currentTimeMillis()));
+			System.out.println(String.format("No Tags [%s]", System.currentTimeMillis()));
 		}
 
 	}
