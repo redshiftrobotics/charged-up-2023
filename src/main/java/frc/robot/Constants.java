@@ -137,11 +137,11 @@ public final class Constants {
 	}
 
 	public static class ArmConstants {
-		public static final double BOTTOM_ARM_PID_P = -2;
+		public static final double BOTTOM_ARM_PID_P = -1;
 		public static final double BOTTOM_ARM_PID_I = 0;
 		public static final double BOTTOM_ARM_PID_D = -0.5;
 
-		public static final double TOP_ARM_PID_P = -2;
+		public static final double TOP_ARM_PID_P = -1;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
 
@@ -154,7 +154,7 @@ public final class Constants {
 		public static final int TOP_ARM_ENCODER_ID = 30;
 
 		public static final double BOTTOM_ARM_MIN_DEGREE = 313;
-		public static final double TOP_ARM_MIN_DEGREE = 0;
+		public static final double TOP_ARM_MIN_DEGREE = 350;
 		public static final double BOTTOM_ARM_MAX_DEGREE = 116;
 		public static final double TOP_ARM_MAX_DEGREE = 211;
 
