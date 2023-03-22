@@ -25,8 +25,10 @@ import java.util.Map;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
+
+	public static final String TEAM = "blue"; // should be "blue" or "red"
 	// Inches to meters constant
-	private static double IN_TO_M = 0.0024;
+	public static final double IN_TO_M = 0.0024;
 	public static final double periodicFrequency = 0.02;
 
 	public static final Pose2d CHARGE_STATION_POSITION = new Pose2d(0, 0, new Rotation2d(0));

@@ -106,6 +106,6 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 	// Returns true when the robot is in the right position and rotation.
 	@Override
 	public boolean isFinished() {
-		return pidRotation.atSetpoint() & pidVelocity.atSetpoint();
+		return pidRotation.atSetpoint() && pidVelocity.atSetpoint();
 	}
 }
