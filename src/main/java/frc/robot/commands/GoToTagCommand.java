@@ -5,6 +5,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.Constants.VisionConstants;
 
 public class GoToTagCommand extends RotateAndDriveSimultaneousCommand {
 	SwerveDrivetrain drivetrain;
@@ -17,7 +18,7 @@ public class GoToTagCommand extends RotateAndDriveSimultaneousCommand {
 		// GenericSubscriber sub = NetworkTablesInstance.getDefault().getTable("Vision")
 		// 		.getTransform3dTopic("aprilTagPosition").subscribe(new Transform3d());
 		// Transform3d aprilTag = sub.get();
-		Transform3d tagPose = aprilTag.plus(CameraConstants.CAMERA_POSITION);
+		Transform3d tagPose = aprilTag.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER);
 		Rotation2d tagRotation = new Rotation2d(-tagPose.getRotation().getY());
 		Translation2d driveDistance = new Translation2d(tagPose.getX(), tagPose.getZ());
 		driveDistance = driveDistance.plus(desiredPosFromTag.getTranslation().rotateBy(tagRotation));
