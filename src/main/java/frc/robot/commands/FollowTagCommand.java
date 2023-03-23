@@ -55,7 +55,7 @@ public class FollowTagCommand extends CommandBase {
 		Transform3d tagTransform3d = camera.getDetectedAprilTagById(targetTagId);
 
 		// remove the extra distance from transform origin being at very center of robot
-		tagTransform3d = camera.adjustTransformToRobotFrontCenter(tagTransform3d);
+		// tagTransform3d = camera.getDetectedAprilTagById(tagTransform3d);
 
 		// make fixed tag pose into 2d
 		Transform2d tagPose2d = camera.makeTransformInto2d(tagTransform3d);

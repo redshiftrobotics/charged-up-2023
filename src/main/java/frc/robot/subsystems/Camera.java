@@ -17,6 +17,7 @@ import edu.wpi.first.networktables.DoubleArraySubscriber;
 import edu.wpi.first.networktables.DoubleArrayTopic;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.TimestampedDoubleArray;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
 
@@ -26,6 +27,7 @@ public class Camera extends SubsystemBase {
 
 	private final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
 	private final HashMap<Integer, Transform3d> aprilTags = new HashMap<>();
+	// private final HashMap<Integer, Transform3d> aprilTagsPast = new HashMap<>();
 
 	public Camera(int cameraID) {
 		// Sets up and connects roboRio to the pi network table
@@ -37,7 +39,6 @@ public class Camera extends SubsystemBase {
 		networkTable = networkTableInst.getTable(String.format("camera-%s-tags", cameraID));
 
 		// Sets subscribers for topics
-		// TODO test if this works
 		for (String topicName : networkTable.getKeys()) {
 			final DoubleArrayTopic topic = networkTable.getDoubleArrayTopic(topicName);
 			final DoubleArraySubscriber sub = topic.subscribe(new double[] {});
@@ -59,12 +60,20 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** Convert tag location transform with origin at center of robot to a transform with origin at very center front of robot.
-	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center of robot
-	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at very front and center of robot
+	/** Convert tag location transform with origin at center of robot to a transform with origin at a corner of robot
+	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center center of robot
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at a corner of robot
 	 */
-	public Transform3d adjustTransformToRobotFront(Transform3d tranformFromCenter) {
-		return tranformFromCenter.plus(VisionConstants.CENTER_CENTER_TO_FRONT_CENTER);
+	public Transform3d adjustTransformToCorner(Transform3d tranformFromCenter) {
+		return tranformFromCenter.plus(new Transform3d(new Translation3d(0, 0, 0), new Rotation3d()));
+	}
+
+	/** Convert tag location transform with origin at center of robot to a transform with origin at the center of a side of robot
+	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center center of robot
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at a the center of a side of robot
+	 */
+	public Transform3d adjustTransformToSide(Transform3d tranformFromCenter) {
+		return tranformFromCenter.plus(new Transform3d(new Translation3d(0, 0, 0), new Rotation3d()));
 	}
 
 	/** Convert tag location transform with origin at camera to a transform with origin at very center front of robot.
@@ -83,10 +92,10 @@ public class Camera extends SubsystemBase {
 	 * @return 3D pose of tag with specified id.
 	*/
 	public Transform3d getDetectedAprilTagById(int tagId) {
-		if (!aprilTagSubs.containsKey(tagId)) {
+		if (!aprilTags.containsKey(tagId)) {
 			throw new Error("Invalid tag key");
 		}
-		return reconstructTransform3d(aprilTagSubs.get(tagId).get());
+		return aprilTags.get(tagId);
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of all found tags. If it is not found it's value will be null.
@@ -95,10 +104,6 @@ public class Camera extends SubsystemBase {
 	*/
 	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
 		return aprilTags;
-		// private final HashMap<Integer, Transform3d> aprilTags = new HashMap<>();
-		// for (Integer tagId : aprilTagSubs.keySet()) {
-		// 	aprilTags.put(tagId, getDetectedAprilTagById(tagId));
-		// }		
 	}
 
 	/** Converts position of tag relative to camera.
@@ -131,16 +136,14 @@ public class Camera extends SubsystemBase {
 	public void periodic() {
 		// Loops through subscribers to store and output values
 
-		boolean anyTagFound = false;
-
 		for (Integer tagId : aprilTagSubs.keySet()) {
 			final DoubleArraySubscriber sub = aprilTagSubs.get(tagId);
 
 			// get deconstructed transform3d values from subscriber. 
-			final double[] value = sub.get();
+			final TimestampedDoubleArray piTagValue = sub.getAtomic();
 
 			// reconstruct transform3d and adjust it so its not centered at camera but instead at very center of robot
-			Transform3d tagLocation = adjustTransformToRobotCenter(reconstructTransform3d(value));
+			Transform3d tagLocation = adjustTransformToRobotCenter(reconstructTransform3d(piTagValue.value));
 
 			aprilTags.put(tagId, tagLocation);
 
@@ -148,13 +151,7 @@ public class Camera extends SubsystemBase {
 				// prints time since proggram started, april tag id, and distance to said tag in feet
 				System.out.println(String.format("Found April Tag #%s at distance of %.1f feet [%s]",
 						tagId, getDistance(tagLocation) / 304.8, System.currentTimeMillis()));
-				anyTagFound = true;
 			}
 		}
-
-		if (!anyTagFound) {
-			System.out.println(String.format("No Tags [%s]", System.currentTimeMillis()));
-		}
-
 	}
 }

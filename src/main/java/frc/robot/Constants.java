@@ -34,10 +34,6 @@ public final class Constants {
 	public static class VisionConstants {
 		public static final int CAMERA_PORT = 0;
 
-		public static final Transform3d CENTER_CENTER_TO_FRONT_CENTER = new Transform3d(
-				new Translation3d(0, 0.5, 0.5),
-				new Rotation3d());
-
 		public static final Transform3d CAMERA_POSITION_FROM_CENTER_CENTER = new Transform3d(
 				new Translation3d(0, 0.5, 0.5),
 				new Rotation3d());
