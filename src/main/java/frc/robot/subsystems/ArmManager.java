@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -22,7 +23,13 @@ public class ArmManager extends SubsystemBase {
 	}
 
 	// Getting the degree of both arms for rotations of input, reading, and execution
-	public String getBothArmDegree() {
-		return bottomArm.getEncoderRotation() + ", " + topArm.getEncoderRotation();
+	public double[] getBothArmDegree() {
+		double[] arr = { bottomArm.getEncoderRotation().getDegrees(), topArm.getEncoderRotation().getDegrees() };
+		return arr;
+	}
+
+	public double[] getBothArmSetDegree() {
+		double[] arr = { bottomArm.getTarget().getDegrees(), topArm.getTarget().getDegrees() };
+		return arr;
 	}
 }

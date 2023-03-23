@@ -22,6 +22,7 @@ import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ChangeArmDegreeByCommand;
 import frc.robot.commands.ConstantDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
 import frc.robot.subsystems.SwerveModule;
@@ -127,7 +128,10 @@ public class RobotContainer {
 	private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
 	private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
-	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 360);
+	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 90);
+
+	private final Command armByCommandTestForward = new ChangeArmDegreeByCommand(armManager, 0, 10);
+	private final Command armByCommandTestBackward = new ChangeArmDegreeByCommand(armManager, 0, -10);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -156,14 +160,14 @@ public class RobotContainer {
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		// driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		// driverJoystick.button(4).onTrue(armDriveCommand);
-		// driverJoystick.button(5).onTrue(armInspectionComand);
-		// driverJoystick.button(6).onTrue(armIntakeLowCommand);
-		// driverJoystick.button(7).onTrue(armIntakeHighCommand);
-		// driverJoystick.button(8).onTrue(armScoreThreeCommand);
-		// driverJoystick.button(9).onTrue(armScoreTwoCommand);
+		driverJoystick.button(4).onTrue(armDriveCommand);
+		driverJoystick.button(5).onTrue(armInspectionComand);
+		driverJoystick.button(6).onTrue(armIntakeLowCommand);
+		driverJoystick.button(7).onTrue(armIntakeHighCommand);
+		driverJoystick.button(8).onTrue(armScoreThreeCommand);
+		driverJoystick.button(9).onTrue(armScoreTwoCommand);
 
 		// driverJoystick.button(10).onTrue(armTestCommand);
 
@@ -176,9 +180,12 @@ public class RobotContainer {
 		// driverJoystick.button(1).onTrue(setModule);
 		// driverJoystick.button(2).onTrue(zeroModule);
 
-		driverJoystick.button(5).onTrue(driveDistanceTest);
-		driverJoystick.button(6).onTrue(driveDurationTest);
-		driverJoystick.button(4).onTrue(rotateTest);
+		// driverJoystick.button(5).onTrue(driveDistanceTest);
+		// driverJoystick.button(6).onTrue(driveDurationTest);
+		// driverJoystick.button(4).onTrue(rotateTest);
+
+		driverJoystick.button(10).onTrue(armByCommandTestForward);
+		driverJoystick.button(11).onTrue(armByCommandTestBackward);
 
 		// driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
 		// driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));

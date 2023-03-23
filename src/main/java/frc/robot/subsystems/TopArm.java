@@ -60,27 +60,21 @@ public class TopArm extends SubsystemBase {
 		return Rotation2d.fromDegrees(armEncoder.getAbsolutePosition() * ArmConstants.ARM_MOTOR_GEAR_RATIO);
 	}
 
+	public Rotation2d getTarget() {
+		return armAngleRotation2d;
+	}
+
 	// Setting the desired degree for the top arm to avoid breaking and movement
 	public void setDegree(double desiredDegree) {
 		// Limiting the angle the arm can be set to to between the minimum and maximum degrees
 		// Minimum degree will not always be set to zero. 
 		if (maxAngleRotation2d.getDegrees() < minAngleRotation2d.getDegrees()) {
-			if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees() + 360) {
-				armAngleRotation2d = maxAngleRotation2d;
-			}
-			if (minAngleRotation2d.getDegrees() + desiredDegree < minAngleRotation2d.getDegrees()) {
-				armAngleRotation2d = minAngleRotation2d;
-			} else {
-				armAngleRotation2d = Rotation2d.fromDegrees(minAngleRotation2d.getDegrees() + desiredDegree);
+			if (desiredDegree < maxAngleRotation2d.getDegrees() || desiredDegree > minAngleRotation2d.getDegrees()) {
+				armAngleRotation2d = Rotation2d.fromDegrees(desiredDegree);
 			}
 		} else {
-			if (minAngleRotation2d.getDegrees() + desiredDegree > maxAngleRotation2d.getDegrees()) {
-				armAngleRotation2d = maxAngleRotation2d;
-			}
-			if (minAngleRotation2d.getDegrees() + desiredDegree < minAngleRotation2d.getDegrees()) {
-				armAngleRotation2d = minAngleRotation2d;
-			} else {
-				armAngleRotation2d = Rotation2d.fromDegrees(minAngleRotation2d.getDegrees() + desiredDegree);
+			if (desiredDegree > minAngleRotation2d.getDegrees() && desiredDegree < maxAngleRotation2d.getDegrees()) {
+				armAngleRotation2d = Rotation2d.fromDegrees(desiredDegree);
 			}
 		}
 
@@ -110,5 +104,6 @@ public class TopArm extends SubsystemBase {
 		// 	armMotor.set(0);
 		// }
 		SmartDashboard.putNumber("Top Encoder", armEncoder.getAbsolutePosition());
+		SmartDashboard.putNumber("Top Set Value", armAngleRotation2d.getDegrees());
 	}
 }
