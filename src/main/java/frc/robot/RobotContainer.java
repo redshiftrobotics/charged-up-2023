@@ -38,20 +38,20 @@ public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
 
-	private final SwerveModule module1 = new SwerveModule(
-			SwerveDriveConstants.ANGULAR_MOTOR_ID,
-			SwerveDriveConstants.VELOCITY_MOTOR_ID,
-			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
+	// private final SwerveModule module1 = new SwerveModule(
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
+	// 		SwerveDriveConstants.VELOCITY_MOTOR_ID,
+	// 		SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_ID);
 
-	private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
-	private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
+	// private final Command setModule = new SingularSwerveModuleCommand(module1, Math.PI, 1);
+	// private final Command zeroModule = new SingularSwerveModuleCommand(module1, 0, 0);
 
 	private final JakeClaw claw = new JakeClaw(ClawConstants.clawMotor1Id, ClawConstants.clawMotor2Id);
 
 	// TODO find out if a posative or negative direction is open/ close 
 
-	private final Command clawClose = new SetJakeClawDirection(claw, -0.01);
-	private final Command clawOpen = new SetJakeClawDirection(claw, 0.01);
+	private final Command clawClose = new SetJakeClawDirection(claw, -0.05);
+	private final Command clawOpen = new SetJakeClawDirection(claw, 0.05);
 	private final Command clawIdle = new SetJakeClawDirection(claw, 0);
 	// Replace with CommandPS4Controller or CommandJoystick if needed
 	// private final CommandXboxController driverController = new CommandXboxController(
@@ -89,8 +89,8 @@ public class RobotContainer {
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
-		driverJoystick.button(1).onTrue(setModule);
-		driverJoystick.button(2).onTrue(zeroModule);
+		// driverJoystick.button(1).onTrue(setModule);
+		// driverJoystick.button(2).onTrue(zeroModule);
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));

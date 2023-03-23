@@ -87,11 +87,11 @@ public class SwerveModule extends SubsystemBase {
 	// Calculates the next output value of each PID controller and sets motors to them
 	@Override
 	public void periodic() {
-		angularMotor.set(
-				angularPIDController.calculate(getYawRotation()));
+		// angularMotor.set(
+		// 		angularPIDController.calculate(getYawRotation()));
 
-		velocityMotor.set(
-				velocityPIDController.calculate(getVelocity()));
+		// velocityMotor.set(
+		// 		velocityPIDController.calculate(getVelocity()));
 
 		SmartDashboard.putNumber("Angular Encoder", angularEncoder.getPosition());
 		SmartDashboard.putNumber("Velocity ENcoder", velocityEncoder.getPosition());

@@ -49,7 +49,7 @@ public final class Constants {
 
 		public static final int ANGULAR_MOTOR_ID_FR = 2;
 		public static final int VELOCITY_MOTOR_ID_FR = 3;
-		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 9;
+		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 4;
 		public static final int VELOCITY_MOTOR_ID_BL = 5;
@@ -88,8 +88,8 @@ public final class Constants {
 	}
 
 	public static class ClawConstants {
-		public static final int clawMotor1Id = 0;
-		public static final int clawMotor2Id = 1;
+		public static final int clawMotor1Id = 9;
+		public static final int clawMotor2Id = 18;
 	}
 
 }
