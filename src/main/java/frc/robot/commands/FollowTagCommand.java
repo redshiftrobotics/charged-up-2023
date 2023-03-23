@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.SwerveDrivetrain;
+import frc.robot.subsystems.Camera.Side;
 
 public class FollowTagCommand extends CommandBase {
 
@@ -55,10 +56,10 @@ public class FollowTagCommand extends CommandBase {
 		Transform3d tagTransform3d = camera.getDetectedAprilTagById(targetTagId);
 
 		// remove the extra distance from transform origin being at very center of robot
-		// tagTransform3d = camera.getDetectedAprilTagById(tagTransform3d);
+		tagTransform3d = camera.adjustTransformToSide(tagTransform3d, Side.FRONT);
 
 		// make fixed tag pose into 2d
-		Transform2d tagPose2d = camera.makeTransformInto2d(tagTransform3d);
+		Transform2d tagPose2d = camera.makeTransform3dInto2d(tagTransform3d);
 
 		// create a desired location that accounts for tags rotation
 		final Transform2d rotatedDesiredTransformToTag = new Transform2d(
