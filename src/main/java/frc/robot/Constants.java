@@ -46,12 +46,13 @@ public final class Constants {
 
 	public static class SwerveDriveConstants {
 
-		public static double JOYSTICK_DEADZONE = 0.05;
+		public static double JOYSTICK_DEADZONE = 0.1;
+
 		// Meters per second
-		public static final double MAX_SPEED = 0.02;
+		public static final double MAX_SPEED = 0.05;
 
 		// Radians per second
-		public static final double MAX_ROTATION_SPEED = 0.02;
+		// public static final double MAX_ROTATION_SPEED = 0.02;
 
 		public static final double MODULE_LOCATION_X = 0.25;
 		public static final double MODULE_LOCATION_Y = 0.25;
@@ -64,25 +65,25 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
-		public static final int ANGULAR_MOTOR_ID_FL = 7;
-		public static final int VELOCITY_MOTOR_ID_FL = 8;
+		public static final int ANGULAR_MOTOR_ID_FL = 4;
+		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90 - 90;
 
-		public static final int ANGULAR_MOTOR_ID_FR = 5;
-		public static final int VELOCITY_MOTOR_ID_FR = 6;
+		public static final int ANGULAR_MOTOR_ID_FR = 8;
+		public static final int VELOCITY_MOTOR_ID_FR = 1;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_BL = 2;
-		public static final int VELOCITY_MOTOR_ID_BL = 1;
+		public static final int VELOCITY_MOTOR_ID_BL = 31;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90 - 90;
 
-		public static final int ANGULAR_MOTOR_ID_BR = 18;
-		public static final int VELOCITY_MOTOR_ID_BR = 19;
+		public static final int ANGULAR_MOTOR_ID_BR = 3;
+		public static final int VELOCITY_MOTOR_ID_BR = 6;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
-		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90;
+		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90 - 90;
 
 		public static final double ENCODER_NATIVE_NUM_SUBDIVISION = 42;
 		public static final double ROTATIONAL_UNITS_CONSTANT = 2 * Math.PI;
@@ -116,27 +117,70 @@ public final class Constants {
 		public static final double ROBOT_VELOCITY_PID_I = 0;
 		public static final double ROBOT_VELOCITY_PID_D = 0;
 
-		public static final double ROBOT_ANGULAR_PID_P = 0.05;
+		public static final double ROBOT_ANGULAR_PID_P = -0.2;
 		public static final double ROBOT_ANGULAR_PID_I = 0;
-		public static final double ROBOT_ANGULAR_PID_D = 0;
+		public static final double ROBOT_ANGULAR_PID_D = -0.005;
 
 		// The maximum speed and error the robot will stop at for DriveDistanceCommand.
-		public static final double ROBOT_DISTANCE_TOLERANCE = 0.1;
-		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = 0.1;
+		public static final double ROBOT_DISTANCE_TOLERANCE = 0.5;
+		public static final double ROBOT_STOP_VELOCITY_TOLERANCE = .05;
 
 		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
 		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
 		public static final double ROBOT_STOP_ROTATION_TOLERANCE = 0.1;
 	}
 
-	public static final class CameraConstants {
-
-	}
-
 	public static class IntakeConstants {
 		public static final double INTAKE_MOTOR_SPEED = 0.5;
 		public static final int TOP_MOTOR_ID = 0;
 		public static final int BOTTOM_MOTOR_ID = 1;
+	}
+
+	public static class ArmConstants {
+		public static final double BOTTOM_ARM_PID_P = -1;
+		public static final double BOTTOM_ARM_PID_I = 0;
+		public static final double BOTTOM_ARM_PID_D = -0.5;
+
+		public static final double TOP_ARM_PID_P = -1;
+		public static final double TOP_ARM_PID_I = 0;
+		public static final double TOP_ARM_PID_D = 0;
+
+		public static final double ARM_MOTOR_GEAR_RATIO = 1;
+
+		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 18;
+		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 19;
+		public static final int TOP_ARM_MOTOR_ID = 13;
+		public static final int BOTTOM_ARM_ENCODER_ID = 29;
+		public static final int TOP_ARM_ENCODER_ID = 30;
+
+		public static final double BOTTOM_ARM_MIN_DEGREE = 313;
+		public static final double TOP_ARM_MIN_DEGREE = 350;
+		public static final double BOTTOM_ARM_MAX_DEGREE = 116;
+		public static final double TOP_ARM_MAX_DEGREE = 211;
+
+		public static final double BOTTOM_ARM_PID_S = 0.0001;
+		public static final double BOTTOM_ARM_PID_G = 2.04;
+		public static final double BOTTOM_ARM_PID_V = 3.12;
+		public static final double BOTTOM_ARM_PID_A = .11;
+
+		public static final double TOP_ARM_PID_S = 0.0001;
+		public static final double TOP_ARM_PID_G = 2.14;
+		public static final double TOP_ARM_PID_V = 3.12;
+		public static final double TOP_ARM_PID_A = .22;
+
+		public static final double BOTTOM_ARM_FEEDFORWARD_POS = 0;
+		public static final double BOTTOM_ARM_FEEDFORWARD_VEL = 1;
+		public static final double BOTTOM_ARM_FEEDFORWARD_ACCEL = 0;
+
+		public static final double TOP_ARM_FEEDFORWARD_POS = 0;
+		public static final double TOP_ARM_FEEDFORWARD_VEL = 1;
+		public static final double TOP_ARM_FEEDFORWARD_ACCEL = 0;
+
+		public static final double TOP_ARM_MAX_VELOCITY = 0.1;
+		public static final double TOP_ARM_MAX_ACCEL = .01;
+
+		public static final double BOTTOM_ARM_MAX_VELOCITY = 0.1;
+		public static final double BOTTOM_ARM_MAX_ACCEL = .01;
 	}
 
 }

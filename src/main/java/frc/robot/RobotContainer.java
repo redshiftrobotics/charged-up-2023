@@ -4,10 +4,19 @@
 
 package frc.robot;
 
-import frc.robot.Constants.VisionConstants;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.subsystems.Camera;
 import frc.robot.Constants.SwerveDriveConstants;
+import frc.robot.commands.Autos;
+import frc.robot.commands.SetArmDegreeCommand;
+import frc.robot.commands.SingularSwerveModuleCommand;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ToggleFieldRelativeCommand;
+import frc.robot.subsystems.TopArm;
+import frc.robot.subsystems.BottomArm;
+import frc.robot.subsystems.DriveCamera;
+import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
@@ -19,7 +28,11 @@ import frc.robot.subsystems.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.I2C;
@@ -30,6 +43,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+// import frc.robot.commands.ToggleIntakeCommand;
+// import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -40,12 +55,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 public class RobotContainer {
 	// The robot's subsystems and commands are defined here...
 	// private final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-
-	// Replace with CommandPS4Controller or CommandJoystick if needed
-	// private final CommandXboxController driverController = new CommandXboxController(
-	// 		OperatorConstants.DRIVER_CONTROLLER_PORT);
-
-	private final Camera camera = new Camera(VisionConstants.CAMERA_PORT);
 
 	// private final SwerveModule module1 = new SwerveModule(
 	// 		SwerveDriveConstants.ANGULAR_MOTOR_ID,
@@ -76,6 +85,9 @@ public class RobotContainer {
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
 
 	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+
+	private final DriveCamera driveCamera = new DriveCamera();
+
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro, swerveModuleFL,
 			swerveModuleFR, swerveModuleBL, swerveModuleBR);
@@ -87,8 +99,35 @@ public class RobotContainer {
 	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
+	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
+	private final Command toggleFieldRelative = new ToggleFieldRelativeCommand(drivetrain);
+
+	// Initialize the bottom arm and top arm
+	private final BottomArm bottomArm = new BottomArm(
+			ArmConstants.BOTTOM_ARM_MOTOR_ONE_ID,
+			ArmConstants.BOTTOM_ARM_MOTOR_TWO_ID,
+			ArmConstants.BOTTOM_ARM_ENCODER_ID,
+			ArmConstants.BOTTOM_ARM_MIN_DEGREE,
+			ArmConstants.BOTTOM_ARM_MAX_DEGREE);
+	private final TopArm topArm = new TopArm(
+			ArmConstants.TOP_ARM_MOTOR_ID,
+			ArmConstants.TOP_ARM_ENCODER_ID,
+			ArmConstants.TOP_ARM_MIN_DEGREE,
+			ArmConstants.TOP_ARM_MAX_DEGREE);
+
+	// Initialize the arm manager so that setting the degrees of both arms is simpler
+	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
+
+	// Commands to set the state of the arm manager 
+	private final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
+	private final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
+	private final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
+	private final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
+	private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
+	private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
+
+	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 360);
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -117,9 +156,21 @@ public class RobotContainer {
 		// Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
 		// cancelling on release.
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
+		driverJoystick.button(3).onTrue(toggleFieldRelative);
+
+		// driverJoystick.button(4).onTrue(armDriveCommand);
+		// driverJoystick.button(5).onTrue(armInspectionComand);
+		// driverJoystick.button(6).onTrue(armIntakeLowCommand);
+		// driverJoystick.button(7).onTrue(armIntakeHighCommand);
+		// driverJoystick.button(8).onTrue(armScoreThreeCommand);
+		// driverJoystick.button(9).onTrue(armScoreTwoCommand);
+
+		// driverJoystick.button(10).onTrue(armTestCommand);
+
+		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
-		driverJoystick.button(2).onTrue(stopCommand);
+		driverJoystick.button(2).whileTrue(stopCommand);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);

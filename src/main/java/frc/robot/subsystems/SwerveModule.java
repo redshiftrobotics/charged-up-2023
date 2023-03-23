@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix.sensors.CANCoder;
+
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
 import com.ctre.phoenix.sensors.SensorTimeBase;
 
@@ -36,6 +39,7 @@ public class SwerveModule extends SubsystemBase {
 	private final SparkMaxPIDController velocitySparkMaxPIDController;
 
 	private SwerveModuleState state = new SwerveModuleState();
+	private SwerveModulePosition position = new SwerveModulePosition();
 
 	private double angularZero = 0;
 
@@ -80,7 +84,10 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setI(SwerveDriveConstants.VELOCITY_PID_I);
 		velocitySparkMaxPIDController.setD(SwerveDriveConstants.VELOCITY_PID_D);
 		velocitySparkMaxPIDController.setFF(SwerveDriveConstants.VELOCITY_PID_FF);
+
+		// velocitySparkMaxPIDController.setOutputRange(-SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_SPEED);
 		velocitySparkMaxPIDController.setOutputRange(-1, 1);
+
 		velocitySparkMaxPIDController.setIZone(0);
 
 		// Rotational units: 4096 / rotation
@@ -126,7 +133,7 @@ public class SwerveModule extends SubsystemBase {
 	 */
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(velocityEncoder.getPosition(),
-				new Rotation2d(angularEncoder.getAbsolutePosition()));
+				Rotation2d.fromDegrees(angularEncoder.getAbsolutePosition()));
 	}
 
 	/** Sets the speed and desired angle of the module
@@ -148,7 +155,7 @@ public class SwerveModule extends SubsystemBase {
 		SmartDashboard.putNumber("Angular PID value" + smartdashboardID, test);
 		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
-		// Convert from RPM to MPS
+		// // Convert from RPM to MPS
 		velocitySparkMaxPIDController.setReference(
 				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
 				CANSparkMax.ControlType.kVelocity);

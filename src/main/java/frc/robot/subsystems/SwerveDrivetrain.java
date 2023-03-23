@@ -1,5 +1,12 @@
 package frc.robot.subsystems;
 
+import javax.crypto.spec.GCMParameterSpec;
+import javax.swing.text.Position;
+
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -9,6 +16,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.SwerveDriveConstants;
+import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.subsystems.SwerveModule;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveConstants;
@@ -17,13 +29,13 @@ import frc.robot.Constants.SwerveDriveConstants;
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationFR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
-	private static final Translation2d locationBR = new Translation2d(
+	private static final Translation2d locationFR = new Translation2d(
 			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBL = new Translation2d(
+			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+	private static final Translation2d locationBR = new Translation2d(
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
@@ -100,12 +112,30 @@ public class SwerveDrivetrain extends SubsystemBase {
 		}
 	}
 
+	private ChassisSpeeds clampSpeed(ChassisSpeeds speeds) {
+
+		//Find total speed, 
+		double totalSpeed = Math.sqrt(speeds.vxMetersPerSecond * speeds.vxMetersPerSecond
+				+ speeds.vyMetersPerSecond * speeds.vyMetersPerSecond);
+
+		//If speed is over max speed, clamp it
+		if (totalSpeed > SwerveDriveConstants.MAX_SPEED) {
+			double scale = SwerveDriveConstants.MAX_SPEED / totalSpeed;
+			speeds.vxMetersPerSecond *= scale;
+			speeds.vyMetersPerSecond *= scale;
+		}
+		return speeds;
+	}
+
 	/** Set the SwerveModuleState of all modules
 	 * 
 	 * @param speeds The ChassisSpeeds object to calculate module states
 	 * 		based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
+
+		speeds = clampSpeed(speeds);
+
 		if (fieldRelative) {
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
 		} else {
@@ -135,6 +165,9 @@ public class SwerveDrivetrain extends SubsystemBase {
 		SmartDashboard.putNumber("SpeedsX", speeds.vxMetersPerSecond);
 		SmartDashboard.putNumber("SpeedsY", speeds.vyMetersPerSecond);
 		SmartDashboard.putNumber("SpeedsR", speeds.omegaRadiansPerSecond);
+
+		SmartDashboard.putNumber("Robot X", pose.getX());
+		SmartDashboard.putNumber("Robot Y", pose.getY());
 	}
 
 	/** stops all swerve modules */
