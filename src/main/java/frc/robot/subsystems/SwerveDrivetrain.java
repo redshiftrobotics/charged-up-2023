@@ -112,12 +112,30 @@ public class SwerveDrivetrain extends SubsystemBase {
 		}
 	}
 
+	private ChassisSpeeds clampSpeed(ChassisSpeeds speeds) {
+
+		//Find total speed, 
+		double totalSpeed = Math.sqrt(speeds.vxMetersPerSecond * speeds.vxMetersPerSecond
+				+ speeds.vyMetersPerSecond * speeds.vyMetersPerSecond);
+
+		//If speed is over max speed, clamp it
+		if (totalSpeed > SwerveDriveConstants.MAX_SPEED) {
+			double scale = SwerveDriveConstants.MAX_SPEED / totalSpeed;
+			speeds.vxMetersPerSecond *= scale;
+			speeds.vyMetersPerSecond *= scale;
+		}
+		return speeds;
+	}
+
 	/** Set the SwerveModuleState of all modules
 	 * 
 	 * @param speeds The ChassisSpeeds object to calculate module states
 	 * 		based off forward-backward, left-right, and rotation speeds.
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
+
+		speeds = clampSpeed(speeds);
+
 		if (fieldRelative) {
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
 		} else {
