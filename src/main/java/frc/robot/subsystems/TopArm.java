@@ -52,7 +52,7 @@ public class TopArm extends SubsystemBase {
 		armEncoder = new CANCoder(armEncoderId);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
-		armAngleRotation2d = Rotation2d.fromDegrees(20);
+		armAngleRotation2d = Rotation2d.fromDegrees(5);
 	}
 
 	// Getting the rotation of the encoder for movement
@@ -90,15 +90,15 @@ public class TopArm extends SubsystemBase {
 	//            >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		// armMotor.setVoltage(
-		// 		armPIDController.calculate(
-		// 				getEncoderRotation().getRadians(),
-		// 				armAngleRotation2d.getRadians())
+		armMotor.setVoltage(
+				armPIDController.calculate(
+						getEncoderRotation().getRadians(),
+						armAngleRotation2d.getRadians())
 		// +
 		// feedForward.calculate(
 		// 		armAngleRotation2d.getRadians(),
 		// 		armPIDController.getSetpoint().velocity)
-		// );
+		);
 
 		// armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 

@@ -34,6 +34,7 @@ public class DriveDistanceCommand extends CommandBase {
 		position = initialPosition;
 		distance = driveDistance;
 		this.isFieldRelative = isFieldRelative;
+		pidController.setSetpoint(driveDistance.getNorm());
 		pidController.setTolerance(SwerveDriveConstants.ROBOT_DISTANCE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_VELOCITY_TOLERANCE);
 
@@ -59,7 +60,9 @@ public class DriveDistanceCommand extends CommandBase {
 		distance = driveDistance.minus(position.minus(initialPosition));
 
 		// Get the new speed as a Translation2d using the output of the pid controller and the angle to the target position.
-		Translation2d speed = new Translation2d(pidController.calculate(distance.getNorm()), distance.getAngle());
+		Translation2d speed = new Translation2d(
+				pidController.calculate(position.getNorm()),
+				distance.getAngle());
 
 		// Set the SwerveModuleStates as a new ChassisSpeeds object using the Translation2d above.
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed.getX(), speed.getY(), 0));

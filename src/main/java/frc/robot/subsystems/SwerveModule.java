@@ -85,7 +85,10 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setI(SwerveDriveConstants.VELOCITY_PID_I);
 		velocitySparkMaxPIDController.setD(SwerveDriveConstants.VELOCITY_PID_D);
 		velocitySparkMaxPIDController.setFF(SwerveDriveConstants.VELOCITY_PID_FF);
+
+		// velocitySparkMaxPIDController.setOutputRange(-SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_SPEED);
 		velocitySparkMaxPIDController.setOutputRange(-1, 1);
+
 		velocitySparkMaxPIDController.setIZone(0);
 
 		// Rotational units: 4096 / rotation
@@ -131,7 +134,7 @@ public class SwerveModule extends SubsystemBase {
 	 */
 	public SwerveModulePosition getPosition() {
 		return new SwerveModulePosition(velocityEncoder.getPosition(),
-				new Rotation2d(angularEncoder.getAbsolutePosition()));
+				Rotation2d.fromDegrees(angularEncoder.getAbsolutePosition()));
 	}
 
 	/** Sets the speed and desired angle of the module
@@ -154,12 +157,12 @@ public class SwerveModule extends SubsystemBase {
 		SmartDashboard.putNumber("Angular sensor value" + smartdashboardID, angularEncoder.getAbsolutePosition());
 
 		// // Convert from RPM to MPS
-		// velocitySparkMaxPIDController.setReference(
-		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
-		// 		CANSparkMax.ControlType.kVelocity);
-		// SmartDashboard.putNumber("Velocity set value",
-		// 		(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
-		// SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
+		velocitySparkMaxPIDController.setReference(
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE,
+				CANSparkMax.ControlType.kVelocity);
+		SmartDashboard.putNumber("Velocity set value",
+				(state.speedMetersPerSecond * 60) / SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		SmartDashboard.putNumber(testString, angularEncoder.getAbsolutePosition());
 	}
 
 	// stops motor and ends PID

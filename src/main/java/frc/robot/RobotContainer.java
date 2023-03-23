@@ -12,8 +12,10 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.SetArmDegreeCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
+import frc.robot.commands.ToggleFieldRelativeCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
+import frc.robot.subsystems.DriveCamera;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
@@ -26,6 +28,7 @@ import frc.robot.subsystems.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -81,6 +84,9 @@ public class RobotContainer {
 			SwerveDriveConstants.ANGULAR_MOTOR_ENCODER_OFFSET_BR);
 
 	private final AHRS gyro = new AHRS(I2C.Port.kMXP);
+
+	private final DriveCamera driveCamera = new DriveCamera();
+
 	// link for gyro https://pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
 	private final SwerveDrivetrain drivetrain = new SwerveDrivetrain(gyro, swerveModuleFL,
 			swerveModuleFR, swerveModuleBL, swerveModuleBR);
@@ -93,7 +99,7 @@ public class RobotContainer {
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 
-	private final Command toggleFieldRelative = new RunCommand(drivetrain::toggleFieldRelative, drivetrain);
+	private final Command toggleFieldRelative = new ToggleFieldRelativeCommand(drivetrain);
 
 	// Initialize the bottom arm and top arm
 	private static final BottomArm bottomArm = new BottomArm(
@@ -151,27 +157,27 @@ public class RobotContainer {
 
 		driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		driverJoystick.button(4).onTrue(armDriveCommand);
-		driverJoystick.button(5).onTrue(armInspectionComand);
-		driverJoystick.button(6).onTrue(armIntakeLowCommand);
-		driverJoystick.button(7).onTrue(armIntakeHighCommand);
-		driverJoystick.button(8).onTrue(armScoreThreeCommand);
-		driverJoystick.button(9).onTrue(armScoreTwoCommand);
+		// driverJoystick.button(4).onTrue(armDriveCommand);
+		// driverJoystick.button(5).onTrue(armInspectionComand);
+		// driverJoystick.button(6).onTrue(armIntakeLowCommand);
+		// driverJoystick.button(7).onTrue(armIntakeHighCommand);
+		// driverJoystick.button(8).onTrue(armScoreThreeCommand);
+		// driverJoystick.button(9).onTrue(armScoreTwoCommand);
 
-		driverJoystick.button(10).onTrue(armTestCommand);
+		// driverJoystick.button(10).onTrue(armTestCommand);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
-		// driverJoystick.button(3).onTrue(toggleFieldRelative);
-		// driverJoystick.button(2).onTrue(stopCommand);
+		driverJoystick.button(3).onTrue(toggleFieldRelative);
+		driverJoystick.button(2).whileTrue(stopCommand);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);
 		// driverJoystick.button(2).onTrue(zeroModule);
 
-		// driverJoystick.button(5).onTrue(driveDistanceTest);
-		// driverJoystick.button(6).onTrue(driveDurationTest);
-		// driverJoystick.button(4).onTrue(rotateTest);
+		driverJoystick.button(5).onTrue(driveDistanceTest);
+		driverJoystick.button(6).onTrue(driveDurationTest);
+		driverJoystick.button(4).onTrue(rotateTest);
 
 		// driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
 		// driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
