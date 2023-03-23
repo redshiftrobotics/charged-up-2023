@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants.CameraConstants;
@@ -14,19 +15,19 @@ public class GoToTagCommand extends RotateAndDriveSimultaneousCommand {
 	// sub.get();
 
 	public static GoToTagCommand createGoToTagCommand(SwerveDrivetrain drivetrain, Transform3d aprilTag,
-			Translation2d desiredDistToTag) {
+			Transform2d desiredPosFromTag) {
 		// GenericSubscriber sub = NetworkTablesInstance.getDefault().getTable("Vision")
 		// 		.getTransform3dTopic("aprilTagPosition").subscribe(new Transform3d());
 		// Transform3d aprilTag = sub.get();
 		Transform3d tagPose = aprilTag.plus(CameraConstants.CAMERA_POSITION);
 		Rotation2d tagRotation = new Rotation2d(-tagPose.getRotation().getY());
 		Translation2d driveDistance = new Translation2d(tagPose.getX(), tagPose.getZ());
-		driveDistance = driveDistance.plus(desiredDistToTag.rotateBy(tagRotation));
-		return new GoToTagCommand(drivetrain, tagRotation, driveDistance);
+		driveDistance = driveDistance.plus(desiredPosFromTag.getTranslation().rotateBy(tagRotation));
+		return new GoToTagCommand(drivetrain, tagRotation.plus(desiredPosFromTag.getRotation()), driveDistance);
 	}
 
-	public GoToTagCommand(SwerveDrivetrain drivetrain, Rotation2d tagRotation, Translation2d driveDistance) {
-		super(drivetrain, tagRotation, false, driveDistance, false);
+	public GoToTagCommand(SwerveDrivetrain drivetrain, Rotation2d tagRelativeRotation, Translation2d driveDistance) {
+		super(drivetrain, tagRelativeRotation, false, driveDistance, false);
 
 	}
 
