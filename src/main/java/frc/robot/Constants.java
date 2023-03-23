@@ -42,7 +42,7 @@ public final class Constants {
 		public static double JOYSTICK_DEADZONE = 0.1;
 
 		// Meters per second
-		public static final double MAX_SPEED = 0.02;
+		public static final double MAX_SPEED = 0.05;
 
 		// Radians per second
 		// public static final double MAX_ROTATION_SPEED = 0.02;
