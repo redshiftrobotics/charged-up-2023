@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import frc.robot.subsystems.JakeClaw;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class SetJakeClawDirection extends CommandBase {
@@ -16,6 +17,7 @@ public class SetJakeClawDirection extends CommandBase {
 
 	@Override
 	public void execute() {
+		SmartDashboard.putNumber("set jake claw speed", desiredClawDirection);
 		claw.setDirection(desiredClawDirection);
 	}
 
