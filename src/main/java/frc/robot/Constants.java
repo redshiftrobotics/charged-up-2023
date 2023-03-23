@@ -23,7 +23,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-
 	public static final double periodicFrequency = 0.02;
 
 	public static final Pose2d STARTING_POSITION = new Pose2d(0, 0, new Rotation2d(0)); // x, y, theta
@@ -31,6 +30,14 @@ public final class Constants {
 	public static final Pose2d CHARGE_STATION_POSITION = new Pose2d(0, 0, new Rotation2d(0));
 
 	public static final double CENTER_OF_MASS_OFFSET = 0;
+
+	public static class VisionConstants {
+		public static final int CAMERA_PORT = 0;
+
+		public static final Transform3d CAMERA_POSITION_FROM_CENTER_CENTER = new Transform3d(
+				new Translation3d(0, 0.5, 0.5),
+				new Rotation3d());
+	}
 
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
@@ -121,13 +128,6 @@ public final class Constants {
 		// The maximum rotation speed and error the robot will stop at for RotateByCommand.
 		public static final double ROBOT_ANGLE_TOLERANCE = 0.1;
 		public static final double ROBOT_STOP_ROTATION_TOLERANCE = 0.1;
-	}
-
-	public static final class CameraConstants {
-		// TODO get camera position from design.
-		public static final Transform3d CAMERA_POSITION = new Transform3d(new Translation3d(0, 0.5, 0.5),
-				new Rotation3d());
-
 	}
 
 	public static class IntakeConstants {
