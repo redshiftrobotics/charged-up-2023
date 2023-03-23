@@ -16,6 +16,7 @@ import frc.robot.Constants.RobotConstants;
 import frc.robot.commands.Autos;
 import frc.robot.RobotContainer;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import frc.robot.Constants;
 
 public final class Autos {
@@ -116,7 +117,7 @@ public final class Autos {
 				RobotContainer.armScoreThreeCommand);
 	}
 
-	public static SequentialCommandGroup noArmAuto(SwerveDrivetrain drivetrain) {
+	public static SequentialCommandGroup noArmAutoBottom(SwerveDrivetrain drivetrain) {
 		// This auto simply leaves the community and then balances on the Charge Station
 		final Translation2d START_POS = FieldConstants.BLUE_GRID_NODE_1.plus(
 				new Translation2d(RobotConstants.WIDTH / 2, 0));
@@ -126,11 +127,47 @@ public final class Autos {
 						findRelativeOffset(START_POS,
 								FieldConstants.BLUE_STAGING_MARK_1.minus(new Translation2d(RobotConstants.WIDTH, 0)))
 								.times(dir),
-						true));
+						true),
+				new DriveDistanceCommand(drivetrain,
+						findRelativeOffset(
+								FieldConstants.BLUE_STAGING_MARK_1.minus(new Translation2d(RobotConstants.WIDTH, 0)),
+								FieldConstants.BLUE_CHARGE_STATION.plus(
+										FieldConstants.CHARGE_STATION_RAMP_OFFSET.plus(RobotConstants.LENGTH_OFFSET)))
+								.times(dir),
+						true),
+				new BalanceCommand(drivetrain));
+
+	}
+
+	public static SequentialCommandGroup noArmAutoTop(SwerveDrivetrain drivetrain) {
+		// This auto simply leaves the community and then balances on the Charge Station
+		final Translation2d START_POS = FieldConstants.BLUE_GRID_NODE_8.plus(
+				new Translation2d(RobotConstants.WIDTH / 2, 0));
+
+		return new SequentialCommandGroup(
+				new DriveDistanceCommand(drivetrain,
+						findRelativeOffset(START_POS,
+								FieldConstants.BLUE_STAGING_MARK_4.minus(new Translation2d(RobotConstants.WIDTH, 0)))
+								.times(dir),
+						true),
+				new DriveDistanceCommand(drivetrain,
+						findRelativeOffset(
+								FieldConstants.BLUE_STAGING_MARK_4.minus(new Translation2d(RobotConstants.WIDTH, 0)),
+								FieldConstants.BLUE_CHARGE_STATION.plus(
+										FieldConstants.CHARGE_STATION_RAMP_OFFSET.plus(RobotConstants.LENGTH_OFFSET)))
+								.times(dir),
+						true),
+				new BalanceCommand(drivetrain)
+
+		);
+
 	}
 
 	public static SequentialCommandGroup visionBasedAuto(SwerveDrivetrain drivetrain, ArmManager armManager) {
 		return new SequentialCommandGroup(
+			RobotContainer.armScoreThreeCommand,
+
+			GoToTagCommand.createGoToTagCommand(drivetrain, , new Transform2d(findRelativeOffset(FieldConstants.TAGS.get(8), FieldConstants.BLUE_STAGING_MARK_1.minus(RobotConstants.LENGTH_OFFSET)), new Rotation2d(Math.PI))),
 
 		);
 	}
