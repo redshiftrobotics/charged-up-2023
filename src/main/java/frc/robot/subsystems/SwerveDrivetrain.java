@@ -43,6 +43,8 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private ChassisSpeeds speeds = new ChassisSpeeds();
 	private boolean fieldRelative = false;
 
+	private boolean turboMode = false;
+
 	private final SwerveModule moduleFL;
 	private final SwerveModule moduleFR;
 	private final SwerveModule moduleBL;
@@ -80,6 +82,15 @@ public class SwerveDrivetrain extends SubsystemBase {
 	/** Toggle the robot movement between relative to the field forward and relative to the robot forward */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
+	}
+
+	//Turbo Mode only for joystick
+	public void setTurboMode(boolean mode) {
+		turboMode = mode;
+	}
+
+	public boolean getTurboMode() {
+		return turboMode;
 	}
 
 	/** Return robot position as Pose2d */

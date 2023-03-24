@@ -10,6 +10,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 import frc.robot.commands.SetArmDegreeCommand;
+import frc.robot.commands.SetTurboMode;
 import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ToggleFieldRelativeCommand;
@@ -130,6 +131,9 @@ public class RobotContainer {
 
 	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
+	private final Command turboModeOn = new SetTurboMode(drivetrain, true);
+	private final Command turboModeOff = new SetTurboMode(drivetrain, false);
+
 	private final Command armByCommandTestForward = new ChangeArmDegreeByCommand(armManager, 0, 10);
 	private final Command armByCommandTestBackward = new ChangeArmDegreeByCommand(armManager, 0, -10);
 
@@ -193,6 +197,9 @@ public class RobotContainer {
 		// driverJoystick.button(10).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0.01, 0, 0)));
 		// driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
 		// driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
+
+		driverJoystick.button(1).onTrue(turboModeOn);
+		driverJoystick.button(1).onFalse(turboModeOff);
 	}
 
 	/**

@@ -40,7 +40,7 @@ public class DriveDurationCommand extends WaitCommand {
 	@Override
 	public void initialize() {
 		super.initialize();
-		drivetrain.setFieldRelative(true);
+		drivetrain.setFieldRelative(false);
 		drivetrain.setSwerveModuleStates(speeds);
 	}
 
