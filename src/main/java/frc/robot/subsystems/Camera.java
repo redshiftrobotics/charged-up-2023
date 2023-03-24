@@ -133,7 +133,7 @@ public class Camera extends SubsystemBase {
 	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at very center of robot
 	 */
 	private Transform3d adjustTransformToRobotCenter(Transform3d tranformFromCamera) {
-		return tranformFromCamera.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER);
+		return tranformFromCamera.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER_MM);
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of tag with specified ID. If it is not found it returns null.

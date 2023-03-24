@@ -37,8 +37,8 @@ public final class Constants {
 		// Most camera related stuff happens on Pi co-processor
 
 		// TODO set values
-		public static final Transform3d CAMERA_POSITION_FROM_CENTER_CENTER = new Transform3d(
-				new Translation3d(0, 0.5, 0.5),
+		public static final Transform3d CAMERA_POSITION_FROM_CENTER_CENTER_MM = new Transform3d(
+				new Translation3d(-317.5, 0, -457.2),
 				new Rotation3d());
 
 		public static final int ROBOT_WIDTH_MM = 100;
