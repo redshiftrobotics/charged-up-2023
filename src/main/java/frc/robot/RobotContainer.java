@@ -8,6 +8,7 @@ import frc.robot.Constants.ArmConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.Autos;
 import frc.robot.commands.SetArmDegreeCommand;
 import frc.robot.commands.SingularSwerveModuleCommand;
@@ -15,6 +16,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ToggleFieldRelativeCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
+import frc.robot.subsystems.Camera;
 import frc.robot.subsystems.DriveCamera;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
@@ -127,6 +129,8 @@ public class RobotContainer {
 
 	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 360);
 
+	private static final Camera camera = new Camera(VisionConstants.CAMERA_PORT);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
@@ -195,6 +199,6 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
-		return Autos.basicAuto(drivetrain, armManager);
+		return Autos.basicAutoBottom(drivetrain, armManager);
 	}
 }

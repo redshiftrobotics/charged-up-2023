@@ -178,6 +178,11 @@ public final class Constants {
 		public static final Translation2d BLUE_GRID_NODE_8 = new Translation2d(57.45 * IN_TO_M, 174.19 * IN_TO_M);
 		public static final Translation2d BLUE_GRID_NODE_9 = new Translation2d(57.45 * IN_TO_M, 196.19 * IN_TO_M);
 
+		// offset from the apriltag to the grid node horizontally
+		public static final Translation2d TAG_TO_NODE_OFFSET = BLUE_GRID_NODE_2.minus(TAGS.get(8));
+
+		public static final Translation2d VERTICAL_NODE_DISTANCE = BLUE_GRID_NODE_2.minus(BLUE_GRID_NODE_1);
+
 		// Same as tags 4 and 5, just for readability
 		public static final Translation2d RED_SUBSTATION = new Translation2d(636.96 * IN_TO_M, 265.74 * IN_TO_M);
 		public static final Translation2d BLUE_SUBSTATION = new Translation2d(14.25 * IN_TO_M, 265.74 * IN_TO_M);
