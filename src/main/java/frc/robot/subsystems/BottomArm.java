@@ -19,7 +19,7 @@ import frc.robot.Constants.ArmConstants;
 // The subsystem for controlling the bottom arm and motors associated with it
 public class BottomArm extends SubsystemBase {
 
-	private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(1);
 
 	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotorOne;
@@ -132,6 +132,12 @@ public class BottomArm extends SubsystemBase {
 		// } else {
 		// 	armMotorTwo.set(0);
 		// }
+
+		if (joy.getRawButton(4)) {
+			armMotorControllerGroup.set(-joy.getY() * .25);
+		} else {
+			armMotorControllerGroup.set(0);
+		}
 	}
 }
 // TomarTopia CC 2023, the dark souls of papercuts

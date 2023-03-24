@@ -4,11 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -21,6 +23,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
  */
 public class Robot extends TimedRobot {
 	private Command autonomousCommand;
+	private Joystick operatorJoystick = new Joystick(1);
 
 	private RobotContainer robotContainer;
 
@@ -34,6 +37,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
+		clawMotor1.setNeutralMode(NeutralMode.Brake);
+		clawMotor2.setNeutralMode(NeutralMode.Brake);
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
@@ -95,8 +100,13 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-		clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.1);
-		clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.1);
+		if (operatorJoystick.getRawButton(1)) {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.1 * operatorJoystick.getY());
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.1 * operatorJoystick.getY());
+		} else {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
+		}
 	}
 
 	@Override
