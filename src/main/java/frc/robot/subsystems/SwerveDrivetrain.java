@@ -29,13 +29,13 @@ import frc.robot.Constants.SwerveDriveConstants;
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationFR = new Translation2d(
 			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationBR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
@@ -134,7 +134,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 
-		speeds = clampSpeed(speeds);
+		// speeds = clampSpeed(speeds);
 
 		if (fieldRelative) {
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());

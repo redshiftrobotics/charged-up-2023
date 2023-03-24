@@ -52,7 +52,7 @@ public class TopArm extends SubsystemBase {
 		armEncoder = new CANCoder(armEncoderId);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
-		armAngleRotation2d = Rotation2d.fromDegrees(5);
+		armAngleRotation2d = Rotation2d.fromDegrees(ArmConstants.TOP_ARM_START_DEGREE);
 	}
 
 	// Getting the rotation of the encoder for movement
