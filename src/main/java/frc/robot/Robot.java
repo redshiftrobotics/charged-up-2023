@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -19,9 +24,11 @@ public class Robot extends TimedRobot {
 
 	private RobotContainer robotContainer;
 
-	// private final Camera camModule = new Camera(0);
+	// private final Camera camModule = new Camera(0);s
+	VictorSPX clawMotor1 = new VictorSPX(18);
+	VictorSPX clawMotor2 = new VictorSPX(20);
 
-	/**
+	/**s
 	 * This function is run when the robot is first started up and should be used for any
 	 * initialization code.
 	 */
@@ -88,6 +95,8 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
+		clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.1);
+		clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.1);
 	}
 
 	@Override
