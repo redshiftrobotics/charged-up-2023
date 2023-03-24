@@ -141,9 +141,9 @@ public final class Constants {
 		public static final double BOTTOM_ARM_PID_I = 0;
 		public static final double BOTTOM_ARM_PID_D = -1;
 
-		public static final double TOP_ARM_PID_P = -10;
+		public static final double TOP_ARM_PID_P = -20;
 		public static final double TOP_ARM_PID_I = 0;
-		public static final double TOP_ARM_PID_D = 0;
+		public static final double TOP_ARM_PID_D = -1;
 
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
