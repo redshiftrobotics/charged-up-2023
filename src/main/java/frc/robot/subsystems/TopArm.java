@@ -84,25 +84,26 @@ public class TopArm extends SubsystemBase {
 	//            >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		armMotor.setVoltage(
-				armPIDController.calculate(
-						getEncoderRotation().getRadians(),
-						armAngleRotation2d.getRadians())
-		// +
-		// feedForward.calculate(
-		// 		armAngleRotation2d.getRadians(),
-		// 		armPIDController.getSetpoint().velocity)
-		);
+		// armMotor.setVoltage(
+		// 		armPIDController.calculate(
+		// 				getEncoderRotation().getRadians(),
+		// 				armAngleRotation2d.getRadians())
+		// // +
+		// // feedForward.calculate(
+		// // 		armAngleRotation2d.getRadians(),
+		// // 		armPIDController.getSetpoint().velocity)
+		// );
 
 		// armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 
-		// if (joy.getRawButton(3)) {
-		// 	armMotor.set(0.1);
-		// } else if (joy.getRawButton(4)) {
-		// 	armMotor.set(-0.1);
-		// } else {
-		// 	armMotor.set(0);
-		// }
+		if (joy.getRawButton(3)) {
+			armMotor.set(0.5);
+		} else if (joy.getRawButton(4)) {
+			armMotor.set(-0.5);
+		} else {
+			armMotor.set(0);
+		}
+
 		SmartDashboard.putNumber("Top Encoder", armEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Top Set Value", armAngleRotation2d.getDegrees());
 	}
