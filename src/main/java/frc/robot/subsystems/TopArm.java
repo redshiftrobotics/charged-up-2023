@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TopArm extends SubsystemBase {
 	// Initializing the motor, encoder, and PID controller & rotation privates
 
-	private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(1);
 
 	private final CANSparkMax armMotor;
 	private final CANCoder armEncoder;

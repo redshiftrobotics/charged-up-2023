@@ -78,6 +78,8 @@ public class SwerveDriveCommand extends CommandBase {
 		SmartDashboard.putNumber("Joy R", joystick.getTwist());
 
 		drivetrain.setSwerveModuleStates(speeds);
+
+		SmartDashboard.putBoolean("Turbo Mode", drivetrain.getTurboMode());
 	}
 
 	// Called once the command ends or is interrupted.

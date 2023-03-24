@@ -46,14 +46,14 @@ public final class Constants {
 
 	public static class SwerveDriveConstants {
 
-		public static double JOYSTICK_DEADZONE = 0.1;
+		public static double JOYSTICK_DEADZONE = 0.2;
 
 		// Clamps Final Speed, in Percent
-		public static final double MAX_SPEED = 0.5;
+		public static final double MAX_SPEED = 0.75;
 
 		// Percent of Speed use by Joystick
-		public static final double MAX_NORMAL_JOYSTICK_SPEED = 0.2;
-		public static final double MAX_TURBO_JOYSTICK_SPEED = 0.5;
+		public static final double MAX_NORMAL_JOYSTICK_SPEED = 0.1;
+		public static final double MAX_TURBO_JOYSTICK_SPEED = 0.2;
 
 		// Radians per second
 		// public static final double MAX_ROTATION_SPEED = 0.02;
