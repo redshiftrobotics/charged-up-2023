@@ -53,7 +53,7 @@ public class BottomArm extends SubsystemBase {
 		armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
 		armMotorOne.setIdleMode(IdleMode.kBrake);
 		armMotorTwo.setIdleMode(IdleMode.kBrake);
-		armMotorOne.setInverted(true);
+		armMotorOne.setInverted(false);
 
 		armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
 		armEncoder = new CANCoder(armEncoderId);

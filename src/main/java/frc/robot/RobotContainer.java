@@ -162,19 +162,19 @@ public class RobotContainer {
 		// driverController.b().whileTrue(exampleSubsystem.exampleMethodCommand());
 		// driverJoystick.button(3).onTrue(toggleFieldRelative);
 
-		driverJoystick.button(4).onTrue(armDriveCommand);
-		driverJoystick.button(5).onTrue(armInspectionComand);
-		driverJoystick.button(6).onTrue(armIntakeLowCommand);
-		driverJoystick.button(7).onTrue(armIntakeHighCommand);
-		driverJoystick.button(8).onTrue(armScoreThreeCommand);
-		driverJoystick.button(9).onTrue(armScoreTwoCommand);
+		// driverJoystick.button(4).onTrue(armDriveCommand);
+		// driverJoystick.button(5).onTrue(armInspectionComand);
+		// driverJoystick.button(6).onTrue(armIntakeLowCommand);
+		// driverJoystick.button(7).onTrue(armIntakeHighCommand);
+		// driverJoystick.button(8).onTrue(armScoreThreeCommand);
+		// driverJoystick.button(9).onTrue(armScoreTwoCommand);
 
 		// driverJoystick.button(10).onTrue(armTestCommand);
 
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
-		driverJoystick.button(3).onTrue(toggleFieldRelative);
-		driverJoystick.button(2).whileTrue(stopCommand);
+		// driverJoystick.button(3).onTrue(toggleFieldRelative);
+		// driverJoystick.button(2).whileTrue(stopCommand);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);
@@ -184,8 +184,8 @@ public class RobotContainer {
 		// driverJoystick.button(6).onTrue(driveDurationTest);
 		// driverJoystick.button(4).onTrue(rotateTest);
 
-		driverJoystick.button(10).onTrue(armByCommandTestForward);
-		driverJoystick.button(11).onTrue(armByCommandTestBackward);
+		// driverJoystick.button(10).onTrue(armByCommandTestForward);
+		// driverJoystick.button(11).onTrue(armByCommandTestBackward);
 
 		// driverJoystick.button(7).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0.01, 0)));
 		// driverJoystick.button(8).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, -0.01, 0)));
