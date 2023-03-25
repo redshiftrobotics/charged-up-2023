@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -100,18 +101,20 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-		if (operatorJoystick.getRawButtonPressed(2)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
-			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
-		}
 		if (operatorJoystick.getRawButtonPressed(7)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.2);
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
 			clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.2);
 		}
-		if (operatorJoystick.getRawButtonPressed(1)) {
+		if (operatorJoystick.getRawButtonPressed(9)) {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.2);
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
+		}
+		if (operatorJoystick.getRawButtonPressed(8)) {
 			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
 			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
 		}
+		SmartDashboard.putBoolean("Claw Motor 1", clawMotor1.getMotorOutputPercent() != 0);
+		SmartDashboard.putBoolean("Claw Motor 2", clawMotor2.getMotorOutputPercent() != 0);
 	}
 
 	@Override

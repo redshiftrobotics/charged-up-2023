@@ -100,7 +100,7 @@ public class RobotContainer {
 			new ChassisSpeeds(1, 0, Math.PI * 2));
 	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 
-	private final Command testAuto = new DriveDurationCommand(drivetrain, 4, 0.05);
+	private final Command testAuto = new DriveDurationCommand(drivetrain, 2, 0.05);
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
@@ -200,8 +200,8 @@ public class RobotContainer {
 		// driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
 		// driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
 
-		driverJoystick.button(1).onTrue(turboModeOn);
-		driverJoystick.button(1).onFalse(turboModeOff);
+		// driverJoystick.button(1).onTrue(turboModeOn);
+		// driverJoystick.button(1).onFalse(turboModeOff);
 
 	}
 
@@ -213,6 +213,6 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
-		return null;
+		return testAuto;
 	}
 }

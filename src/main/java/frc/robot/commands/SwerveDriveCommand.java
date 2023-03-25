@@ -61,9 +61,13 @@ public class SwerveDriveCommand extends CommandBase {
 		double speedR = 0;
 
 		if (joystick.button(7).getAsBoolean()) {
-			speedR = 0.25;
+			speedR = 0.25 * SwerveDriveConstants.MAX_FIRST_ROTATE_JOYSTICK_SPEED;
 		} else if (joystick.button(8).getAsBoolean()) {
-			speedR = -0.25;
+			speedR = -0.25 * SwerveDriveConstants.MAX_FIRST_ROTATE_JOYSTICK_SPEED;
+		} else if (joystick.button(9).getAsBoolean()) {
+			speedR = 0.25 * SwerveDriveConstants.MAX_SECOND_ROTATE_JOYSTICK_SPEED;
+		} else if (joystick.button(10).getAsBoolean()) {
+			speedR = -0.25 * SwerveDriveConstants.MAX_SECOND_ROTATE_JOYSTICK_SPEED;
 		}
 
 		ChassisSpeeds speeds;
@@ -71,12 +75,12 @@ public class SwerveDriveCommand extends CommandBase {
 			speeds = new ChassisSpeeds(
 					speedY * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
 					speedX * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
-					speedR * SwerveDriveConstants.MAX_ROTATE_JOYSTICK_SPEED);
+					speedR);
 		} else {
 			speeds = new ChassisSpeeds(
 					speedY * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED,
 					speedX * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED,
-					speedR * SwerveDriveConstants.MAX_ROTATE_JOYSTICK_SPEED);
+					speedR);
 		}
 
 		SmartDashboard.putNumber("Joy X", joystick.getX());
