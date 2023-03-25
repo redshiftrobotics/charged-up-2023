@@ -100,6 +100,8 @@ public class RobotContainer {
 			new ChassisSpeeds(1, 0, Math.PI * 2));
 	private final Command rotateTest = new RotateByCommand(drivetrain, new Rotation2d(Math.PI / 2));
 
+	private final Command testAuto = new DriveDurationCommand(drivetrain, 4, 0.05);
+
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
 

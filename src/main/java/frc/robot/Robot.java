@@ -100,13 +100,15 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
-		if (operatorJoystick.getRawButton(1)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.35 * operatorJoystick.getY());
-			clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.35 * operatorJoystick.getY());
-		} else if (operatorJoystick.getRawButton(2)) {
+		if (operatorJoystick.getRawButtonPressed(2)) {
 			clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
 			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
-		} else {
+		}
+		if (operatorJoystick.getRawButtonPressed(7)) {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.2);
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.2);
+		}
+		if (operatorJoystick.getRawButtonPressed(1)) {
 			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
 			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
 		}

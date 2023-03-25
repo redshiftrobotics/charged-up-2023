@@ -134,7 +134,9 @@ public class BottomArm extends SubsystemBase {
 		// }
 
 		if (joy.getRawButton(4)) {
-			armMotorControllerGroup.set(-joy.getY() * .25);
+			armMotorControllerGroup.set(.3);
+		} else if (joy.getRawButton(6)) {
+			armMotorControllerGroup.set(-.3);
 		} else {
 			armMotorControllerGroup.set(0);
 		}

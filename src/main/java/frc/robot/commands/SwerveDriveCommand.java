@@ -56,21 +56,27 @@ public class SwerveDriveCommand extends CommandBase {
 	@Override
 	public void execute() {
 
-		double speedX = deadbandJoystick(joystick.getX());
+		double speedX = deadbandJoystick(-joystick.getX());
 		double speedY = deadbandJoystick(-joystick.getY());
-		double speedR = deadbandJoystick(-joystick.getZ());
+		double speedR = 0;
+
+		if (joystick.button(7).getAsBoolean()) {
+			speedR = 0.25;
+		} else if (joystick.button(8).getAsBoolean()) {
+			speedR = -0.25;
+		}
 
 		ChassisSpeeds speeds;
 		if (drivetrain.getTurboMode()) {
 			speeds = new ChassisSpeeds(
 					speedY * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
 					speedX * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
-					speedR * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED);
+					speedR * SwerveDriveConstants.MAX_ROTATE_JOYSTICK_SPEED);
 		} else {
 			speeds = new ChassisSpeeds(
 					speedY * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED,
 					speedX * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED,
-					speedR * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED);
+					speedR * SwerveDriveConstants.MAX_ROTATE_JOYSTICK_SPEED);
 		}
 
 		SmartDashboard.putNumber("Joy X", joystick.getX());
