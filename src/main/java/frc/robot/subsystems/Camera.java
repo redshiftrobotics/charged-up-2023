@@ -20,14 +20,29 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.TimestampedDoubleArray;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.VisionConstants;
+// Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: -backward to +foward), Rotation3d(Quaternion(...)))
 
 public class Camera extends SubsystemBase {
+
 	private final NetworkTableInstance networkTableInst;
 	private final NetworkTable networkTable;
 
 	private final HashMap<Integer, DoubleArraySubscriber> aprilTagSubs = new HashMap<>();
 	private final HashMap<Integer, Transform3d> aprilTags = new HashMap<>();
-	// private final HashMap<Integer, Transform3d> aprilTagsPast = new HashMap<>();
+
+	public enum Side {
+		FRONT,
+		BACK,
+		LEFT,
+		RIGHT,
+	}
+
+	public enum Corner {
+		TOP_LEFT,
+		TOP_RIGHT,
+		BUTTOM_LEFT,
+		BUTTOM_RIGHT,
+	}
 
 	public Camera(int cameraID) {
 		// Sets up and connects roboRio to the pi network table
@@ -60,20 +75,56 @@ public class Camera extends SubsystemBase {
 						new Rotation3d(new Quaternion(values[3], values[4], values[5], values[6])));
 	}
 
-	/** Convert tag location transform with origin at center of robot to a transform with origin at a corner of robot
-	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center center of robot
-	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at a corner of robot
-	 */
-	public Transform3d adjustTransformToCorner(Transform3d tranformFromCenter) {
-		return tranformFromCenter.plus(new Transform3d(new Translation3d(0, 0, 0), new Rotation3d()));
-	}
-
 	/** Convert tag location transform with origin at center of robot to a transform with origin at the center of a side of robot
 	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center center of robot
-	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at a the center of a side of robot
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at the desired center of a side of robot
 	 */
-	public Transform3d adjustTransformToSide(Transform3d tranformFromCenter) {
-		return tranformFromCenter.plus(new Transform3d(new Translation3d(0, 0, 0), new Rotation3d()));
+	public Transform3d adjustTransformToSide(Transform3d tranformFromCenter, Side side) {
+		int x = 0, y = 0, z = 0;
+		switch (side) {
+			case FRONT:
+				z = VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+			case BACK:
+				z = -VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+			case LEFT:
+				x = VisionConstants.ROBOT_HALF_WIDTH_MM;
+				break;
+			case RIGHT:
+				x = -VisionConstants.ROBOT_HALF_WIDTH_MM;
+				break;
+			default:
+				break;
+		}
+		return tranformFromCenter.plus(new Transform3d(new Translation3d(x, y, z), new Rotation3d()));
+	}
+
+	/** Convert tag location transform with origin at center of robot to a transform with origin at a corner of robot
+	 * @param tranformFromCenter {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at center center of robot
+	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at the desired corner of robot
+	 */
+	public Transform3d adjustTransformToCorner(Transform3d tranformFromCenter, Corner corner) {
+		int x = 0, y = 0, z = 0;
+		switch (corner) {
+			case TOP_LEFT:
+				x = VisionConstants.ROBOT_HALF_WIDTH_MM;
+				z = VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+			case TOP_RIGHT:
+				x = -VisionConstants.ROBOT_HALF_WIDTH_MM;
+				z = VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+			case BUTTOM_LEFT:
+				x = VisionConstants.ROBOT_HALF_WIDTH_MM;
+				z = -VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+			case BUTTOM_RIGHT:
+				x = -VisionConstants.ROBOT_HALF_WIDTH_MM;
+				z = -VisionConstants.ROBOT_HALF_LENGTH_MM;
+				break;
+		}
+		return tranformFromCenter.plus(new Transform3d(new Translation3d(x, y, z), new Rotation3d()));
 	}
 
 	/** Convert tag location transform with origin at camera to a transform with origin at very center front of robot.
@@ -82,15 +133,14 @@ public class Camera extends SubsystemBase {
 	 * @return {@link edu.wpi.first.math.geometry.Transform3d Transform3d} with origin at very center of robot
 	 */
 	private Transform3d adjustTransformToRobotCenter(Transform3d tranformFromCamera) {
-		return tranformFromCamera.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER);
+		return tranformFromCamera.plus(VisionConstants.CAMERA_POSITION_FROM_CENTER_CENTER_MM);
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of tag with specified ID. If it is not found it returns null.
-	 * 3D pose of tag is <code>Transform3d(Translation3d(x: -right to +left, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
+	 * @return 3D pose of tag with specified id.
 	 * @see <a href="https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png">Translation3d image</a>
 	 * @see <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png">Rotation3d Quaternion image</a>
-	 * @return 3D pose of tag with specified id.
-	*/
+	 */
 	public Transform3d getDetectedAprilTagById(int tagId) {
 		if (!aprilTags.containsKey(tagId)) {
 			throw new Error("Invalid tag key");
@@ -99,19 +149,20 @@ public class Camera extends SubsystemBase {
 	}
 
 	/** Get {@link edu.wpi.first.math.geometry.Transform3d Transform3d} location of all found tags. If it is not found it's value will be null.
-	 * 3D pose of tag is <code>Transform3d(Translation3d(x: +left to -right, y: -up to +down, z: +foward), Rotation3d(Quaternion(...)))</code>
-	 * @return HashMap with ag id as key and {@link edu.wpi.first.math.geometry.Transform3d Transform3d} tag location as value
+	 * @return HashMap with tag id as key and {@link edu.wpi.first.math.geometry.Transform3d Transform3d} tag location as value
+	 * @see <a href="https://www.researchgate.net/profile/Ilya-Afanasyev-3/publication/325819721/figure/fig3/AS:638843548094468@1529323579246/3D-Point-Cloud-ModelXYZ-generated-from-disparity-map-where-Y-and-Z-represent-objects.png">Translation3d image</a>
+	 * @see <a href="https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Euler_AxisAngle.png/220px-Euler_AxisAngle.png">Rotation3d Quaternion image</a>
 	*/
 	public HashMap<Integer, Transform3d> getAllDetectAprilTags() {
 		return aprilTags;
 	}
 
 	/** Converts position of tag relative to camera.
-	 * 2d pose of tag is Transform2d(Translation2d(x: +left to -right, y: +foward), Rotation2d(value: yaw of object))
+	 * 2d pose of tag is Transform2d(Translation2d(x: -right to +left, y: -backward to +foward), Rotation2d(value: yaw of object))
 	 * @param transform a 3d pose of a tag
 	 * @return 2d pose of a tag (ignoring verticle).
 	 */
-	public Transform2d makeTransformInto2d(Transform3d transform) {
+	public Transform2d makeTransform3dInto2d(Transform3d transform) {
 		return new Transform2d(new Translation2d(transform.getX(), transform.getZ()),
 				new Rotation2d(transform.getRotation().getZ()));
 	}
@@ -121,14 +172,6 @@ public class Camera extends SubsystemBase {
 	 * @return distance to tag in mm
 	 */
 	public double getDistance(Transform3d transform) {
-		return transform.getTranslation().getNorm();
-	}
-
-	/** Distance to pose in mm without verticle distance
-	 * @param transform a 2d pose of tag
-	 * @return distance to tag in mm (ignoring verticle distance)
-	 */
-	public double getDistance(Transform2d transform) {
 		return transform.getTranslation().getNorm();
 	}
 

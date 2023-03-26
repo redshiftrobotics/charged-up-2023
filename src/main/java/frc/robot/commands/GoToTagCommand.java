@@ -8,19 +8,15 @@ import frc.robot.subsystems.SwerveDrivetrain;
 public class GoToTagCommand extends RotateAndDriveSimultaneousCommand {
 	SwerveDrivetrain drivetrain;
 
-	// TYPESubscriber sub = NetworkTablesInstance.getDefault().getTable("Vision").getTYPETopic("VARIABLE NAME").subscribe(DEFAULT VALUE);
-	// sub.get();
-
 	public static GoToTagCommand createGoToTagCommand(SwerveDrivetrain drivetrain, Transform3d aprilTag,
 			Translation2d desiredDistToTag) {
-		// GenericSubscriber sub = NetworkTablesInstance.getDefault().getTable("Vision")
-		// 		.getTransform3dTopic("aprilTagPosition").subscribe(new Transform3d());
-		// Transform3d aprilTag = sub.get();
-		// Transform3d tagPose = aprilTag.plus(CameraConstants.CAMERA_POSITION);
-		Transform3d tagPose = aprilTag;
-		Rotation2d tagRotation = new Rotation2d(-tagPose.getRotation().getY());
-		Translation2d driveDistance = new Translation2d(tagPose.getX(), tagPose.getZ());
+
+		Rotation2d tagRotation = new Rotation2d(-aprilTag.getRotation().getY());
+
+		Translation2d driveDistance = new Translation2d(aprilTag.getX(), aprilTag.getZ());
+
 		driveDistance = driveDistance.plus(desiredDistToTag.rotateBy(tagRotation));
+
 		return new GoToTagCommand(drivetrain, tagRotation, driveDistance);
 	}
 
