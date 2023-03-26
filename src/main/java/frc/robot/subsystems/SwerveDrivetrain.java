@@ -29,19 +29,21 @@ import frc.robot.Constants.SwerveDriveConstants;
 public class SwerveDrivetrain extends SubsystemBase {
 	// Locations of wheels relative to robot center
 	private static final Translation2d locationFL = new Translation2d(
-			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
+			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationFR = new Translation2d(
 			SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationBL = new Translation2d(
 			-SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
 	private static final Translation2d locationBR = new Translation2d(
-			SwerveDriveConstants.MODULE_LOCATION_X, SwerveDriveConstants.MODULE_LOCATION_Y);
+			-SwerveDriveConstants.MODULE_LOCATION_X, -SwerveDriveConstants.MODULE_LOCATION_Y);
 
 	private static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			locationFL, locationFR, locationBL, locationBR);
 	private final SwerveDriveOdometry odometry;
 	private ChassisSpeeds speeds = new ChassisSpeeds();
 	private boolean fieldRelative = false;
+
+	private boolean turboMode = false;
 
 	private final SwerveModule moduleFL;
 	private final SwerveModule moduleFR;
@@ -80,6 +82,15 @@ public class SwerveDrivetrain extends SubsystemBase {
 	/** Toggle the robot movement between relative to the field forward and relative to the robot forward */
 	public void toggleFieldRelative() {
 		fieldRelative = !fieldRelative;
+	}
+
+	//Turbo Mode only for joystick
+	public void setTurboMode(boolean mode) {
+		turboMode = mode;
+	}
+
+	public boolean getTurboMode() {
+		return turboMode;
 	}
 
 	/** Return robot position as Pose2d */
@@ -134,7 +145,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 	 */
 	public void setSwerveModuleStates(ChassisSpeeds speeds) {
 
-		speeds = clampSpeed(speeds);
+		// speeds = clampSpeed(speeds);
 
 		if (fieldRelative) {
 			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());

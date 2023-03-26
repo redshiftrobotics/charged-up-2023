@@ -19,7 +19,7 @@ import frc.robot.Constants.ArmConstants;
 // The subsystem for controlling the bottom arm and motors associated with it
 public class BottomArm extends SubsystemBase {
 
-	private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(1);
 
 	// Initializing the motor, encoder, and PID controller
 	private final CANSparkMax armMotorOne;
@@ -53,14 +53,18 @@ public class BottomArm extends SubsystemBase {
 		armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
 		armMotorOne.setIdleMode(IdleMode.kBrake);
 		armMotorTwo.setIdleMode(IdleMode.kBrake);
-		armMotorOne.setInverted(true);
+		armMotorOne.setInverted(false);
 
 		armMotorControllerGroup = new MotorControllerGroup(armMotorOne, armMotorTwo);
 		armEncoder = new CANCoder(armEncoderId);
 		armPIDController.enableContinuousInput(0, 2 * Math.PI);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
-		armAngleRotation2d = Rotation2d.fromDegrees(310);
+		armAngleRotation2d = Rotation2d.fromDegrees(ArmConstants.BOTTOM_ARM_START_DEGREE);
+	}
+
+	public Rotation2d getTarget() {
+		return armAngleRotation2d;
 	}
 
 	public Rotation2d getTarget() {
@@ -92,15 +96,15 @@ public class BottomArm extends SubsystemBase {
 	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		armMotorControllerGroup.setVoltage(
-				armPIDController.calculate(
-						getEncoderRotation().getRadians(),
-						armAngleRotation2d.getRadians())
+		// armMotorControllerGroup.setVoltage(
+		// 		armPIDController.calculate(
+		// 				getEncoderRotation().getRadians(),
+		// 				armAngleRotation2d.getRadians())
 		// 				+
 		// 				feedForward.calculate(
 		// 						armAngleRotation2d.getRadians(),
 		// 						armPIDController.getSetpoint().velocity)
-		);
+		// );
 
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
@@ -132,6 +136,12 @@ public class BottomArm extends SubsystemBase {
 		// } else {
 		// 	armMotorTwo.set(0);
 		// }
+
+		if (joy.getRawButton(4)) {
+			armMotorControllerGroup.set(-joy.getY() * .25);
+		} else {
+			armMotorControllerGroup.set(0);
+		}
 	}
 }
 // TomarTopia CC 2023, the dark souls of papercuts

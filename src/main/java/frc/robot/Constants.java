@@ -55,10 +55,14 @@ public final class Constants {
 
 	public static class SwerveDriveConstants {
 
-		public static double JOYSTICK_DEADZONE = 0.1;
+		public static double JOYSTICK_DEADZONE = 0.2;
 
-		// Meters per second
-		public static final double MAX_SPEED = 0.05;
+		// Clamps Final Speed, in Percent
+		public static final double MAX_SPEED = 0.75;
+
+		// Percent of Speed use by Joystick
+		public static final double MAX_NORMAL_JOYSTICK_SPEED = 0.1;
+		public static final double MAX_TURBO_JOYSTICK_SPEED = 0.2;
 
 		// Radians per second
 		// public static final double MAX_ROTATION_SPEED = 0.02;
@@ -69,18 +73,18 @@ public final class Constants {
 		public static final Translation2d DESIRED_DIST_TO_APRILTAG = new Translation2d(-0.75, 0);
 
 		// TESTING ONLY
-		public static final int ANGULAR_MOTOR_ID = 18;
-		public static final int VELOCITY_MOTOR_ID = 19;
-		public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
+		// public static final int ANGULAR_MOTOR_ID = 18;
+		// public static final int VELOCITY_MOTOR_ID = 19;
+		// public static final int ANGULAR_MOTOR_ENCODER_ID = 28;
 
 		// TODO update motor IDs
-		public static final int ANGULAR_MOTOR_ID_FL = 4;
+		public static final int ANGULAR_MOTOR_ID_FL = 13;
 		public static final int VELOCITY_MOTOR_ID_FL = 12;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FL = 26;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FL = -42 + 90 - 90;
 
 		public static final int ANGULAR_MOTOR_ID_FR = 8;
-		public static final int VELOCITY_MOTOR_ID_FR = 1;
+		public static final int VELOCITY_MOTOR_ID_FR = 15;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_FR = 27;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_FR = -22 + 90 - 90;
 
@@ -89,8 +93,8 @@ public final class Constants {
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BL = 25;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BL = -257 - 90 - 90;
 
-		public static final int ANGULAR_MOTOR_ID_BR = 3;
-		public static final int VELOCITY_MOTOR_ID_BR = 6;
+		public static final int ANGULAR_MOTOR_ID_BR = 1;
+		public static final int VELOCITY_MOTOR_ID_BR = 9;
 		public static final int ANGULAR_MOTOR_ENCODER_ID_BR = 28;
 		public static final int ANGULAR_MOTOR_ENCODER_OFFSET_BR = -345 + 90 - 90;
 
@@ -146,19 +150,22 @@ public final class Constants {
 	}
 
 	public static class ArmConstants {
-		public static final double BOTTOM_ARM_PID_P = -1;
-		public static final double BOTTOM_ARM_PID_I = 0;
-		public static final double BOTTOM_ARM_PID_D = -0.5;
+		public static final double TOP_ARM_START_DEGREE = 332;
+		public static final double BOTTOM_ARM_START_DEGREE = 333;
 
-		public static final double TOP_ARM_PID_P = -1;
+		public static final double BOTTOM_ARM_PID_P = -4;
+		public static final double BOTTOM_ARM_PID_I = 0;
+		public static final double BOTTOM_ARM_PID_D = -1;
+
+		public static final double TOP_ARM_PID_P = -4;
 		public static final double TOP_ARM_PID_I = 0;
 		public static final double TOP_ARM_PID_D = 0;
 
 		public static final double ARM_MOTOR_GEAR_RATIO = 1;
 
-		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 18;
-		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 19;
-		public static final int TOP_ARM_MOTOR_ID = 13;
+		public static final int BOTTOM_ARM_MOTOR_ONE_ID = 3;
+		public static final int BOTTOM_ARM_MOTOR_TWO_ID = 10;
+		public static final int TOP_ARM_MOTOR_ID = 7;
 		public static final int BOTTOM_ARM_ENCODER_ID = 29;
 		public static final int TOP_ARM_ENCODER_ID = 30;
 

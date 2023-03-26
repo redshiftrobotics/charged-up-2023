@@ -4,9 +4,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -16,17 +23,22 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot {
 	private Command autonomousCommand;
+	private Joystick operatorJoystick = new Joystick(1);
 
 	private RobotContainer robotContainer;
 
-	// private final Camera camModule = new Camera(0);
+	// private final Camera camModule = new Camera(0);s
+	VictorSPX clawMotor1 = new VictorSPX(18);
+	VictorSPX clawMotor2 = new VictorSPX(20);
 
-	/**
+	/**s
 	 * This function is run when the robot is first started up and should be used for any
 	 * initialization code.
 	 */
 	@Override
 	public void robotInit() {
+		clawMotor1.setNeutralMode(NeutralMode.Brake);
+		clawMotor2.setNeutralMode(NeutralMode.Brake);
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
@@ -88,6 +100,16 @@ public class Robot extends TimedRobot {
 	/** This function is called periodically during operator control. */
 	@Override
 	public void teleopPeriodic() {
+		if (operatorJoystick.getRawButton(1)) {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.35 * operatorJoystick.getY());
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.35 * operatorJoystick.getY());
+		} else if (operatorJoystick.getRawButton(2)) {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
+		} else {
+			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
+			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
+		}
 	}
 
 	@Override

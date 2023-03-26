@@ -85,8 +85,8 @@ public class SwerveModule extends SubsystemBase {
 		velocitySparkMaxPIDController.setD(SwerveDriveConstants.VELOCITY_PID_D);
 		velocitySparkMaxPIDController.setFF(SwerveDriveConstants.VELOCITY_PID_FF);
 
-		// velocitySparkMaxPIDController.setOutputRange(-SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_SPEED);
-		velocitySparkMaxPIDController.setOutputRange(-1, 1);
+		velocitySparkMaxPIDController.setOutputRange(-SwerveDriveConstants.MAX_SPEED, SwerveDriveConstants.MAX_SPEED);
+		// velocitySparkMaxPIDController.setOutputRange(-1, 1);
 
 		velocitySparkMaxPIDController.setIZone(0);
 

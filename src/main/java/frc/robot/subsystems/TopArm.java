@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class TopArm extends SubsystemBase {
 	// Initializing the motor, encoder, and PID controller & rotation privates
 
-	private final Joystick joy = new Joystick(0);
+	private final Joystick joy = new Joystick(1);
 
 	private final CANSparkMax armMotor;
 	private final CANCoder armEncoder;
@@ -52,7 +52,7 @@ public class TopArm extends SubsystemBase {
 		armEncoder = new CANCoder(armEncoderId);
 		minAngleRotation2d = Rotation2d.fromDegrees(inMinDegree);
 		maxAngleRotation2d = Rotation2d.fromDegrees(inMaxDegree);
-		armAngleRotation2d = Rotation2d.fromDegrees(5);
+		armAngleRotation2d = Rotation2d.fromDegrees(ArmConstants.TOP_ARM_START_DEGREE);
 	}
 
 	// Getting the rotation of the encoder for movement
@@ -84,25 +84,24 @@ public class TopArm extends SubsystemBase {
 	//            >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		armMotor.setVoltage(
-				armPIDController.calculate(
-						getEncoderRotation().getRadians(),
-						armAngleRotation2d.getRadians())
-		// +
-		// feedForward.calculate(
-		// 		armAngleRotation2d.getRadians(),
-		// 		armPIDController.getSetpoint().velocity)
-		);
+		// armMotor.setVoltage(
+		// 		armPIDController.calculate(
+		// 				getEncoderRotation().getRadians(),
+		// 				armAngleRotation2d.getRadians())
+		// // +
+		// // feedForward.calculate(
+		// // 		armAngleRotation2d.getRadians(),
+		// // 		armPIDController.getSetpoint().velocity)
+		// );
 
 		// armMotor.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
 
-		// if (joy.getRawButton(3)) {
-		// 	armMotor.set(0.1);
-		// } else if (joy.getRawButton(4)) {
-		// 	armMotor.set(-0.1);
-		// } else {
-		// 	armMotor.set(0);
-		// }
+		if (joy.getRawButton(3)) {
+			armMotor.set(-joy.getY() * .25);
+		} else {
+			armMotor.set(0);
+		}
+
 		SmartDashboard.putNumber("Top Encoder", armEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Top Set Value", armAngleRotation2d.getDegrees());
 	}
