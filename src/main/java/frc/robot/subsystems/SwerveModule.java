@@ -17,6 +17,7 @@ import com.ctre.phoenix.sensors.SensorTimeBase;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.SwerveDriveConstants;
@@ -110,6 +111,7 @@ public class SwerveModule extends SubsystemBase {
 		velocityEncoder.setVelocityConversionFactor(
 				SwerveDriveConstants.VELOCITY_MOTOR_GEAR_RATIO *
 						SwerveDriveConstants.WHEEL_CIRCUMFERENCE);
+		velocityMotor.setIdleMode(IdleMode.kBrake);
 
 	}
 

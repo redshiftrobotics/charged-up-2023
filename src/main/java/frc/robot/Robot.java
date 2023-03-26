@@ -113,8 +113,8 @@ public class Robot extends TimedRobot {
 			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
 			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
 		}
-		SmartDashboard.putBoolean("Claw Motor 1", clawMotor1.getMotorOutputPercent() != 0);
-		SmartDashboard.putBoolean("Claw Motor 2", clawMotor2.getMotorOutputPercent() != 0);
+		SmartDashboard.putNumber("Claw Motor 1", clawMotor1.getMotorOutputPercent());
+		SmartDashboard.putNumber("Claw Motor 2", clawMotor2.getMotorOutputPercent());
 	}
 
 	@Override
