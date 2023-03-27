@@ -16,6 +16,7 @@ import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ToggleFieldRelativeCommand;
 import frc.robot.subsystems.TopArm;
 import frc.robot.subsystems.BottomArm;
+import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveCamera;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
@@ -42,9 +43,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
+import frc.robot.commands.ClawEjectCommand;
+import frc.robot.commands.ClawGrabCommand;
+import frc.robot.commands.ClawStopCommand;
+
 // import frc.robot.commands.ToggleIntakeCommand;
 // import frc.robot.subsystems.Intake;
 
@@ -139,6 +146,11 @@ public class RobotContainer {
 	private final Command armByCommandTestForward = new ChangeArmDegreeByCommand(armManager, 0, 10);
 	private final Command armByCommandTestBackward = new ChangeArmDegreeByCommand(armManager, 0, -10);
 
+	private final Claw claw = new Claw();
+	private final Command ClawEjectCommand = new ClawEjectCommand(claw);
+	private final Command ClawGrabCommand = new ClawGrabCommand(claw);
+	private final Command ClawStopCommand = new ClawStopCommand(claw);
+
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
 		drivetrain.setDefaultCommand(new SwerveDriveCommand(drivetrain, driverJoystick));
@@ -202,6 +214,10 @@ public class RobotContainer {
 
 		driverJoystick.button(1).onTrue(turboModeOn);
 		driverJoystick.button(1).onFalse(turboModeOff);
+
+		driverJoystick.button(7).onTrue(ClawEjectCommand);
+		driverJoystick.button(8).onTrue(ClawStopCommand);
+		driverJoystick.button(9).onTrue(ClawEjectCommand);
 
 	}
 
