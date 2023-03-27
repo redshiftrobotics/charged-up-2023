@@ -200,8 +200,8 @@ public class RobotContainer {
 		// driverJoystick.button(11).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, 0.01)));
 		// driverJoystick.button(12).whileTrue(new ConstantDriveCommand(drivetrain, new ChassisSpeeds(0, 0, -0.01)));
 
-		// driverJoystick.button(1).onTrue(turboModeOn);
-		// driverJoystick.button(1).onFalse(turboModeOff);
+		driverJoystick.button(1).onTrue(turboModeOn);
+		driverJoystick.button(1).onFalse(turboModeOff);
 
 	}
 

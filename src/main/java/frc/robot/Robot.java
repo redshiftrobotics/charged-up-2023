@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,6 +16,9 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,14 +27,18 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
  * project.
  */
 public class Robot extends TimedRobot {
+	private PowerDistribution pdh = new PowerDistribution();
 	private Command autonomousCommand;
 	private Joystick operatorJoystick = new Joystick(1);
 
 	private RobotContainer robotContainer;
 
 	// private final Camera camModule = new Camera(0);s
-	VictorSPX clawMotor1 = new VictorSPX(18);
-	VictorSPX clawMotor2 = new VictorSPX(20);
+	// VictorSPX clawMotor1 = new VictorSPX(18);
+	// VictorSPX clawMotor2 = new VictorSPX(20);
+
+	private final CANSparkMax motor1 = new CANSparkMax(18, MotorType.kBrushless);
+	private final CANSparkMax motor2 = new CANSparkMax(11, MotorType.kBrushless);
 
 	/**s
 	 * This function is run when the robot is first started up and should be used for any
@@ -38,8 +46,10 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		clawMotor1.setNeutralMode(NeutralMode.Brake);
-		clawMotor2.setNeutralMode(NeutralMode.Brake);
+		// clawMotor1.setNeutralMode(NeutralMode.Brake);
+		// clawMotor2.setNeutralMode(NeutralMode.Brake);
+		motor1.setIdleMode(IdleMode.kBrake);
+		motor2.setIdleMode(IdleMode.kBrake);
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();
@@ -102,19 +112,26 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		if (operatorJoystick.getRawButtonPressed(7)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
-			clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.2);
+			// clawMotor1.set(VictorSPXControlMode.PercentOutput, -0.2);
+			// clawMotor2.set(VictorSPXControlMode.PercentOutput, -0.2);
+			motor1.set(-0.2);
+			motor2.set(-0.2);
 		}
 		if (operatorJoystick.getRawButtonPressed(9)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.2);
-			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
+			// clawMotor1.set(VictorSPXControlMode.PercentOutput, 0.2);
+			// clawMotor2.set(VictorSPXControlMode.PercentOutput, 0.2);
+			motor1.set(0.2);
+			motor2.set(0.2);
 		}
 		if (operatorJoystick.getRawButtonPressed(8)) {
-			clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
-			clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
+			// clawMotor1.set(VictorSPXControlMode.PercentOutput, 0);
+			// clawMotor2.set(VictorSPXControlMode.PercentOutput, 0);
+			motor1.set(0);
+			motor2.set(0);
 		}
-		SmartDashboard.putNumber("Claw Motor 1", clawMotor1.getMotorOutputPercent());
-		SmartDashboard.putNumber("Claw Motor 2", clawMotor2.getMotorOutputPercent());
+		SmartDashboard.putNumber("Claw Motor 1", motor1.getOutputCurrent());
+		SmartDashboard.putNumber("Claw Motor 2", motor2.getOutputCurrent());
+
 	}
 
 	@Override
