@@ -31,6 +31,13 @@ public final class Constants {
 
 	public static final double CENTER_OF_MASS_OFFSET = 0;
 
+	public static class ClawConstants {
+		public static final int MOTOR_1_ID = 18;
+		public static final int MOTOR_2_ID = 11;
+
+		public static final double MOTOR_SPEED = 0.2;
+	}
+
 	public static class VisionConstants {
 		public static final int CAMERA_PORT = 0;
 
