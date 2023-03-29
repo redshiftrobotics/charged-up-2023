@@ -153,7 +153,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 		// speeds = clampSpeed(speeds);
 
 		if (fieldRelative) {
-			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, gyro.getRotation2d());
+			this.speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, new Rotation2d(gyro.getPitch()));
 		} else {
 			this.speeds = speeds;
 		}
