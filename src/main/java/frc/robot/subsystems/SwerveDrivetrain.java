@@ -103,6 +103,11 @@ public class SwerveDrivetrain extends SubsystemBase {
 		return Math.toRadians(gyro.getRate());
 	}
 
+	public Rotation2d getRotation() {
+		// using pitch because gyro is mounted sideways.
+		return new Rotation2d(-gyro.getPitch());
+	}
+
 	/** Return robot speed as Translation2d
 	 * Will return speed depending on fieldRelative.
 	 * @return Use getX() and getY() to get the speeds in meters per second. 

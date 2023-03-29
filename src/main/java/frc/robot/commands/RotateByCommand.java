@@ -30,7 +30,7 @@ public class RotateByCommand extends CommandBase {
 	public RotateByCommand(SwerveDrivetrain drivetrain, Rotation2d desiredRotation) {
 		this.drivetrain = drivetrain;
 
-		initialRotation = drivetrain.getRobotPosition().getRotation();
+		initialRotation = drivetrain.getRotation();
 		this.desiredRotation = Rotation2d.fromDegrees(initialRotation.getDegrees() + desiredRotation.getDegrees());
 
 		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
@@ -51,7 +51,7 @@ public class RotateByCommand extends CommandBase {
 	// Get current rotation, provide it to the pidController, and set the new speed.
 	@Override
 	public void execute() {
-		rotation = drivetrain.getRobotPosition().getRotation().minus(initialRotation);
+		rotation = drivetrain.getRotation().minus(initialRotation);
 		double rotationSpeed = pidController.calculate(rotation.getRadians());
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, 0, rotationSpeed));
 		SmartDashboard.putNumber("Rotate by current", rotation.getDegrees());

@@ -28,7 +28,7 @@ public class RotateToCommand extends CommandBase {
 	public RotateToCommand(SwerveDrivetrain drivetrain, Rotation2d desiredRotation) {
 		this.drivetrain = drivetrain;
 		this.desiredRotation = desiredRotation;
-		rotation = drivetrain.getRobotPosition().getRotation();
+		rotation = drivetrain.getRotation();
 		pidController.enableContinuousInput(0, 2 * Math.PI);
 		pidController.setTolerance(SwerveDriveConstants.ROBOT_ANGLE_TOLERANCE,
 				SwerveDriveConstants.ROBOT_STOP_ROTATION_TOLERANCE);
@@ -46,7 +46,7 @@ public class RotateToCommand extends CommandBase {
 	// Get current rotation, provide it to the pidController, and set the new speed.
 	@Override
 	public void execute() {
-		rotation = drivetrain.getRobotPosition().getRotation();
+		rotation = drivetrain.getRotation();
 		double rotationSpeed = pidController.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(0, 0, rotationSpeed));
 	}

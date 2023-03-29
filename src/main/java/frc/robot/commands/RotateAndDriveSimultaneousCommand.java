@@ -47,7 +47,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 
 		initialPosition = drivetrain.getRobotPosition().getTranslation();
 		position = initialPosition;
-		rotation = drivetrain.getRobotPosition().getRotation();
+		rotation = drivetrain.getRotation();
 		// Uses field-relative drive by default; modifies driveDistance accordingly.
 		// If given is not field-relative, rotate by the rotation to make it field-relative.
 		this.driveDistance = (fieldRelativeDistance) ? driveDistance : driveDistance.rotateBy(rotation);
@@ -72,7 +72,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		drivetrain.setFieldRelative(true);
-		rotation = drivetrain.getRobotPosition().getRotation();
+		rotation = drivetrain.getRotation();
 		// Do one calculation so the pidControllers have error values for execute()
 		pidRotation.calculate(rotation.getRadians() - desiredRotation.getRadians());
 		pidVelocity.calculate(driveDistance.getNorm());
@@ -82,7 +82,7 @@ public class RotateAndDriveSimultaneousCommand extends CommandBase {
 	// Get current rotation and distance, provide it to the pidControllers, and set the new speed.
 	@Override
 	public void execute() {
-		rotation = drivetrain.getRobotPosition().getRotation();
+		rotation = drivetrain.getRotation();
 		double rotationSpeed = 0;
 
 		// If robot is not already at the correct rotation, set the new rotation speed from the PID.

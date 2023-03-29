@@ -72,7 +72,7 @@ public class FollowTagCommand extends CommandBase {
 		pidRotation.setSetpoint(tagPose2d.getRotation().getRadians());
 		pidVelocity.setSetpoint(tagPose2d.getTranslation().getNorm());
 
-		final Rotation2d drivetrainRotation = drivetrain.getRobotPosition().getRotation();
+		final Rotation2d drivetrainRotation = drivetrain.getRotation();
 
 		final double rotationSpeed = pidRotation
 				.calculate(drivetrainRotation.minus(tagPose2d.getRotation()).getRadians());
