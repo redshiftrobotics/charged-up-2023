@@ -5,13 +5,11 @@
 package frc.robot;
 
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.IntakeConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 import frc.robot.commands.SetArmDegreeCommand;
 import frc.robot.commands.SetTurboMode;
-import frc.robot.commands.SingularSwerveModuleCommand;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ToggleFieldRelativeCommand;
 import frc.robot.subsystems.TopArm;
@@ -23,7 +21,6 @@ import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.StopCommand;
-import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ChangeArmDegreeByCommand;
 import frc.robot.commands.ConstantDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
@@ -31,19 +28,13 @@ import frc.robot.subsystems.SwerveModule;
 
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;

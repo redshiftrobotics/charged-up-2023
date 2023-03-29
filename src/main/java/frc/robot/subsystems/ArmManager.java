@@ -1,10 +1,6 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import frc.robot.Constants.ArmConstants;
 
 public class ArmManager extends SubsystemBase {
 	public final BottomArm bottomArm;
