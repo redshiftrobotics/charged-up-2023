@@ -37,8 +37,8 @@ public class Robot extends TimedRobot {
 	// VictorSPX clawMotor1 = new VictorSPX(18);
 	// VictorSPX clawMotor2 = new VictorSPX(20);
 
-	private final CANSparkMax motor1 = new CANSparkMax(18, MotorType.kBrushless);
-	private final CANSparkMax motor2 = new CANSparkMax(11, MotorType.kBrushless);
+	// private final CANSparkMax motor1 = new CANSparkMax(18, MotorType.kBrushless);
+	// private final CANSparkMax motor2 = new CANSparkMax(11, MotorType.kBrushless);
 
 	/**s
 	 * This function is run when the robot is first started up and should be used for any
@@ -48,8 +48,8 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		// clawMotor1.setNeutralMode(NeutralMode.Brake);
 		// clawMotor2.setNeutralMode(NeutralMode.Brake);
-		motor1.setIdleMode(IdleMode.kBrake);
-		motor2.setIdleMode(IdleMode.kBrake);
+		// motor1.setIdleMode(IdleMode.kBrake);
+		// motor2.setIdleMode(IdleMode.kBrake);
 		// Instantiate our RobotContainer.  This will perform all our button bindings, and put our
 		// autonomous chooser on the dashboard.
 		robotContainer = new RobotContainer();

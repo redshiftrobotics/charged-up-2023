@@ -6,6 +6,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.ArmFeedforward;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -26,7 +27,7 @@ public class BottomArm extends SubsystemBase {
 	private final CANSparkMax armMotorTwo;
 	private final MotorControllerGroup armMotorControllerGroup;
 	private final CANCoder armEncoder;
-	private final ProfiledPIDController armPIDController;
+	private final PIDController armPIDController;
 	private Rotation2d armAngleRotation2d;
 	private Rotation2d minAngleRotation2d;
 	private Rotation2d maxAngleRotation2d;
@@ -43,12 +44,13 @@ public class BottomArm extends SubsystemBase {
 	 degrees
 	*/
 	public BottomArm(int armMotorOneId, int armMotorTwoId, int armEncoderId, double inMinDegree, double inMaxDegree) {
-		armPIDController = new ProfiledPIDController(
+		armPIDController = new PIDController(
 				ArmConstants.BOTTOM_ARM_PID_P,
 				ArmConstants.BOTTOM_ARM_PID_I,
-				ArmConstants.BOTTOM_ARM_PID_D,
-				new TrapezoidProfile.Constraints(ArmConstants.BOTTOM_ARM_MAX_VELOCITY,
-						ArmConstants.BOTTOM_ARM_MAX_ACCEL));
+				ArmConstants.BOTTOM_ARM_PID_D
+		// new TrapezoidProfile.Constraints(ArmConstants.BOTTOM_ARM_MAX_VELOCITY,
+		// ArmConstants.BOTTOM_ARM_MAX_ACCEL)
+		);
 		armMotorOne = new CANSparkMax(armMotorOneId, MotorType.kBrushless);
 		armMotorTwo = new CANSparkMax(armMotorTwoId, MotorType.kBrushless);
 		armMotorOne.setIdleMode(IdleMode.kBrake);
@@ -92,15 +94,18 @@ public class BottomArm extends SubsystemBase {
 	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		// armMotorControllerGroup.setVoltage(
-		// 		armPIDController.calculate(
-		// 				getEncoderRotation().getRadians(),
-		// 				armAngleRotation2d.getRadians())
+		double pidValue = armPIDController.calculate(
+				getEncoderRotation().getRadians(),
+				armAngleRotation2d.getRadians());
+		armMotorControllerGroup.setVoltage(
+				pidValue
 		// 				+
 		// 				feedForward.calculate(
 		// 						armAngleRotation2d.getRadians(),
 		// 						armPIDController.getSetpoint().velocity)
-		// );
+		);
+
+		SmartDashboard.putNumber("Bottom Arm Raw PID", pidValue);
 
 		/*
 		armMotorControllerGroup.set(armPIDController.calculate(getEncoderRotation() * 0.05, armDegree));
@@ -133,13 +138,13 @@ public class BottomArm extends SubsystemBase {
 		// 	armMotorTwo.set(0);
 		// }
 
-		if (joy.getRawButton(4)) {
-			armMotorControllerGroup.set(.3);
-		} else if (joy.getRawButton(6)) {
-			armMotorControllerGroup.set(-.3);
-		} else {
-			armMotorControllerGroup.set(0);
-		}
+		// if (joy.getRawButton(4)) {
+		// 	armMotorControllerGroup.set(.3);
+		// } else if (joy.getRawButton(6)) {
+		// 	armMotorControllerGroup.set(-.3);
+		// } else {
+		// 	armMotorControllerGroup.set(0);
+		// }
 	}
 }
 // TomarTopia CC 2023, the dark souls of papercuts

@@ -58,6 +58,7 @@ public final class Constants {
 	public static class OperatorConstants {
 		public static final int DRIVER_JOYSTICK_PORT = 0;
 		public static final int TOGGLE_INTAKE_BUTTON_ID = 2;
+		public static final int OPERATOR_JOYSTICK_PORT = 1;
 	}
 
 	public static class SwerveDriveConstants {
@@ -160,11 +161,11 @@ public final class Constants {
 
 	public static class ArmConstants {
 		public static final double TOP_ARM_START_DEGREE = 332;
-		public static final double BOTTOM_ARM_START_DEGREE = 333;
+		public static final double BOTTOM_ARM_START_DEGREE = 324;
 
-		public static final double BOTTOM_ARM_PID_P = -4;
+		public static final double BOTTOM_ARM_PID_P = -10;
 		public static final double BOTTOM_ARM_PID_I = 0;
-		public static final double BOTTOM_ARM_PID_D = -1;
+		public static final double BOTTOM_ARM_PID_D = -1.5;
 
 		public static final double TOP_ARM_PID_P = -4;
 		public static final double TOP_ARM_PID_I = 0;
@@ -178,9 +179,9 @@ public final class Constants {
 		public static final int BOTTOM_ARM_ENCODER_ID = 29;
 		public static final int TOP_ARM_ENCODER_ID = 30;
 
-		public static final double BOTTOM_ARM_MIN_DEGREE = 313;
+		public static final double BOTTOM_ARM_MIN_DEGREE = 116;
 		public static final double TOP_ARM_MIN_DEGREE = 350;
-		public static final double BOTTOM_ARM_MAX_DEGREE = 116;
+		public static final double BOTTOM_ARM_MAX_DEGREE = 333;
 		public static final double TOP_ARM_MAX_DEGREE = 211;
 
 		public static final double BOTTOM_ARM_PID_S = 0.0001;

@@ -111,6 +111,7 @@ public class RobotContainer {
 
 	private final CommandJoystick driverJoystick = new CommandJoystick(OperatorConstants.DRIVER_JOYSTICK_PORT);
 	// private final Intake intake = new Intake(IntakeConstants.TOP_MOTOR_ID, IntakeConstants.BOTTOM_MOTOR_ID);
+	private final CommandJoystick operatorJoystick = new CommandJoystick(OperatorConstants.OPERATOR_JOYSTICK_PORT);
 
 	private final Command toggleFieldRelative = new ToggleFieldRelativeCommand(drivetrain);
 
@@ -131,12 +132,16 @@ public class RobotContainer {
 	private final ArmManager armManager = new ArmManager(bottomArm, topArm);
 
 	// Commands to set the state of the arm manager 
-	private final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
-	private final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
-	private final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
-	private final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
-	private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
-	private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
+	// private final Command armDriveCommand = new SetArmDegreeCommand(armManager, 10, 10);
+	// private final Command armInspectionComand = new SetArmDegreeCommand(armManager, 60, 10);
+	// private final Command armIntakeLowCommand = new SetArmDegreeCommand(armManager, 75, 280);
+	// private final Command armIntakeHighCommand = new SetArmDegreeCommand(armManager, 75, 120);
+	// private final Command armScoreThreeCommand = new SetArmDegreeCommand(armManager, 45, 180);
+	// private final Command armScoreTwoCommand = new SetArmDegreeCommand(armManager, 90, 90);
+
+	private final Command armStowCommand = new SetArmDegreeCommand(armManager, 324, 0);
+	private final Command armIntake = new SetArmDegreeCommand(armManager, 296, 0);
+	private final Command armTopRung = new SetArmDegreeCommand(armManager, 266, 0);
 
 	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
@@ -215,9 +220,13 @@ public class RobotContainer {
 		driverJoystick.button(1).onTrue(turboModeOn);
 		driverJoystick.button(1).onFalse(turboModeOff);
 
-		driverJoystick.button(7).onTrue(ClawEjectCommand);
-		driverJoystick.button(8).onTrue(ClawStopCommand);
-		driverJoystick.button(9).onTrue(ClawEjectCommand);
+		operatorJoystick.button(7).onTrue(ClawEjectCommand);
+		operatorJoystick.button(8).onTrue(ClawStopCommand);
+		operatorJoystick.button(9).onTrue(ClawEjectCommand);
+
+		operatorJoystick.button(10).onTrue(armStowCommand);
+		operatorJoystick.button(11).onTrue(armIntake);
+		operatorJoystick.button(12).onTrue(armTopRung);
 
 	}
 
