@@ -159,6 +159,9 @@ public class RobotContainer {
 		SmartDashboard.putData(CommandScheduler.getInstance());
 		// SmartDashboard.putData(module1);
 		gyro.zeroYaw();
+		SmartDashboard.putNumber("Balance P", 0);
+		SmartDashboard.putNumber("Balance I", 0);
+		SmartDashboard.putNumber("Balance D", 0);
 	}
 
 	/**

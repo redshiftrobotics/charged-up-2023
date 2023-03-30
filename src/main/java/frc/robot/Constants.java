@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -21,6 +22,7 @@ import edu.wpi.first.math.geometry.Translation3d;
  */
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public final class Constants {
 	public static final double periodicFrequency = 0.02;
@@ -163,9 +165,10 @@ public final class Constants {
 		public static final double BALENCE_TOLERANCE = 5;
 		public static final double SPEED_MULTPLIER = 0.2;
 
-		public static final double BALANCE_P = -0.00035;
+		public static final double BALANCE_P = -0.0003;
 		public static final double BALANCE_I = 0;
-		public static final double BALANCE_D = -0.00001;
+		public static final double BALANCE_D = -0.0001;
+
 	}
 
 	public static class ArmConstants {

@@ -25,6 +25,8 @@ public class BalanceCommand extends CommandBase {
 			BalenceConstants.BALANCE_I,
 			BalenceConstants.BALANCE_D);
 
+	// private PIDController pidController;
+
 	/**
 	 * Moves the robot to the center of the Charge Station and keeps it balanced, \\
 	 * assumes that the robot is already in line with the Charge Station and just needs to move forward/backward
@@ -43,7 +45,11 @@ public class BalanceCommand extends CommandBase {
 	public void initialize() {
 		// TODO: Figure out if center of mass should be added or subtracted
 		pidController.setSetpoint(0);
-		pidController.setTolerance(0.1);
+		// pidController.setTolerance(0.1);
+		// pidController = new PIDController(
+		// 		SmartDashboard.getNumber("Balance P", 0),
+		// 		SmartDashboard.getNumber("Balance I", 0),
+		// 		SmartDashboard.getNumber("Balance D", 0));
 
 	}
 
