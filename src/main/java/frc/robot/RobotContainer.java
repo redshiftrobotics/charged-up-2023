@@ -156,6 +156,7 @@ public class RobotContainer {
 		SmartDashboard.putData(CommandScheduler.getInstance());
 		// SmartDashboard.putData(module1);
 
+		gyro.calibrate();
 	}
 
 	/**

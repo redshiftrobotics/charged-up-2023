@@ -159,6 +159,11 @@ public final class Constants {
 		public static final int BOTTOM_MOTOR_ID = 1;
 	}
 
+	public static class BalenceConstants {
+		public static final double BALENCE_TOLERANCE = 5;
+		public static final double SPEED_MULTPLIER = 0.2;
+	}
+
 	public static class ArmConstants {
 		public static final double TOP_ARM_START_DEGREE = 332;
 		public static final double BOTTOM_ARM_START_DEGREE = 324;
