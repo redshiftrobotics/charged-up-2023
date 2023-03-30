@@ -66,13 +66,13 @@ public final class Constants {
 		public static double JOYSTICK_DEADZONE = 0.2;
 
 		// Clamps Final Speed, in Percent
-		public static final double MAX_SPEED = 0.75;
+		public static final double MAX_SPEED = 1;
 
 		// Percent of Speed use by Joystick
 		public static final double MAX_NORMAL_JOYSTICK_SPEED = 0.08;
 		public static final double MAX_TURBO_JOYSTICK_SPEED = 0.2;
-		public static final double MAX_FIRST_ROTATE_JOYSTICK_SPEED = 0.4;
-		public static final double MAX_SECOND_ROTATE_JOYSTICK_SPEED = 0.2;
+		public static final double MAX_FIRST_ROTATE_JOYSTICK_SPEED = 0.65;
+		public static final double MAX_SECOND_ROTATE_JOYSTICK_SPEED = 0.25;
 
 		// Radians per second
 		// public static final double MAX_ROTATION_SPEED = 0.02;

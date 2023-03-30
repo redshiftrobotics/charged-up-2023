@@ -21,6 +21,7 @@ import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
 import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.StopCommand;
+import frc.robot.commands.BalanceCommand;
 import frc.robot.commands.ChangeArmDegreeByCommand;
 import frc.robot.commands.ConstantDriveCommand;
 import frc.robot.subsystems.SwerveDrivetrain;
@@ -132,7 +133,7 @@ public class RobotContainer {
 
 	private final Command armStowCommand = new SetArmDegreeCommand(armManager, 324, 0);
 	private final Command armIntake = new SetArmDegreeCommand(armManager, 296, 0);
-	private final Command armTopRung = new SetArmDegreeCommand(armManager, 266, 0);
+	private final Command armTopRung = new SetArmDegreeCommand(armManager, 271, 0);
 
 	private final Command armTestCommand = new SetArmDegreeCommand(armManager, 90, 90);
 
@@ -146,6 +147,7 @@ public class RobotContainer {
 	private final Command ClawEjectCommand = new ClawEjectCommand(claw);
 	private final Command ClawGrabCommand = new ClawGrabCommand(claw);
 	private final Command ClawStopCommand = new ClawStopCommand(claw);
+	// private final Command ClawConeKeepCommand = new CLaw
 
 	/** The container for the robot. Contains subsystems, OI devices, and commands. */
 	public RobotContainer() {
@@ -211,13 +213,15 @@ public class RobotContainer {
 		driverJoystick.button(1).onTrue(turboModeOn);
 		driverJoystick.button(1).onFalse(turboModeOff);
 
-		operatorJoystick.button(7).onTrue(ClawEjectCommand);
-		operatorJoystick.button(8).onTrue(ClawStopCommand);
+		operatorJoystick.button(7).onTrue(ClawGrabCommand);
 		operatorJoystick.button(9).onTrue(ClawEjectCommand);
+		operatorJoystick.button(8).onTrue(ClawStopCommand);
 
-		operatorJoystick.button(10).onTrue(armStowCommand);
-		operatorJoystick.button(11).onTrue(armIntake);
-		operatorJoystick.button(12).onTrue(armTopRung);
+		operatorJoystick.button(3).onTrue(armStowCommand);
+		operatorJoystick.button(4).onTrue(armIntake);
+		operatorJoystick.button(6).onTrue(armTopRung);
+
+		// operatorJoystick.button(3).onTrue(new BalanceCommand(drivetrain));
 
 	}
 
