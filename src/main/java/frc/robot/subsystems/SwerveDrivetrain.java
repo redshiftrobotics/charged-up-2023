@@ -59,6 +59,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 						moduleFR.getPosition(),
 						moduleBL.getPosition(),
 						moduleBR.getPosition() });
+		gyro.calibrate();
 	}
 
 	/** Set the robot's movement to either field or robot relative
@@ -85,6 +86,10 @@ public class SwerveDrivetrain extends SubsystemBase {
 	/** Return robot position as Pose2d */
 	public Pose2d getRobotPosition() {
 		return pose;
+	}
+
+	public AHRS getGyro() {
+		return gyro;
 	}
 
 	/** Return robot rotation speed in radians per second. */
@@ -173,6 +178,10 @@ public class SwerveDrivetrain extends SubsystemBase {
 
 		SmartDashboard.putNumber("Robot X", pose.getX());
 		SmartDashboard.putNumber("Robot Y", pose.getY());
+
+		SmartDashboard.putNumber("Gyro X", gyro.getRoll());
+		SmartDashboard.putNumber("Gyro Y", gyro.getPitch());
+		SmartDashboard.putNumber("Gyro Z", gyro.getYaw());
 	}
 
 	/** stops all swerve modules */
@@ -181,5 +190,9 @@ public class SwerveDrivetrain extends SubsystemBase {
 		moduleFR.stop();
 		moduleBL.stop();
 		moduleBR.stop();
+	}
+
+	public void zeroYaw() {
+		gyro.zeroYaw();
 	}
 }

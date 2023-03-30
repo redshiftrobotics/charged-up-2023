@@ -6,8 +6,10 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
+import frc.robot.Constants.BalenceConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 import frc.robot.subsystems.SwerveDrivetrain;
 
@@ -19,9 +21,9 @@ public class BalanceCommand extends CommandBase {
 	// make new PID controler
 
 	private final PIDController pidController = new PIDController(
-			SwerveDriveConstants.VELOCITY_PID_P,
-			SwerveDriveConstants.VELOCITY_PID_I,
-			SwerveDriveConstants.VELOCITY_PID_D);
+			BalenceConstants.BALANCE_P,
+			BalenceConstants.BALANCE_I,
+			BalenceConstants.BALANCE_D);
 
 	/**
 	 * Moves the robot to the center of the Charge Station and keeps it balanced, \\
@@ -40,15 +42,18 @@ public class BalanceCommand extends CommandBase {
 	@Override
 	public void initialize() {
 		// TODO: Figure out if center of mass should be added or subtracted
-		pidController.setSetpoint(Constants.CHARGE_STATION_POSITION.getX() + Constants.CENTER_OF_MASS_OFFSET);
+		pidController.setSetpoint(0);
+		pidController.setTolerance(0.1);
 
 	}
 
 	// get robot position and calculate speed 
 	@Override
 	public void execute() {
-		double speed = pidController.calculate(drivetrain.getRobotPosition().getX());
+		double speed = pidController.calculate(drivetrain.getGyro().getYaw(), 0);
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed, 0, 0));
+		SmartDashboard.putNumber("Balance Command", speed);
+
 	}
 
 	// // Called once the command ends or is interrupted.
@@ -58,6 +63,6 @@ public class BalanceCommand extends CommandBase {
 
 	@Override
 	public boolean isFinished() {
-		return false;
+		return pidController.atSetpoint();
 	}
 }

@@ -19,6 +19,7 @@ import frc.robot.subsystems.DriveCamera;
 import frc.robot.subsystems.ArmManager;
 import frc.robot.commands.DriveDistanceCommand;
 import frc.robot.commands.DriveDurationCommand;
+import frc.robot.commands.FullTestAuto;
 import frc.robot.commands.RotateByCommand;
 import frc.robot.commands.StopCommand;
 import frc.robot.commands.BalanceCommand;
@@ -157,8 +158,7 @@ public class RobotContainer {
 
 		SmartDashboard.putData(CommandScheduler.getInstance());
 		// SmartDashboard.putData(module1);
-
-		gyro.calibrate();
+		gyro.zeroYaw();
 	}
 
 	/**
@@ -222,6 +222,8 @@ public class RobotContainer {
 		operatorJoystick.button(4).onTrue(armIntake);
 		operatorJoystick.button(6).onTrue(armTopRung);
 
+		operatorJoystick.button(5).onTrue(new BalanceCommand(drivetrain));
+
 		// operatorJoystick.button(3).onTrue(new BalanceCommand(drivetrain));
 
 	}
@@ -234,6 +236,6 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
-		return testAuto;
+		return new FullTestAuto(drivetrain);
 	}
 }
