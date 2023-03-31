@@ -56,7 +56,7 @@ public class BalanceCommand extends CommandBase {
 	// get robot position and calculate speed 
 	@Override
 	public void execute() {
-		double speed = pidController.calculate(drivetrain.getGyro().getYaw(), 0);
+		double speed = pidController.calculate(drivetrain.getGyro().getRoll(), 0);
 		drivetrain.setSwerveModuleStates(new ChassisSpeeds(speed, 0, 0));
 		SmartDashboard.putNumber("Balance Command", speed);
 
