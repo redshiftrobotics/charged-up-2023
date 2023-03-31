@@ -225,7 +225,7 @@ public class RobotContainer {
 		operatorJoystick.button(4).onTrue(armIntake);
 		operatorJoystick.button(6).onTrue(armTopRung);
 
-		operatorJoystick.button(5).onTrue(new BalanceCommand(drivetrain));
+		// operatorJoystick.button(5).onTrue(new BalanceCommand(drivetrain));
 
 		// operatorJoystick.button(3).onTrue(new BalanceCommand(drivetrain));
 
@@ -239,6 +239,10 @@ public class RobotContainer {
 	public Command getAutonomousCommand() {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
+		//Balance
 		return new FullTestAuto(drivetrain);
+
+		//Leave Community
+		// return testAuto;
 	}
 }

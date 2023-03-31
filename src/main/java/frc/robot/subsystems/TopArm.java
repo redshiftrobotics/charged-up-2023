@@ -101,7 +101,11 @@ public class TopArm extends SubsystemBase {
 		// 	armMotor.set(0);
 		// }
 
-		armMotor.set(joy.getY() * .25);
+		if (joy.getRawButton(1)) {
+			armMotor.set(joy.getY() * .5);
+		} else {
+			armMotor.set(joy.getY() * .25);
+		}
 
 		SmartDashboard.putNumber("Top Encoder", armEncoder.getAbsolutePosition());
 		SmartDashboard.putNumber("Top Set Value", armAngleRotation2d.getDegrees());
