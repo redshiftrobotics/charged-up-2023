@@ -167,7 +167,7 @@ public final class Constants {
 
 		public static final double BALANCE_P = -0.0003;
 		public static final double BALANCE_I = 0;
-		public static final double BALANCE_D = -0.0001;
+		public static final double BALANCE_D = -0.0000;
 
 	}
 

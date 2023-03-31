@@ -45,7 +45,7 @@ public class BalanceCommand extends CommandBase {
 	public void initialize() {
 		// TODO: Figure out if center of mass should be added or subtracted
 		pidController.setSetpoint(0);
-		// pidController.setTolerance(0.1);
+		pidController.setTolerance(0.1);
 		// pidController = new PIDController(
 		// 		SmartDashboard.getNumber("Balance P", 0),
 		// 		SmartDashboard.getNumber("Balance I", 0),
