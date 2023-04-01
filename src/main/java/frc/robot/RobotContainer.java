@@ -194,7 +194,7 @@ public class RobotContainer {
 		// driverJoystick.button(OperatorConstants.TOGGLE_INTAKE_BUTTON_ID).onTrue(new ToggleIntakeCommand(intake));
 
 		// driverJoystick.button(3).onTrue(toggleFieldRelative);
-		// driverJoystick.button(2).whileTrue(stopCommand);
+		operatorJoystick.button(2).whileTrue(stopCommand);
 
 		// Test bindings
 		// driverJoystick.button(1).onTrue(setModule);
@@ -240,9 +240,9 @@ public class RobotContainer {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
 		//Balance
-		return new FullTestAuto(drivetrain);
+		// return new FullTestAuto(drivetrain);
 
 		//Leave Community
-		// return testAuto;
+		return testAuto;
 	}
 }

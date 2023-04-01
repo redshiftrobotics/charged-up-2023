@@ -8,6 +8,6 @@ public class FullTestAuto extends SequentialCommandGroup {
 		addCommands(
 				// new ZeroYaw(drivetrain),
 				new DriveDurationCommand(drivetrain, 1.5, 0.055),
-				new BalanceCommand(drivetrain));
+				new BalanceCommand(drivetrain).withTimeout(13.5));
 	}
 }
