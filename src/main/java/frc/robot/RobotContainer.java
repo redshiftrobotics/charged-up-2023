@@ -240,9 +240,9 @@ public class RobotContainer {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
 		//Balance
-		// return new FullTestAuto(drivetrain);
+		return new FullTestAuto(drivetrain);
 
 		//Leave Community
-		return testAuto;
+		// return testAuto;
 	}
 }

@@ -165,7 +165,7 @@ public final class Constants {
 		public static final double BALENCE_TOLERANCE = 5;
 		public static final double SPEED_MULTPLIER = 0.2;
 
-		public static final double BALANCE_P = -0.00035;
+		public static final double BALANCE_P = -0.0005;
 		public static final double BALANCE_I = 0;
 		public static final double BALANCE_D = -0.0000;
 
