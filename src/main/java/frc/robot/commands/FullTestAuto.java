@@ -7,7 +7,7 @@ public class FullTestAuto extends SequentialCommandGroup {
 	public FullTestAuto(SwerveDrivetrain drivetrain) {
 		addCommands(
 				// new ZeroYaw(drivetrain),
-				new DriveDurationCommand(drivetrain, 1.5, 0.045),
+				new DriveDurationCommand(drivetrain, 1.5, 0.055),
 				new BalanceCommand(drivetrain));
 	}
 }
