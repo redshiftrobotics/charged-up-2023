@@ -37,7 +37,7 @@ public final class Constants {
 		public static final int MOTOR_1_ID = 18;
 		public static final int MOTOR_2_ID = 11;
 
-		public static final double MOTOR_SPEED = 0.2;
+		public static final double MOTOR_SPEED = 0.4;
 	}
 
 	public static class VisionConstants {
