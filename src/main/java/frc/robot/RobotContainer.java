@@ -9,6 +9,7 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.SwerveDriveConstants;
 
 import frc.robot.commands.SetArmDegreeCommand;
+import frc.robot.commands.SetSlowMode;
 import frc.robot.commands.SetTurboMode;
 import frc.robot.commands.SwerveDriveCommand;
 import frc.robot.commands.ToggleFieldRelativeCommand;
@@ -141,6 +142,9 @@ public class RobotContainer {
 	private final Command turboModeOn = new SetTurboMode(drivetrain, true);
 	private final Command turboModeOff = new SetTurboMode(drivetrain, false);
 
+	private final Command slowModeOn = new SetSlowMode(drivetrain, true);
+	private final Command slowModeOff = new SetSlowMode(drivetrain, false);
+
 	private final Command armByCommandTestForward = new ChangeArmDegreeByCommand(armManager, 0, 10);
 	private final Command armByCommandTestBackward = new ChangeArmDegreeByCommand(armManager, 0, -10);
 
@@ -217,6 +221,9 @@ public class RobotContainer {
 		driverJoystick.button(1).onTrue(turboModeOn);
 		driverJoystick.button(1).onFalse(turboModeOff);
 
+		// driverJoystick.button(2).onTrue(slowModeOn);
+		// driverJoystick.button(2).onFalse(slowModeOff);
+
 		operatorJoystick.button(7).onTrue(ClawGrabCommand);
 		operatorJoystick.button(9).onTrue(ClawEjectCommand);
 		operatorJoystick.button(8).onTrue(ClawStopCommand);
@@ -240,9 +247,9 @@ public class RobotContainer {
 		// An example command will be run in autonomous
 		// return Autos.exampleAuto(exampleSubsystem);
 		//Balance
-		return new FullTestAuto(drivetrain);
+		// return new FullTestAuto(drivetrain);
 
 		//Leave Community
-		// return testAuto;
+		return testAuto;
 	}
 }

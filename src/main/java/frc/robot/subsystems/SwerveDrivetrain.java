@@ -33,6 +33,7 @@ public class SwerveDrivetrain extends SubsystemBase {
 	private boolean fieldRelative = false;
 
 	private boolean turboMode = false;
+	private boolean slowMode = false;
 
 	private final SwerveModule moduleFL;
 	private final SwerveModule moduleFR;
@@ -79,8 +80,16 @@ public class SwerveDrivetrain extends SubsystemBase {
 		turboMode = mode;
 	}
 
+	public void setSlowMode(boolean mode) {
+		slowMode = mode;
+	}
+
 	public boolean getTurboMode() {
 		return turboMode;
+	}
+
+	public boolean getSlowMode() {
+		return slowMode;
 	}
 
 	/** Return robot position as Pose2d */

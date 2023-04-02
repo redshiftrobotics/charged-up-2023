@@ -29,7 +29,7 @@ public class Claw extends SubsystemBase {
 	}
 
 	public void ejectItem() {
-		motors.set(ClawConstants.MOTOR_SPEED);
+		motors.set(0.5 * ClawConstants.MOTOR_SPEED);
 	}
 
 	@Override

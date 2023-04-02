@@ -76,6 +76,11 @@ public class SwerveDriveCommand extends CommandBase {
 					speedY * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
 					speedX * SwerveDriveConstants.MAX_TURBO_JOYSTICK_SPEED,
 					speedR);
+		} else if (drivetrain.getSlowMode()) {
+			speeds = new ChassisSpeeds(
+					speedY * SwerveDriveConstants.MAX_SLOW_JOYSTICK_SPEED,
+					speedX * SwerveDriveConstants.MAX_SLOW_JOYSTICK_SPEED,
+					speedR);
 		} else {
 			speeds = new ChassisSpeeds(
 					speedY * SwerveDriveConstants.MAX_NORMAL_JOYSTICK_SPEED,
