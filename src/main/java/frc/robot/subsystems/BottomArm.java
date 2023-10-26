@@ -94,16 +94,16 @@ public class BottomArm extends SubsystemBase {
 	//           >>> Uncomment the bottom comment and comment the top code to slow down the arm for testing <<<
 	@Override
 	public void periodic() {
-		// double pidValue = armPIDController.calculate(
-		// 		getEncoderRotation().getRadians(),
-		// 		armAngleRotation2d.getRadians());
-		// armMotorControllerGroup.setVoltage(
-		// 		pidValue
+		double pidValue = armPIDController.calculate(
+				getEncoderRotation().getRadians(),
+				armAngleRotation2d.getRadians());
+		armMotorControllerGroup.setVoltage(
+				pidValue
 		// 				+
 		// 				feedForward.calculate(
 		// 						armAngleRotation2d.getRadians(),
 		// 						armPIDController.getSetpoint().velocity)
-		// );
+		);
 
 		// SmartDashboard.putNumber("Bottom Arm Raw PID", pidValue);
 

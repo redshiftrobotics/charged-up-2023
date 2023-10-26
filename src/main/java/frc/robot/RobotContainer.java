@@ -221,8 +221,8 @@ public class RobotContainer {
 		driverJoystick.button(1).onTrue(turboModeOn);
 		driverJoystick.button(1).onFalse(turboModeOff);
 
-		// driverJoystick.button(2).onTrue(slowModeOn);
-		// driverJoystick.button(2).onFalse(slowModeOff);
+		driverJoystick.button(2).onTrue(slowModeOn);
+		driverJoystick.button(2).onFalse(slowModeOff);
 
 		operatorJoystick.button(7).onTrue(ClawGrabCommand);
 		operatorJoystick.button(9).onTrue(ClawEjectCommand);
